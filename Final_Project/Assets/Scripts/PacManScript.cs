@@ -8,11 +8,12 @@ public class PacManScript : MonoBehaviour
     AudioSource audioSource;
     public AudioClip audioClip;
     public AudioClip wakkawakka;
-    bool afterAudio;
+    bool afterInitAudio;
+    bool[] switches = { false , false, false, false};
 
     private void Start()
     {
-        afterAudio = false;
+        afterInitAudio = false;
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioClip);
         StartCoroutine(Wait());
@@ -20,7 +21,7 @@ public class PacManScript : MonoBehaviour
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(audioClip.length);
-        afterAudio = true;
+        afterInitAudio = true;
         GetComponent<Animator>().SetBool("right", true);
         audioSource.loop = true;
         audioSource.clip = wakkawakka;
@@ -28,41 +29,29 @@ public class PacManScript : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (afterAudio)
+        if (afterInitAudio)
         {
             if (Input.GetKeyDown(KeyCode.RightArrow) || GetComponent<Animator>().GetBool("right"))
             {
-                GetComponent<Animator>().SetBool("up", false);
-                GetComponent<Animator>().SetBool("down", false);
-                GetComponent<Animator>().SetBool("left", false);
-                GetComponent<Animator>().SetBool("right", true);
+                Switches("right");
                 transform.Translate(speed * Time.deltaTime, 0, 0);
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow) || GetComponent<Animator>().GetBool("left"))
             {
-                GetComponent<Animator>().SetBool("up", false);
-                GetComponent<Animator>().SetBool("down", false);
-                GetComponent<Animator>().SetBool("right", false);
-                GetComponent<Animator>().SetBool("left", true);
+                Switches("left");
                 transform.Translate(-1 * speed * Time.deltaTime, 0, 0);
             }
 
             if (Input.GetKeyDown(KeyCode.DownArrow) || GetComponent<Animator>().GetBool("down"))
             {
-                GetComponent<Animator>().SetBool("up", false);
-                GetComponent<Animator>().SetBool("right", false);
-                GetComponent<Animator>().SetBool("left", false);
-                GetComponent<Animator>().SetBool("down", true);
+                Switches("down");
                 transform.Translate(0, -1 * speed * Time.deltaTime, 0);
             }
 
             if (Input.GetKeyDown(KeyCode.UpArrow) || GetComponent<Animator>().GetBool("up"))
             {
-                GetComponent<Animator>().SetBool("right", false);
-                GetComponent<Animator>().SetBool("left", false);
-                GetComponent<Animator>().SetBool("down", false);
-                GetComponent<Animator>().SetBool("up", true);
+                Switches("up");
                 transform.Translate(0, speed * Time.deltaTime, 0);
             }
         }
@@ -77,8 +66,42 @@ public class PacManScript : MonoBehaviour
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.CompareTag("teleport1"))
-            transform.Translate(-60, 0, 0);
+            transform.Translate(-70, 0, 0);
         if (collision.gameObject.CompareTag("teleport2"))
-            transform.Translate(60, 0, 0);
+            transform.Translate(70, 0, 0);
+    }
+
+    void Switches(string s)
+    {
+        switch (s)
+        {
+            case "right":
+                GetComponent<Animator>().SetBool("right", true);
+                GetComponent<Animator>().SetBool("left", false);
+                GetComponent<Animator>().SetBool("down", false);
+                GetComponent<Animator>().SetBool("up", false);    
+                break;
+
+            case "left":
+                GetComponent<Animator>().SetBool("right", false);
+                GetComponent<Animator>().SetBool("left", true);
+                GetComponent<Animator>().SetBool("down", false);
+                GetComponent<Animator>().SetBool("up", false);
+                break;
+
+            case "down":
+                GetComponent<Animator>().SetBool("right", false);
+                GetComponent<Animator>().SetBool("left", false);
+                GetComponent<Animator>().SetBool("down", true);
+                GetComponent<Animator>().SetBool("up", false);
+                break;
+
+            case "up":
+                GetComponent<Animator>().SetBool("right", false);
+                GetComponent<Animator>().SetBool("left", false);
+                GetComponent<Animator>().SetBool("down", false);
+                GetComponent<Animator>().SetBool("up", true);
+                break;
+        }
     }
 }
