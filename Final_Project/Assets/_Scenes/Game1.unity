@@ -357,6 +357,16 @@ PrefabInstance:
       propertyPath: audio
       value: 
       objectReference: {fileID: 8300000, guid: d6a4f195fc7efd641b1ce49940b5e544, type: 3}
+    - target: {fileID: 2963431278323030082, guid: 1d9c437120c16bc469f91b552504ac2f,
+        type: 3}
+      propertyPath: audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d6a4f195fc7efd641b1ce49940b5e544, type: 3}
+    - target: {fileID: 2963431278323030082, guid: 1d9c437120c16bc469f91b552504ac2f,
+        type: 3}
+      propertyPath: wakkawakka
+      value: 
+      objectReference: {fileID: 8300000, guid: 85cc1d2035698c04d8d5df63906b67f7, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d9c437120c16bc469f91b552504ac2f, type: 3}
 --- !u!1 &1616337338
