@@ -24,7 +24,7 @@ public class GostScript : MonoBehaviour
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
     RaycastHit2D hitRight;
-    string[] directions = { "up", "right", "down", "left"};
+    string[] directions = { "up", "right", "down", "left" };
 
     bool[] freeDirection = { false, false, false, false };
     string lastdirection;
@@ -105,7 +105,7 @@ public class GostScript : MonoBehaviour
                     if (freeDirection[0] == false)
                         oneTimeDirection = true;
                     if (!lastdirection.Equals("down"))
-                            freeDirection[0] = true;
+                        freeDirection[0] = true;
                 }
             }
             if (hitRight)
@@ -150,10 +150,10 @@ public class GostScript : MonoBehaviour
                         freeDirection[3] = true;
                 }
             }
-            Debug.Log(freeDirection[0]);
-            Debug.Log(freeDirection[1]);
-            Debug.Log(freeDirection[2]);
-            Debug.Log(freeDirection[3]);
+            Debug.Log("up: " + freeDirection[0]);
+            Debug.Log("right: " + freeDirection[1]);
+            Debug.Log("down: " + freeDirection[2]);
+            Debug.Log("left: " + freeDirection[3]);
 
             counter = 0;
 
@@ -167,8 +167,10 @@ public class GostScript : MonoBehaviour
                 }
             }
 
-            Debug.Log("o[0]: " + options[0]);
-            Debug.Log("o[1]: " + options[1]);
+            for(int j = 0; j<options.Count; j++)
+            {
+                Debug.Log("o[" + j + "]: " + options[j]);
+            }
 
             if (counter > 1)
             {
@@ -178,9 +180,11 @@ public class GostScript : MonoBehaviour
                     rand = Random.Range(0, counter);
                     Debug.Log("rand: " + rand);
                 }
-                lastdirection = directions[options[rand]];
-                Debug.Log("lastdirection: "+lastdirection);
+                
+                
             }
+            lastdirection = directions[options[rand]];
+            Debug.Log("lastdirection: " + lastdirection);
             Move(lastdirection);
             options.Clear();
 
