@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class PacManScript : MonoBehaviour
 {
-    public float speed = 1f;
-    AudioSource audioSource;
     public AudioClip audioClip;
     public AudioClip wakkawakka;
+    AudioSource audioSource;
     bool afterInitAudio;
-    bool[] switches = { false , false, false, false};
+    float speed = 15f;
 
     private void Start()
     {
@@ -22,86 +21,46 @@ public class PacManScript : MonoBehaviour
     {
         yield return new WaitForSeconds(audioClip.length);
         afterInitAudio = true;
-        GetComponent<Animator>().SetBool("right", true);
         audioSource.loop = true;
         audioSource.clip = wakkawakka;
         audioSource.Play();
+        GetComponent<Animator>().SetBool("move", true);
     }
     void FixedUpdate()
     {
-        if (afterInitAudio)
+        if (afterInitAudio && !GetComponent<Animator>().GetBool("die"))
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || GetComponent<Animator>().GetBool("right"))
-            {
-                Switches("right");
-                transform.Translate(speed * Time.deltaTime, 0, 0);
-            }
+            transform.Translate(speed * Time.deltaTime, 0, 0);
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || GetComponent<Animator>().GetBool("left"))
-            {
-                Switches("left");
-                transform.Translate(-1 * speed * Time.deltaTime, 0, 0);
-            }
-
-            if (Input.GetKeyDown(KeyCode.DownArrow) || GetComponent<Animator>().GetBool("down"))
-            {
-                Switches("down");
-                transform.Translate(0, -1 * speed * Time.deltaTime, 0);
-            }
-
-            if (Input.GetKeyDown(KeyCode.UpArrow) || GetComponent<Animator>().GetBool("up"))
-            {
-                Switches("up");
-                transform.Translate(0, speed * Time.deltaTime, 0);
-            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+                transform.eulerAngles = new Vector3(0, 0, 0);
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                transform.eulerAngles = new Vector3(0, 0, 180);
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+                transform.eulerAngles = new Vector3(0, 0, 270);
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+                transform.eulerAngles = new Vector3(0, 0, 90);
         }
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("dots"))
         {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 10);
             Destroy(collision.gameObject);
         }
+
         if (collision.gameObject.CompareTag("teleport1"))
             transform.Translate(-70, 0, 0);
         if (collision.gameObject.CompareTag("teleport2"))
             transform.Translate(70, 0, 0);
     }
 
-    void Switches(string s)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        switch (s)
-        {
-            case "right":
-                GetComponent<Animator>().SetBool("right", true);
-                GetComponent<Animator>().SetBool("left", false);
-                GetComponent<Animator>().SetBool("down", false);
-                GetComponent<Animator>().SetBool("up", false);    
-                break;
-
-            case "left":
-                GetComponent<Animator>().SetBool("right", false);
-                GetComponent<Animator>().SetBool("left", true);
-                GetComponent<Animator>().SetBool("down", false);
-                GetComponent<Animator>().SetBool("up", false);
-                break;
-
-            case "down":
-                GetComponent<Animator>().SetBool("right", false);
-                GetComponent<Animator>().SetBool("left", false);
-                GetComponent<Animator>().SetBool("down", true);
-                GetComponent<Animator>().SetBool("up", false);
-                break;
-
-            case "up":
-                GetComponent<Animator>().SetBool("right", false);
-                GetComponent<Animator>().SetBool("left", false);
-                GetComponent<Animator>().SetBool("down", false);
-                GetComponent<Animator>().SetBool("up", true);
-                break;
-        }
+        if (collision.gameObject.CompareTag("gost"))
+            GetComponent<Animator>().SetBool("die", true);
     }
+
 }
