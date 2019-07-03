@@ -33,7 +33,7 @@ public class GostScript : MonoBehaviour
     int counter;
 
 
-    
+
 
     private void Start()
     {
@@ -100,10 +100,6 @@ public class GostScript : MonoBehaviour
                 finishWaiting = false;
                 StartCoroutine(Wait());
                 FindHit();
-                /*Debug.Log("up: " + freeDirection[0]);
-                Debug.Log("right: " + freeDirection[1]);
-                Debug.Log("down: " + freeDirection[2]);
-                Debug.Log("left: " + freeDirection[3]);*/
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -114,23 +110,24 @@ public class GostScript : MonoBehaviour
                     }
                 }
 
-                if (oneTimeDirection)
+                if (oneTimeDirection && (counter != 0))
                 {
                     oneTimeDirection = false;
+
                     if (checkLoopDirections.Count > 3)
                     {
                         do
                         {
                             rand = Random.Range(0, counter);
-                        } while (checkLoopDirections[checkLoopDirections.Count-2] == options[rand]);
-                            
+                        } while (checkLoopDirections[checkLoopDirections.Count - 2] == options[rand]);
+
                     }
                     else
                         rand = Random.Range(0, counter);
+                    checkLoopDirections.Add(options[rand]);
+                    lastdirection = directions[options[rand]];
+                    Switches(lastdirection);
                 }
-                checkLoopDirections.Add(options[rand]);
-                lastdirection = directions[options[rand]];
-                Switches(lastdirection);
             }
         }
     }
@@ -148,6 +145,8 @@ public class GostScript : MonoBehaviour
 
     IEnumerator Wait()
     {
+        if (checkLoopDirections.Count > 5)
+            checkLoopDirections.Clear();
         options.Clear();
         counter = 0;
         yield return new WaitForSeconds(0.5f);
