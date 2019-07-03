@@ -15,6 +15,7 @@ public class PacManScript : MonoBehaviour
     int directionY;
     private void Start()
     {
+        PlayerPrefs.SetInt("GostBlue", 0);
         directionX = 1;
         directionY = 0;
         rb = GetComponent<Rigidbody2D>();
@@ -85,7 +86,12 @@ public class PacManScript : MonoBehaviour
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 10);
             Destroy(collision.gameObject);
         }
-
+        if (collision.gameObject.CompareTag("powerupDot"))
+        {
+            PlayerPrefs.SetInt("GostBlue", 1);
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 50);
+            Destroy(collision.gameObject);
+        }
         if (collision.gameObject.CompareTag("teleport1"))
             transform.Translate(-70, 0, 0);
         if (collision.gameObject.CompareTag("teleport2"))

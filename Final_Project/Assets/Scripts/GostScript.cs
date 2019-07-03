@@ -34,7 +34,6 @@ public class GostScript : MonoBehaviour
 
 
 
-
     private void Start()
     {
         getOutOfHome = false;
@@ -129,6 +128,11 @@ public class GostScript : MonoBehaviour
                     Switches(lastdirection);
                 }
             }
+        }
+
+        if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
+        {
+            IsBlue();
         }
     }
 
@@ -286,4 +290,20 @@ public class GostScript : MonoBehaviour
         hitLeft = Physics2D.CircleCast(transform.position, 1f, Vector2.left, 1f, layermask);
         Debug.DrawRay(transform.position, Vector2.left);
     }
+    void IsBlue()
+    {
+        GetComponent<Animator>().SetLayerWeight(1, 1);
+        StartCoroutine(Bla());
+    }
+    IEnumerator Bla()
+    {
+        yield return new WaitForSeconds(5f);
+        GetComponent<Animator>().SetLayerWeight(1, 0);
+        PlayerPrefs.SetInt("GostBlue", 0);
+    }
+
+    /*bool HitPacman()
+    {
+        return rayRound.collider.name.Equals("Pacman");
+    }*/
 }
