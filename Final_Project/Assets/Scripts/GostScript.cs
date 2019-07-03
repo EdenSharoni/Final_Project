@@ -7,23 +7,19 @@ public class GostScript : MonoBehaviour
     public Transform wayPoint1;
     public Transform wayPoint2;
     int counter = 0;
-    GameObject pacman;
     GameObject gate;
     bool gateOpen;
     bool startFindingPacman;
-    float speed = 3f;
+    bool waitWithSong;
+    float speed = 8f;
     float deploymentHeight;
-    Ray2D rayRound;
-    Ray2D rayRight;
-    Ray2D rayLeft;
-    Ray2D rayUp;
-    Ray2D rayDown;
     Vector3 directionRound;
 
     RaycastHit2D hitUp;
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
     RaycastHit2D hitRight;
+    Ray2D rayRound;
     string[] directions = { "up", "right", "down", "left" };
 
     bool[] freeDirection = { false, false, false, false };
@@ -32,8 +28,25 @@ public class GostScript : MonoBehaviour
     int rand;
     List<int> options;
 
+    public PacManScript pacman;
+    AudioClip pacmanAudioClip;
+    Rigidbody2D rb;
+    int directionX;
+    int directionY;
+    bool finishWaiting;
     private void Start()
     {
+        directionX = 0;
+        directionY = 1;
+        finishWaiting = true;
+        rb = GetComponent<Rigidbody2D>();
+        counter = 0;
+        options = new List<int>();
+        lastdirection = "up";
+        //pacmanAudioClip = pacman.audioClip;
+        //Debug.Log(pacmanAudioClip.name);
+        //waitWithSong = GetComponent<PacManScript>().afterInitAudio;
+        //Debug.Log(waitWithSong);
         oneTimeDirection = true;
         startFindingPacman = false;
         directionRound = Vector3.up;
@@ -41,32 +54,41 @@ public class GostScript : MonoBehaviour
         gate = GameObject.Find("Gate");
         Switches("up");
         gateOpen = false;
-        pacman = GameObject.Find("Pacman");
         StartCoroutine(WaitForGate());
     }
 
+
     IEnumerator WaitForGate()
     {
-        yield return new WaitForSeconds(5f);
+        if (transform.name.Equals("PinkGost"))
+            yield return new WaitForSeconds(5f);
+        if (transform.name.Equals("LightBlueGost"))
+            yield return new WaitForSeconds(10f);
+        if (transform.name.Equals("YellowGost"))
+            yield return new WaitForSeconds(15f);
         gateOpen = true;
     }
 
     void FixedUpdate()
     {
+        rb.velocity = new Vector2(speed * directionX, speed * directionY);
+
+        if (directionX == 1)
+            Switches("right");
+        else if (directionX == -1)
+            Switches("left");
+
+        if (directionY == 1)
+            Switches("up");
+        else if (directionY == -1)
+            Switches("down");
+
         if (!startFindingPacman && !transform.name.Equals("RedGost"))
         {
-            if (!gateOpen)
-            {
-                if (GetComponent<Animator>().GetBool("up"))
-                    Move("up");
-                if (GetComponent<Animator>().GetBool("down"))
-                    Move("down");
-            }
-
             if (gateOpen)
             {
                 gate.SetActive(false);
-                if (transform.name.Equals("PinkGost"))
+                if (transform.name.Equals("LightBlueGost"))
                     Switches("right");
                 else
                     Switches("left");
@@ -91,143 +113,168 @@ public class GostScript : MonoBehaviour
 
         if (startFindingPacman)
         {
-            lastdirection = "up";
-            gate.SetActive(true);
-            if (hitUp)
+            if (finishWaiting)
             {
-                if (hitUp.collider.name.Equals("Wall"))
+                finishWaiting = false;
+                StartCoroutine(Wait());
+                if (hitUp)
                 {
-                    freeDirection[0] = false;
-                }
+                    if (hitUp.collider.name.Equals("Wall"))
+                    {
+                        if (freeDirection[0] == true)
+                            oneTimeDirection = true;
+                        freeDirection[0] = false;
+                    }
 
-                else
-                {
-                    if (freeDirection[0] == false)
-                        oneTimeDirection = true;
-                    if (!lastdirection.Equals("down"))
+                    else
+                    {
+                        if (freeDirection[0] == false)
+                            oneTimeDirection = true;
+                        /*if (lastdirection.Equals("down"))
+                            freeDirection[0] = false;
+                        else*/
                         freeDirection[0] = true;
+                    }
                 }
-            }
-            if (hitRight)
-            {
-                if (hitRight.transform.name.Equals("Wall"))
+                if (hitRight)
                 {
-                    freeDirection[1] = false;
-                }
-                else
-                {
-                    if (freeDirection[1] == false)
-                        oneTimeDirection = true;
-                    if (!lastdirection.Equals("left"))
+                    if (hitRight.transform.name.Equals("Wall"))
+                    {
+                        if (freeDirection[1] == true)
+                            oneTimeDirection = true;
+                        freeDirection[1] = false;
+                    }
+                    else
+                    {
+                        if (freeDirection[1] == false)
+                            oneTimeDirection = true;
                         freeDirection[1] = true;
+                    }
                 }
-            }
-            if (hitDown)
-            {
-                if (hitDown.transform.name.Equals("Wall") || hitDown.transform.name.Equals("Gate"))
+                if (hitDown)
                 {
-                    freeDirection[2] = false;
-                }
-                else
-                {
-                    if (freeDirection[2] == false)
-                        oneTimeDirection = true;
-                    if (!lastdirection.Equals("up"))
+                    if (hitDown.transform.name.Equals("Wall") || hitDown.transform.name.Equals("Gate"))
+                    {
+                        if (freeDirection[2] == true)
+                            oneTimeDirection = true;
+                        freeDirection[2] = false;
+                    }
+                    else
+                    {
+                        if (freeDirection[2] == false)
+                            oneTimeDirection = true;
                         freeDirection[2] = true;
+                    }
                 }
-            }
-            if (hitLeft)
-            {
-                if (hitLeft.transform.name.Equals("Wall"))
+                if (hitLeft)
                 {
-                    freeDirection[3] = false;
-                }
-                else
-                {
-                    if (freeDirection[3] == false)
-                        oneTimeDirection = true;
-                    if (!lastdirection.Equals("right"))
+                    if (hitLeft.transform.name.Equals("Wall"))
+                    {
+                        if (freeDirection[3] == true)
+                            oneTimeDirection = true;
+                        freeDirection[3] = false;
+                    }
+                    else
+                    {
+                        if (freeDirection[3] == false)
+                            oneTimeDirection = true;
                         freeDirection[3] = true;
+                    }
                 }
-            }
-            Debug.Log("up: " + freeDirection[0]);
-            Debug.Log("right: " + freeDirection[1]);
-            Debug.Log("down: " + freeDirection[2]);
-            Debug.Log("left: " + freeDirection[3]);
 
-            counter = 0;
-
-            options = new List<int>();
-            for (int i = 0; i < 4; i++)
-            {
-                if (freeDirection[i] == true)
+                for (int i = 0; i < 4; i++)
                 {
-                    counter++;
-                    options.Add(i);
+                    if (freeDirection[i] == true)
+                    {
+                        counter++;
+                        options.Add(i);
+                    }
                 }
-            }
 
-            for(int j = 0; j<options.Count; j++)
-            {
-                Debug.Log("o[" + j + "]: " + options[j]);
-            }
-
-            if (counter > 1)
-            {
                 if (oneTimeDirection)
                 {
                     oneTimeDirection = false;
                     rand = Random.Range(0, counter);
-                    Debug.Log("rand: " + rand);
                 }
-                
-                
+
+                lastdirection = directions[options[rand]];
+
+                if (lastdirection.Equals("up"))
+                {
+                    directionX = 0;
+                    directionY = 1;
+                }
+                if (lastdirection.Equals("right"))
+                {
+                    directionX = 1;
+                    directionY = 0;
+                }
+                if (lastdirection.Equals("down"))
+                {
+                    directionX = 0;
+                    directionY = -1;
+                }
+                if (lastdirection.Equals("left"))
+                {
+                    directionX = -1;
+                    directionY = 0;
+                }
+
+
+                options.Clear();
+                counter = 0;
             }
-            lastdirection = directions[options[rand]];
-            Debug.Log("lastdirection: " + lastdirection);
-            Move(lastdirection);
-            options.Clear();
 
-
-
-
-            /*if (hitDown.transform.name.Equals("Board"))
-            Debug.Log("up: " + hitUp.transform.name);
+            /*Debug.Log("up: " + hitUp.transform.name);
               Debug.Log("down: " + hitDown.transform.name);
               Debug.Log("left: " + hitLeft.transform.name);
               Debug.Log("right: " + hitRight.collider.name);*/
         }
     }
+    IEnumerator Wait()
+    {
 
+        yield return new WaitForSeconds(1f);
+        finishWaiting = true;
+
+    }
 
     void MakeRayCast()
     {
-        /*Quaternion q = Quaternion.AngleAxis(100 * Time.time, Vector3.forward);
-        rayRound = new Ray2D(transform.position, directionRound);
-        Debug.DrawRay(transform.position, q * directionRound * deploymentHeight);*/
+        Quaternion q = Quaternion.AngleAxis(100 * Time.time, Vector3.forward);
+        rayRound = new Ray2D(transform.position, q * directionRound * deploymentHeight);
+        Debug.DrawRay(transform.position, q * directionRound * deploymentHeight);
 
-        hitUp = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1.1f), Vector2.up, 1f);
+        hitUp = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1.5f), Vector2.up, 0.2f);
         Debug.DrawRay(new Vector2(transform.position.x, transform.position.y + 1.1f), Vector2.up);
 
-        hitDown = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 1.2f), Vector2.down, 1f);
+        hitDown = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 1.5f), Vector2.down, 0.2f);
         Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - 1.2f), Vector2.down);
 
-        hitRight = Physics2D.Raycast(new Vector2(transform.position.x + 1.2f, transform.position.y), Vector2.right, 1f);
+        hitRight = Physics2D.Raycast(new Vector2(transform.position.x + 1.5f, transform.position.y), Vector2.right, 0.2f);
         Debug.DrawRay(new Vector2(transform.position.x + 1.2f, transform.position.y), Vector2.right);
 
-        hitLeft = Physics2D.Raycast(new Vector2(transform.position.x - 1.2f, transform.position.y), Vector2.left, 1f);
+        hitLeft = Physics2D.Raycast(new Vector2(transform.position.x - 1.5f, transform.position.y), Vector2.left, 0.2f);
         Debug.DrawRay(new Vector2(transform.position.x - 1.2f, transform.position.y), Vector2.left);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Equals("Wall"))
+        if (collision.gameObject.name.Equals("Wall") || collision.gameObject.name.Equals("Gate"))
         {
             if (!gateOpen)
                 if (GetComponent<Animator>().GetBool("up"))
-                    Switches("down");
+                {
+                    //Switches("down");
+                    directionX = 0;
+                    directionY = -1;
+                }
                 else
-                    Switches("up");
+                {
+                    //Switches("up");
+                    directionX = 0;
+                    directionY = 1;
+                }
         }
     }
 
@@ -254,22 +301,11 @@ public class GostScript : MonoBehaviour
         }
     }
 
-    void Move(string s)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        switch (s)
-        {
-            case "up":
-                transform.Translate(0, speed * Time.deltaTime, 0);
-                break;
-            case "down":
-                transform.Translate(0, -speed * Time.deltaTime, 0);
-                break;
-            case "left":
-                transform.Translate(-speed * Time.deltaTime, 0, 0);
-                break;
-            case "right":
-                transform.Translate(speed * Time.deltaTime, 0, 0);
-                break;
-        }
+        if (collision.gameObject.CompareTag("teleport1"))
+            transform.Translate(-70, 0, 0);
+        if (collision.gameObject.CompareTag("teleport2"))
+            transform.Translate(70, 0, 0);
     }
 }
