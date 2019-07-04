@@ -26,37 +26,43 @@ public class GostScript : MonoBehaviour
     bool[] freeDirection = { false, false, false, false };
     string[] directions = { "up", "right", "down", "left" };
     string lastdirection;
-    float speed = 5f;
+    float speed;
     int directionX;
     int directionY;
     int rand;
     int counter;
 
-
-
     private void Start()
     {
-        getOutOfHome = false;
         Physics2D.IgnoreLayerCollision(11, 11);
 
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
 
-        Switches("up");
-        finishWaiting = true;
-
         options = new List<int>();
         checkLoopDirections = new List<int>();
-
+        speed = 0;
         gateOpen = false;
         oneTimeDirection = true;
         startFindingPacman = false;
+        finishWaiting = true;
+        getOutOfHome = false;
 
+        StartCoroutine(StartWait());
+        
+    }
+
+    IEnumerator StartWait()
+    {
+        yield return new WaitForSeconds(5f);
+        speed = 5f;
+        Switches("up");        
         StartCoroutine(WaitForGate());
     }
 
     void FixedUpdate()
     {
+        Debug.Log(checkLoopDirections.Count);
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
         if (!startFindingPacman && !transform.name.Equals("RedGost"))
@@ -83,7 +89,7 @@ public class GostScript : MonoBehaviour
             }
         }
 
-        if (transform.position == wayPoint2.position)
+        if (transform.position == wayPoint2.position && speed == 5f)
         {
             startFindingPacman = true;
             getOutOfHome = false;
