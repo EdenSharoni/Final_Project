@@ -14,13 +14,13 @@ public class GostScript : MonoBehaviour
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
     RaycastHit2D hitRight;
-    RaycastHit2D rayRound;
+    
     List<int> options;
     List<int> checkLoopDirections;
     Vector2 p1;
     Vector2 p2;
     bool gateOpen;
-    bool startFindingPacman;
+    public bool startFindingPacman;
     bool oneTimeDirection;
     bool finishWaiting;
     bool getOutOfHome;
@@ -33,14 +33,10 @@ public class GostScript : MonoBehaviour
     int rand;
     int counter;
 
-    //GostAI gostAI;
-
     private void Start()
     {
         Physics2D.IgnoreLayerCollision(11, 11);
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
-        //gostAI = GameObject.Find("GostAI").GetComponent<GostAI>();
-        //gostAI.enabled = false;
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
 
@@ -130,7 +126,9 @@ public class GostScript : MonoBehaviour
                     Switches(lastdirection);
                 }
             }
+           
         }
+
 
         if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
         {
@@ -161,12 +159,13 @@ public class GostScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("ssss");
         if (HitPacman())
         {
             if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
             {
+                
                 GetComponent<Animator>().SetLayerWeight(2, 1);
-
             }
 
             else
@@ -287,9 +286,7 @@ public class GostScript : MonoBehaviour
 
     void MakeRayCast()
     {
-        Quaternion q = Quaternion.AngleAxis(100 * Time.time, Vector3.forward);
-        rayRound = Physics2D.Raycast(transform.position, q * Vector3.up * 5f, 1f, layermask);
-        Debug.DrawRay(transform.position, q * Vector3.up * 5f);
+        
 
         hitUp = Physics2D.CircleCast(transform.position, 1f, Vector2.up, 1f, layermask);
         Debug.DrawRay(transform.position, Vector2.up);
