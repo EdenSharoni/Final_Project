@@ -11,6 +11,16 @@ TagManager:
   - gost
   - gostHome
   - powerupDot
+  - tree
+  - ghost
+  - dot
+  - mazecell
+  - mazequad
+  - mazewall
+  - mazewallObs
+  - mazepassage
+  - Pacman3D
+  - Ghost3D
   layers:
   - Default
   - TransparentFX
