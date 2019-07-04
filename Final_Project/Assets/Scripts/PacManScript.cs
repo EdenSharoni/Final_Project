@@ -92,13 +92,9 @@ public class PacManScript : MonoBehaviour
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 50);
             Destroy(collision.gameObject);
         }
-        if (collision.gameObject.CompareTag("teleport1"))
-            transform.Translate(-70, 0, 0);
-        if (collision.gameObject.CompareTag("teleport2"))
-            transform.Translate(70, 0, 0);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("gost"))
         {
@@ -106,5 +102,5 @@ public class PacManScript : MonoBehaviour
             GetComponent<Rigidbody2D>().isKinematic = true;
             isdead = true;
         }
-    }
+    }*/
 }

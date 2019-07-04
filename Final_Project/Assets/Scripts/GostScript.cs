@@ -49,7 +49,6 @@ public class GostScript : MonoBehaviour
         getOutOfHome = false;
 
         StartCoroutine(StartWait());
-        
     }
 
     IEnumerator StartWait()
@@ -62,7 +61,6 @@ public class GostScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(checkLoopDirections.Count);
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
         if (!startFindingPacman && !transform.name.Equals("RedGost"))
@@ -165,6 +163,18 @@ public class GostScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (HitPacman())
+        {
+            if(PlayerPrefs.GetInt("GostBlue", 0) == 1)
+            {
+                Debug.Log("Gost Die");
+            }
+            else
+            {
+                Debug.Log("Pacman Die");
+            }
+        }
+
         if ((collision.gameObject.name.Equals("Wall") || collision.gameObject.name.Equals("Gate")) && !gateOpen)
         {
             if (GetComponent<Animator>().GetBool("up"))
@@ -214,13 +224,9 @@ public class GostScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("gostHome"))
         {
+            speed = 5f;
             getOutOfHome = true;
         }
-
-        if (collision.gameObject.CompareTag("teleport1"))
-            transform.Translate(-70, 0, 0);
-        if (collision.gameObject.CompareTag("teleport2"))
-            transform.Translate(70, 0, 0);
     }
 
     void FindHit()
@@ -298,18 +304,27 @@ public class GostScript : MonoBehaviour
     }
     void IsBlue()
     {
-        GetComponent<Animator>().SetLayerWeight(1, 1);
-        StartCoroutine(Bla());
+        GetComponent<Animator>().SetBool("blue", true);
+        StartCoroutine(Blue());
     }
-    IEnumerator Bla()
+
+    IEnumerator Blue()
     {
         yield return new WaitForSeconds(5f);
-        GetComponent<Animator>().SetLayerWeight(1, 0);
+        GetComponent<Animator>().SetBool("blue", false);
         PlayerPrefs.SetInt("GostBlue", 0);
     }
 
-    /*bool HitPacman()
+    bool HitPacman()
     {
-        return rayRound.collider.name.Equals("Pacman");
-    }*/
+        if (hitUp.collider != null)
+            return hitUp.collider.name.Equals("Pacman");
+        else if (hitDown.collider != null)
+            return hitDown.collider.name.Equals("Pacman");
+        else if (hitLeft.collider != null)
+            return hitLeft.collider.name.Equals("Pacman");
+        else if (hitRight.collider != null)
+            return hitRight.collider.name.Equals("Pacman");
+        return false;
+    }
 }
