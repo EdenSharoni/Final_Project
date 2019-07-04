@@ -33,12 +33,14 @@ public class GostScript : MonoBehaviour
     int rand;
     int counter;
 
-    
+    //GostAI gostAI;
+
     private void Start()
     {
-        
         Physics2D.IgnoreLayerCollision(11, 11);
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
+        //gostAI = GameObject.Find("GostAI").GetComponent<GostAI>();
+        //gostAI.enabled = false;
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
 
@@ -86,7 +88,7 @@ public class GostScript : MonoBehaviour
         {
             startFindingPacman = true;
             getOutOfHome = false;
-            speed = 15f;
+            speed = 10f;
         }
 
         MakeRayCast();

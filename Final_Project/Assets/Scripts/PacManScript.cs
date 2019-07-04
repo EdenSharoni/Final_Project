@@ -8,7 +8,7 @@ public class PacManScript : MonoBehaviour
     public AudioClip wakkawakka;
     AudioSource audioSource;
     public bool afterInitAudio;
-    float speed = 15f;
+    float speed = 10f;
     public bool isdead;
     Rigidbody2D rb;
     int directionX;
