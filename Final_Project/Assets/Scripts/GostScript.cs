@@ -33,8 +33,10 @@ public class GostScript : MonoBehaviour
     int rand;
     int counter;
 
+    
     private void Start()
     {
+        
         Physics2D.IgnoreLayerCollision(11, 11);
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         rb = GetComponent<Rigidbody2D>();
@@ -162,6 +164,7 @@ public class GostScript : MonoBehaviour
             if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
             {
                 GetComponent<Animator>().SetLayerWeight(2, 1);
+
             }
 
             else
