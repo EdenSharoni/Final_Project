@@ -7,6 +7,7 @@ public class GostScript : MonoBehaviour
     public Transform wayPoint1;
     public Transform wayPoint2;
     public LayerMask layermask;
+    PacManScript pacman;
     GameObject gate;
     Rigidbody2D rb;
     RaycastHit2D hitUp;
@@ -35,7 +36,7 @@ public class GostScript : MonoBehaviour
     private void Start()
     {
         Physics2D.IgnoreLayerCollision(11, 11);
-
+        pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
 
@@ -55,13 +56,15 @@ public class GostScript : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         speed = 5f;
-        Switches("up");        
+        Switches("up");
         StartCoroutine(WaitForGate());
     }
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector2(speed * directionX, speed * directionY);
+        if (pacman.isdead)
+            rb.velocity = new Vector2(0, 0);
+        else rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
         if (!startFindingPacman && !transform.name.Equals("RedGost"))
         {
@@ -75,17 +78,7 @@ public class GostScript : MonoBehaviour
         }
 
         if (getOutOfHome && gateOpen)
-        {
-            p1 = Vector2.MoveTowards(transform.position, wayPoint1.position, speed * Time.deltaTime);
-            GetComponent<Rigidbody2D>().MovePosition(p1);
-
-            if (transform.position.x == p1.x)
-            {
-                Switches("up");
-                p2 = Vector2.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
-                GetComponent<Rigidbody2D>().MovePosition(p2);
-            }
-        }
+            GetOutOfHome();
 
         if (transform.position == wayPoint2.position && speed == 5f)
         {
@@ -119,11 +112,12 @@ public class GostScript : MonoBehaviour
 
                     if (checkLoopDirections.Count > 3)
                     {
-                        do
+                        for (int j = 0; j < 4; j++)
                         {
                             rand = Random.Range(0, counter);
-                        } while (checkLoopDirections[checkLoopDirections.Count - 2] == options[rand]);
-
+                            if (checkLoopDirections[checkLoopDirections.Count - 2] != options[rand])
+                                break;
+                        }
                     }
                     else
                         rand = Random.Range(0, counter);
@@ -165,13 +159,15 @@ public class GostScript : MonoBehaviour
     {
         if (HitPacman())
         {
-            if(PlayerPrefs.GetInt("GostBlue", 0) == 1)
+            if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
             {
-                Debug.Log("Gost Die");
+                GetComponent<Animator>().SetLayerWeight(2, 1);
             }
+
             else
             {
-                Debug.Log("Pacman Die");
+                pacman.isdead = true;
+                pacman.GetComponent<Animator>().SetTrigger("die");
             }
         }
 
@@ -302,6 +298,7 @@ public class GostScript : MonoBehaviour
         hitLeft = Physics2D.CircleCast(transform.position, 1f, Vector2.left, 1f, layermask);
         Debug.DrawRay(transform.position, Vector2.left);
     }
+
     void IsBlue()
     {
         GetComponent<Animator>().SetBool("blue", true);
@@ -310,7 +307,7 @@ public class GostScript : MonoBehaviour
 
     IEnumerator Blue()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         GetComponent<Animator>().SetBool("blue", false);
         PlayerPrefs.SetInt("GostBlue", 0);
     }
@@ -326,5 +323,17 @@ public class GostScript : MonoBehaviour
         else if (hitRight.collider != null)
             return hitRight.collider.name.Equals("Pacman");
         return false;
+    }
+    void GetOutOfHome()
+    {
+        p1 = Vector2.MoveTowards(transform.position, wayPoint1.position, speed * Time.deltaTime);
+        GetComponent<Rigidbody2D>().MovePosition(p1);
+
+        if (transform.position.x == p1.x)
+        {
+            Switches("up");
+            p2 = Vector2.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
+            GetComponent<Rigidbody2D>().MovePosition(p2);
+        }
     }
 }
