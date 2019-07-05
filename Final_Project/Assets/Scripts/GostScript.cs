@@ -159,13 +159,12 @@ public class GostScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("ssss");
         if (HitPacman())
         {
             if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
             {
-                
                 GetComponent<Animator>().SetLayerWeight(2, 1);
+                
             }
 
             else

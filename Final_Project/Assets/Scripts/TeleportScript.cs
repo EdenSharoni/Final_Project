@@ -6,6 +6,10 @@ public class TeleportScript : MonoBehaviour
 { 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        collision.gameObject.transform.Translate(-70, 0, 0);
+        if(transform.name.Equals("Teleport"))
+            collision.gameObject.transform.Translate(-65, 0, 0);
+        if (transform.name.Equals("Teleport2"))
+            collision.gameObject.transform.Translate(65, 0, 0);
+
     }
 }
