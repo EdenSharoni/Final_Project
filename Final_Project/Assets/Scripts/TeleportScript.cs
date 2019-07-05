@@ -34,7 +34,7 @@ public class TeleportScript : MonoBehaviour
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         oneTimeEntrence = true;
     }
 }

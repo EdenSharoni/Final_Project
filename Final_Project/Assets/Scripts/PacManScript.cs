@@ -8,6 +8,7 @@ public class PacManScript : MonoBehaviour
     public AudioClip wakkawakka;
     AudioSource audioSource;
     public bool afterInitAudio;
+    public Vector2 startPoint;
     float speed = 10f;
     public bool isdead;
     Rigidbody2D rb;
@@ -19,6 +20,8 @@ public class PacManScript : MonoBehaviour
         PlayerPrefs.SetInt("GostBlue", 0);
         directionX = 1;
         directionY = 0;
+
+        startPoint = transform.position;
         rb = GetComponent<Rigidbody2D>();
         isdead = false;
         afterInitAudio = false;

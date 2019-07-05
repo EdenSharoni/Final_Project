@@ -8,13 +8,12 @@ public class GostScript : MonoBehaviour
     public Transform wayPoint2;
     public LayerMask layermask;
     PacManScript pacman;
-    GameObject gate;
     Rigidbody2D rb;
     RaycastHit2D hitUp;
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
     RaycastHit2D hitRight;
-    
+    public GameObject gate;
     List<int> options;
     List<int> checkLoopDirections;
     Vector2 p1;
@@ -39,7 +38,6 @@ public class GostScript : MonoBehaviour
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
-
         options = new List<int>();
         checkLoopDirections = new List<int>();
         speed = 0;
@@ -48,7 +46,6 @@ public class GostScript : MonoBehaviour
         startFindingPacman = false;
         finishWaiting = true;
         getOutOfHome = false;
-
         StartCoroutine(StartWait());
     }
 
@@ -66,22 +63,14 @@ public class GostScript : MonoBehaviour
             rb.velocity = new Vector2(0, 0);
         else rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
-        if (!startFindingPacman && !transform.name.Equals("RedGost"))
-        {
-            if (gateOpen)
-            {
-                if (transform.name.Equals("LightBlueGost"))
-                    Switches("right");
-                else if (transform.name.Equals("YellowGost"))
-                    Switches("left");
-            }
-        }
-
+        DirectionToGoOut();
+        
         if (getOutOfHome && gateOpen)
             GetOutOfHome();
 
         if (transform.position == wayPoint2.position && speed == 5f)
         {
+            gateOpen = false;
             startFindingPacman = true;
             getOutOfHome = false;
             speed = 10f;
@@ -126,7 +115,6 @@ public class GostScript : MonoBehaviour
                     Switches(lastdirection);
                 }
             }
-           
         }
 
 
@@ -136,6 +124,32 @@ public class GostScript : MonoBehaviour
         }
     }
 
+    void GetOutOfHome()
+    {
+        p1 = Vector2.MoveTowards(transform.position, wayPoint1.position, speed * Time.deltaTime);
+        GetComponent<Rigidbody2D>().MovePosition(p1);
+
+        if (transform.position.x == p1.x)
+        {
+            Switches("up");
+            p2 = Vector2.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
+            GetComponent<Rigidbody2D>().MovePosition(p2);
+        }
+    }
+
+    void DirectionToGoOut()
+    {
+        if (!startFindingPacman && !transform.name.Equals("RedGost"))
+        {
+            if (gateOpen)
+            {
+                if (transform.name.Equals("LightBlueGost"))
+                    Switches("right");
+                else if (transform.name.Equals("YellowGost"))
+                    Switches("left");
+            }
+        }
+    }
     IEnumerator WaitForGate()
     {
         if (transform.name.Equals("PinkGost"))
@@ -163,15 +177,15 @@ public class GostScript : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
             {
+                gateOpen = true;
                 GetComponent<Animator>().SetLayerWeight(2, 1);
-                
             }
 
-            else
+            /*else
             {
                 pacman.isdead = true;
                 pacman.GetComponent<Animator>().SetTrigger("die");
-            }
+            }*/
         }
 
         if ((collision.gameObject.name.Equals("Wall") || collision.gameObject.name.Equals("Gate")) && !gateOpen)
@@ -223,8 +237,11 @@ public class GostScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("gostHome"))
         {
+            GetComponent<Animator>().SetLayerWeight(2, 0);
             speed = 5f;
             getOutOfHome = true;
+            if (startFindingPacman)
+                gateOpen = true;
         }
     }
 
@@ -232,9 +249,12 @@ public class GostScript : MonoBehaviour
     {
         if (hitUp.collider != null)
         {
-            if (freeDirection[0] == true)
-                oneTimeDirection = true;
-            freeDirection[0] = false;
+            if (hitUp.collider.name.Equals("Wall"))
+            {
+                if (freeDirection[0] == true)
+                    oneTimeDirection = true;
+                freeDirection[0] = false;
+            }
         }
         else
         {
@@ -245,9 +265,12 @@ public class GostScript : MonoBehaviour
 
         if (hitRight.collider != null)
         {
-            if (freeDirection[1] == true)
-                oneTimeDirection = true;
-            freeDirection[1] = false;
+            if (hitRight.collider.name.Equals("Wall"))
+            {
+                if (freeDirection[1] == true)
+                    oneTimeDirection = true;
+                freeDirection[1] = false;
+            }
         }
         else
         {
@@ -258,9 +281,12 @@ public class GostScript : MonoBehaviour
 
         if (hitDown.collider != null)
         {
-            if (freeDirection[2] == true)
-                oneTimeDirection = true;
-            freeDirection[2] = false;
+            if (hitDown.collider.name.Equals("Wall") || hitDown.collider.name.Equals("Gate"))
+            {
+                if (freeDirection[2] == true)
+                    oneTimeDirection = true;
+                freeDirection[2] = false;
+            }
         }
         else
         {
@@ -271,6 +297,7 @@ public class GostScript : MonoBehaviour
 
         if (hitLeft.collider != null)
         {
+            if (hitLeft.collider.name.Equals("Wall"))
             if (freeDirection[3] == true)
                 oneTimeDirection = true;
             freeDirection[3] = false;
@@ -285,8 +312,6 @@ public class GostScript : MonoBehaviour
 
     void MakeRayCast()
     {
-        
-
         hitUp = Physics2D.CircleCast(transform.position, 1f, Vector2.up, 1f, layermask);
         Debug.DrawRay(transform.position, Vector2.up);
 
@@ -325,16 +350,5 @@ public class GostScript : MonoBehaviour
             return hitRight.collider.name.Equals("Pacman");
         return false;
     }
-    void GetOutOfHome()
-    {
-        p1 = Vector2.MoveTowards(transform.position, wayPoint1.position, speed * Time.deltaTime);
-        GetComponent<Rigidbody2D>().MovePosition(p1);
-
-        if (transform.position.x == p1.x)
-        {
-            Switches("up");
-            p2 = Vector2.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
-            GetComponent<Rigidbody2D>().MovePosition(p2);
-        }
-    }
+    
 }

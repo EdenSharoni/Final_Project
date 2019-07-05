@@ -9,6 +9,7 @@ public class GostControllerScript : MonoBehaviour
 
     GostAI gostAI;
     GostScript gostScript;
+    GhostGoHomeAIScript gostGoHomeAIScript;
 
     bool oneTimeEntrence;
 
@@ -19,6 +20,8 @@ public class GostControllerScript : MonoBehaviour
         gostAI.enabled = false;
         gostScript = GameObject.Find(transform.name).GetComponent<GostScript>();
         gostScript.enabled = true;
+        gostGoHomeAIScript = GameObject.Find(transform.name).GetComponent<GhostGoHomeAIScript>();
+        gostGoHomeAIScript.enabled = false;
     }
 
     void FixedUpdate()
@@ -26,10 +29,31 @@ public class GostControllerScript : MonoBehaviour
         MakeRayCastHit2D();
         if (gostScript.startFindingPacman)
         {
-            if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
+            if(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
+            {
+                oneTimeEntrence = false;
+                gostGoHomeAIScript.enabled = true;
+                gostAI.enabled = false;
+                gostScript.enabled = false;
+                gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
+                gostScript.gate.SetActive(false);
+                PlayerPrefs.SetInt("GostBlue", 0);
+            }
+            if (gostGoHomeAIScript.reachedEndOfPath)
+            {
+                gostScript.GetComponent<Animator>().SetBool("blue", false);
+                gostScript.gate.GetComponent<PlatformEffector2D>().enabled = true;
+                gostGoHomeAIScript.reachedEndOfPath = false;
+                gostGoHomeAIScript.enabled = false;
+                gostAI.enabled = false;
+                gostScript.enabled = true;
+                oneTimeEntrence = true;
+            }
+            else if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
             {
                 gostAI.enabled = false;
                 gostScript.enabled = true;
+                gostGoHomeAIScript.enabled = false;
             }
             else
             if (oneTimeEntrence)
@@ -40,6 +64,7 @@ public class GostControllerScript : MonoBehaviour
                 {
                     gostAI.enabled = true;
                     gostScript.enabled = false;
+                    gostGoHomeAIScript.enabled = false;
                     StartCoroutine(FindPacmanAgain());
                 }
                 else
@@ -47,6 +72,7 @@ public class GostControllerScript : MonoBehaviour
                     oneTimeEntrence = true;
                     gostAI.enabled = false;
                     gostScript.enabled = true;
+                    gostGoHomeAIScript.enabled = false;
                 }
             }
         }

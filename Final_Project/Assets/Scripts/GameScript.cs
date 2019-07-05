@@ -9,11 +9,13 @@ public class GameScript : MonoBehaviour
     public Button volumeOff;
     public Text score;
     public Image ready;
+    public Image[] life = new Image[3];
+    int currentLife;
     PacManScript pacman;
+
 
     void Start()
     {
-
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         PlayerPrefs.SetInt("points", 0);
         score.text = "0";
@@ -21,6 +23,7 @@ public class GameScript : MonoBehaviour
         volumeOff.gameObject.SetActive(false);
         volumeOn.enabled = true;
         volumeOff.enabled = false;
+        currentLife = 2;
     }
 
     public void VolumeOn()
@@ -43,5 +46,15 @@ public class GameScript : MonoBehaviour
         score.text = PlayerPrefs.GetInt("points").ToString();
         if (pacman.afterInitAudio)
             ready.enabled = false;
+
+        /*if(pacman.isdead)
+        {
+            if(life.Length > 0)
+            {
+                pacman.transform.position = pacman.startPoint;
+                life[currentLife].enabled = false;
+                currentLife--;
+            }
+        }*/
     }
 }

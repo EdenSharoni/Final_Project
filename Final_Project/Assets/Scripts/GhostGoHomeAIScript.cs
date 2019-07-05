@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class GostAI : MonoBehaviour
+public class GhostGoHomeAIScript : MonoBehaviour
 {
 
     public Transform target;
@@ -12,7 +12,7 @@ public class GostAI : MonoBehaviour
 
     Path path;
     int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
+    public bool reachedEndOfPath = false;
 
     Seeker seeker;
     Rigidbody2D rb;
@@ -29,7 +29,7 @@ public class GostAI : MonoBehaviour
     {
         if (seeker.IsDone())
             seeker.StartPath(rb.position, target.position, OnPathComplete);
-            
+
     }
 
     void OnPathComplete(Path p)
@@ -43,6 +43,7 @@ public class GostAI : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if (path == null)
             return;
         if (currentWaypoint >= path.vectorPath.Count)
