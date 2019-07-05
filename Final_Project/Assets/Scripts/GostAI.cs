@@ -8,7 +8,7 @@ public class GostAI : MonoBehaviour
 
     public Transform target;
     public Transform target2;
-    float speed = 40f;
+    float speed = 35f;
     public float nextWaypointDistance = 3f;
 
     Path path;

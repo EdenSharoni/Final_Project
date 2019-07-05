@@ -13,6 +13,7 @@ public class GameScript : MonoBehaviour
 
     void Start()
     {
+
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         PlayerPrefs.SetInt("points", 0);
         score.text = "0";

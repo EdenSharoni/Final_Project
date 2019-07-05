@@ -3,13 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TeleportScript : MonoBehaviour
-{ 
+{
+    public bool oneTimeEntrence;
+    TeleportScript teleportScript;
+    TeleportScript teleport2Script;
+
+    private void Start()
+    {
+        oneTimeEntrence = true;
+        teleportScript = GameObject.Find("Teleport").GetComponent<TeleportScript>();
+        teleport2Script = GameObject.Find("Teleport2").GetComponent<TeleportScript>();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(transform.name.Equals("Teleport"))
-            collision.gameObject.transform.Translate(-65, 0, 0);
-        if (transform.name.Equals("Teleport2"))
-            collision.gameObject.transform.Translate(65, 0, 0);
+        if (transform.name.Equals("Teleport") && teleport2Script.oneTimeEntrence)
+        {
+            oneTimeEntrence = false;
+            collision.gameObject.transform.position = teleport2Script.transform.position;
+            StartCoroutine(Wait());
+        }
 
+        if (transform.name.Equals("Teleport2") && teleportScript.oneTimeEntrence)
+        {
+            oneTimeEntrence = false;
+            collision.gameObject.transform.position = teleportScript.transform.position;
+            StartCoroutine(Wait());
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(0.2f);
+        oneTimeEntrence = true;
     }
 }
