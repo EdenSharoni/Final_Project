@@ -5,9 +5,8 @@ using Pathfinding;
 
 public class GhostGoHomeAIScript : MonoBehaviour
 {
-
     public Transform target;
-    float speed = 35f;
+    float speed = 40f;
     public float nextWaypointDistance = 3f;
 
     Path path;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GostControllerScript : MonoBehaviour
 {
+    PacManScript pacman;
     public LayerMask layermask;
     RaycastHit2D[] hitRound;
 
@@ -15,6 +16,7 @@ public class GostControllerScript : MonoBehaviour
 
     void Start()
     {
+        pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         oneTimeEntrence = true;
         gostAI = GameObject.Find(transform.name).GetComponent<GostAI>();
         gostAI.enabled = false;
@@ -27,53 +29,50 @@ public class GostControllerScript : MonoBehaviour
     void FixedUpdate()
     {
         MakeRayCastHit2D();
-        if (gostScript.startFindingPacman)
+
+        if (gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
         {
-            if(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
+            Debug.Log("Ghost eyes");
+            gostScript.gate.GetComponent<BoxCollider2D>().enabled = false;
+            gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
+            oneTimeEntrence = false;
+            gostGoHomeAIScript.enabled = true;
+            gostAI.enabled = false;
+            gostScript.enabled = false;
+            gostScript.gate.SetActive(false);
+        }
+        if (gostScript.controllerOneTimeEntrence)
+        {
+            gostScript.controllerOneTimeEntrence = false;
+            oneTimeEntrence = true;
+        }
+        else
+        if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
+        {
+            Debug.Log("ghost blue");
+            gostAI.enabled = false;
+            gostScript.enabled = true;
+            gostGoHomeAIScript.enabled = false;
+        }
+
+        if (oneTimeEntrence && gostScript.startFindingPacman)
+        {
+            Debug.Log("finding pacman");
+            oneTimeEntrence = false;
+
+            if (FindingPacmanWithRayCast2D())
             {
-                oneTimeEntrence = false;
-                gostGoHomeAIScript.enabled = true;
-                gostAI.enabled = false;
+                gostAI.enabled = true;
                 gostScript.enabled = false;
-                gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
-                gostScript.gate.SetActive(false);
-                PlayerPrefs.SetInt("GostBlue", 0);
-            }
-            if (gostGoHomeAIScript.reachedEndOfPath)
-            {
-                gostScript.GetComponent<Animator>().SetBool("blue", false);
-                gostScript.gate.GetComponent<PlatformEffector2D>().enabled = true;
-                gostGoHomeAIScript.reachedEndOfPath = false;
                 gostGoHomeAIScript.enabled = false;
-                gostAI.enabled = false;
-                gostScript.enabled = true;
-                oneTimeEntrence = true;
-            }
-            else if (PlayerPrefs.GetInt("GostBlue", 0) == 1)
-            {
-                gostAI.enabled = false;
-                gostScript.enabled = true;
-                gostGoHomeAIScript.enabled = false;
+                StartCoroutine(FindPacmanAgain());
             }
             else
-            if (oneTimeEntrence)
             {
-                oneTimeEntrence = false;
-
-                if (FindingPacmanWithRayCast2D())
-                {
-                    gostAI.enabled = true;
-                    gostScript.enabled = false;
-                    gostGoHomeAIScript.enabled = false;
-                    StartCoroutine(FindPacmanAgain());
-                }
-                else
-                {
-                    oneTimeEntrence = true;
-                    gostAI.enabled = false;
-                    gostScript.enabled = true;
-                    gostGoHomeAIScript.enabled = false;
-                }
+                oneTimeEntrence = true;
+                gostAI.enabled = false;
+                gostScript.enabled = true;
+                gostGoHomeAIScript.enabled = false;
             }
         }
     }
