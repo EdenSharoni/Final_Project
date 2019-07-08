@@ -39,23 +39,29 @@ public class PacManScript : MonoBehaviour
     {
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(audioClip.length);
+        initPacman();
+    }
+
+    public void initPacman()
+    {
+        GetComponent<Animator>().SetBool("move", true);
+        directionX = 1;
+        directionY = 0;        
+        transform.eulerAngles = new Vector3(0, 0, 0);
+
         audioSource.loop = true;
         audioSource.volume = 0.5f;
         audioSource.clip = wakkawakka;
         audioSource.Play();
-        GetComponent<Animator>().SetBool("move", true);
+        
         rb.constraints = RigidbodyConstraints2D.None;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        directionX = 1;
-        directionY = 0;
-        transform.eulerAngles = new Vector3(0, 0, 0);
+        
     }
-
     private void Update()
     {
         GetInput();
     }
-
 
     void FixedUpdate()
     {

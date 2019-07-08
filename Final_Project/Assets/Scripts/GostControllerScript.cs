@@ -22,13 +22,19 @@ public class GostControllerScript : MonoBehaviour
         gostScript = GameObject.Find(transform.name).GetComponent<GostScript>();
         gostGoHomeAIScript = GameObject.Find(transform.name).GetComponent<GhostGoHomeAIScript>();
 
+        initGhost();
+   
+    }
+    public void initGhost()
+    {
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         SetScript("gostScript");
-
         oneTimeEntrence = true;
     }
-
     void FixedUpdate()
     {
+        
         MakeRayCastHit2D();
 
         if (gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
@@ -102,6 +108,7 @@ public class GostControllerScript : MonoBehaviour
                 pacman.isdead = true;
             }
         }
+
     }
     void SetScript(string s)
     {

@@ -12,12 +12,14 @@ public class GameScript : MonoBehaviour
     public Image ready;
     public Image gameOver;
     public Image[] life = new Image[3];
+    public bool playAgain;
     GostControllerScript[] ghost = new GostControllerScript[4];
     AudioSource audioSource;
     PacManScript pacman;
     GameObject board;
     int currentLife = 2;
     bool oneTimeEntrence;
+
 
     void Start()
     {
@@ -41,6 +43,7 @@ public class GameScript : MonoBehaviour
         volumeOff.enabled = false;
 
         gameOver.enabled = false;
+        playAgain = false;
 
         StartCoroutine(Starter());
     }
@@ -68,12 +71,13 @@ public class GameScript : MonoBehaviour
             pacman.audioSource.clip = pacman.deadSound;
             pacman.audioSource.PlayOneShot(pacman.deadSound);
             pacman.GetComponent<Animator>().SetTrigger("die");
+            pacman.GetComponent<Animator>().SetBool("move", false);
             pacman.rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
             for (int i = 0; i < 4; i++)
                 ghost[i].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
-            if (life.Length > 0 && board.transform.childCount != 0)
+            if (currentLife >= 0 && board.transform.childCount != 0)
                 StartCoroutine(PlayAgain());
         }
     }
@@ -81,6 +85,7 @@ public class GameScript : MonoBehaviour
     IEnumerator PlayAgain()
     {
         yield return new WaitForSeconds(2f);
+
         pacman.transform.position = pacman.startPoint;
         for (int i = 0; i < 4; i++)
         {
@@ -92,6 +97,14 @@ public class GameScript : MonoBehaviour
         life[currentLife].enabled = false;
         currentLife--;
         gameOver.enabled = false;
+        pacman.initPacman();
+        for (int i = 0; i < 4; i++)
+        {
+            ghost[i].initGhost();
+            ghost[i].gostScript.initGhost();
+        }
+        pacman.isdead = false;
+        oneTimeEntrence = true;
     }
 
     public void VolumeOn()
