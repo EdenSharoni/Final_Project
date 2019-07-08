@@ -13,9 +13,14 @@ public class GostControllerScript : MonoBehaviour
     GhostGoHomeAIScript gostGoHomeAIScript;
 
     bool oneTimeEntrence;
-
+    bool oneTimeEntrence2;
+    Vector2 startPoint;
+    GameScript game;
     void Start()
     {
+        game = GameObject.Find("Main Camera").GetComponent<GameScript>();
+        oneTimeEntrence2 = true;
+        startPoint = transform.position;
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         oneTimeEntrence = true;
         gostAI = GameObject.Find(transform.name).GetComponent<GostAI>();
@@ -25,14 +30,27 @@ public class GostControllerScript : MonoBehaviour
         gostGoHomeAIScript = GameObject.Find(transform.name).GetComponent<GhostGoHomeAIScript>();
         gostGoHomeAIScript.enabled = false;
     }
-
+     IEnumerator PlayAgain()
+    {
+        yield return new WaitForSeconds(2f);
+        transform.position = startPoint;
+    }
     void FixedUpdate()
     {
         MakeRayCastHit2D();
 
+        if (PlayerPrefs.GetInt("gameOver", 0) == 1|| pacman.isdead && oneTimeEntrence2)
+        {
+            oneTimeEntrence2 = false;
+            gostGoHomeAIScript.enabled = false;
+            gostAI.enabled = false;
+            gostScript.enabled = false;
+            if (game.life.Length > 0)
+                StartCoroutine(PlayAgain());
+        }
+
         if (gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
         {
-            Debug.Log("Ghost eyes");
             gostScript.gate.GetComponent<BoxCollider2D>().enabled = false;
             gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
             oneTimeEntrence = false;
@@ -49,7 +67,6 @@ public class GostControllerScript : MonoBehaviour
         else
         if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
         {
-            Debug.Log("ghost blue");
             gostAI.enabled = false;
             gostScript.enabled = true;
             gostGoHomeAIScript.enabled = false;
@@ -57,7 +74,6 @@ public class GostControllerScript : MonoBehaviour
 
         if (oneTimeEntrence && gostScript.startFindingPacman)
         {
-            Debug.Log("finding pacman");
             oneTimeEntrence = false;
 
             if (FindingPacmanWithRayCast2D())
@@ -96,5 +112,20 @@ public class GostControllerScript : MonoBehaviour
         Quaternion q = Quaternion.AngleAxis(2000 * Time.time, Vector3.forward);
         hitRound = Physics2D.RaycastAll(transform.position, q * Vector2.up, 10f, layermask);
         Debug.DrawRay(transform.position, q * Vector3.up * 10f);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.name.Equals("Pacman"))
+        {
+            if (gostScript.GetComponent<Animator>().GetBool("blue"))
+            {
+                GetComponent<Animator>().SetLayerWeight(2, 1);
+            }
+            else
+            {
+                pacman.isdead = true;
+            }
+        }
     }
 }

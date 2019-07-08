@@ -71,10 +71,6 @@ public class GostScript : MonoBehaviour
         if (pacman.ghostBlue && !gateOpen && oneTimeBlue)
             StartCoroutine(Blue());
 
-        /*if (pacman.isdead)
-            rb.velocity = new Vector2(0, 0);
-        else*/
-
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
         if (getOutOfHome && gateOpen && !GetComponent<Animator>().GetBool("blue"))
@@ -90,7 +86,7 @@ public class GostScript : MonoBehaviour
             }
         }
 
-        if (transform.position == wayPoint2.position && speed == 5f) //&& !pacman.ghostBlue
+        if (transform.position == wayPoint2.position && speed == 5f)
         {
             gate.SetActive(true);
             gateOpen = false;
@@ -154,7 +150,6 @@ public class GostScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("gostHome"))
         {
-            Debug.Log("GHOST IS HOME");
 
             GetComponent<Animator>().SetLayerWeight(2, 0);
             GetComponent<Animator>().SetBool("blue", false);
@@ -174,20 +169,6 @@ public class GostScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (HitPacman())
-        {
-            if (GetComponent<Animator>().GetBool("blue"))
-            {
-                GetComponent<Animator>().SetLayerWeight(2, 1);
-            }
-
-            /*else
-            {
-                pacman.isdead = true;
-                pacman.GetComponent<Animator>().SetTrigger("die");
-            }*/
-        }
-
         if (upDownStarter)
         {
             if (GetComponent<Animator>().GetBool("up"))
@@ -324,32 +305,19 @@ public class GostScript : MonoBehaviour
     {
         //Maybe circle to big
         hitUp = Physics2D.CircleCast(transform.position, 1f, Vector2.up, 1f, layermask);
-        //hitUp = Physics2D.Raycast(transform.position, Vector2.up, 0.5f, layermask);
+        //hitUp = Physics2D.Raycast(transform.position, Vector2.up, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.up);
 
         hitDown = Physics2D.CircleCast(transform.position, 1f, Vector2.down, 1f, layermask);
-        //hitDown = Physics2D.Raycast(transform.position, Vector2.down, 0.5f, layermask);
+        //hitDown = Physics2D.Raycast(transform.position, Vector2.down, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.down);
 
         hitRight = Physics2D.CircleCast(transform.position, 1f, Vector2.right, 1f, layermask);
-        //hitRight = Physics2D.Raycast(transform.position, Vector2.right, 0.5f, layermask);
+        //hitRight = Physics2D.Raycast(transform.position, Vector2.right, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.right);
 
         hitLeft = Physics2D.CircleCast(transform.position, 1f, Vector2.left, 1f, layermask);
-        //hitLeft = Physics2D.Raycast(transform.position, Vector2.left, 0.5f, layermask);
+        //hitLeft = Physics2D.Raycast(transform.position, Vector2.left, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.left);
-    }
-
-    bool HitPacman()
-    {
-        if (hitUp.collider != null)
-            return hitUp.collider.name.Equals("Pacman");
-        else if (hitDown.collider != null)
-            return hitDown.collider.name.Equals("Pacman");
-        else if (hitLeft.collider != null)
-            return hitLeft.collider.name.Equals("Pacman");
-        else if (hitRight.collider != null)
-            return hitRight.collider.name.Equals("Pacman");
-        return false;
     }
 }
