@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TeleportScript : MonoBehaviour
 {
-    public bool oneTimeEntrence;
     TeleportScript teleportScript;
     TeleportScript teleport2Script;
+    bool oneTimeEntrence;
 
     private void Start()
     {

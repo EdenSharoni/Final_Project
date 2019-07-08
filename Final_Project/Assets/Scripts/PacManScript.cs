@@ -4,87 +4,63 @@ using UnityEngine;
 
 public class PacManScript : MonoBehaviour
 {
+    public AudioSource audioSource;
     public AudioClip audioClip;
-
     public AudioClip wakkawakka;
     public AudioClip deadSound;
+    public Rigidbody2D rb;
     public LayerMask layermask;
-    AudioSource audioSource;
-    public bool afterInitAudio;
     public Vector2 startPoint;
-    float speed = 10f;
     public bool isdead;
-    Rigidbody2D rb;
-    int directionX;
-    int directionY;
     public bool ghostBlue;
     RaycastHit2D hitUp;
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
     RaycastHit2D hitRight;
-    bool oneTimeEntrence;
-    GameScript game;
+    float speed = 10f;
+    int directionX;
+    int directionY;
+
     private void Start()
     {
-        game = GameObject.Find("Main Camera").GetComponent<GameScript>();
-        oneTimeEntrence = true;
-        ghostBlue = false;
-        directionX = 1;
-        directionY = 0;
-
         startPoint = transform.position;
+
         rb = GetComponent<Rigidbody2D>();
-        isdead = false;
-        afterInitAudio = false;
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioClip);
+
+        ghostBlue = false;
+        isdead = false;
+
         StartCoroutine(Wait());
     }
 
     IEnumerator Wait()
     {
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(audioClip.length);
-        afterInitAudio = true;
         audioSource.loop = true;
         audioSource.volume = 0.5f;
         audioSource.clip = wakkawakka;
         audioSource.Play();
         GetComponent<Animator>().SetBool("move", true);
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        directionX = 1;
+        directionY = 0;
+        transform.eulerAngles = new Vector3(0, 0, 0);
     }
+
     private void Update()
     {
-        if (afterInitAudio && !isdead)
-        {
-            GetInput();
-        }
-
-
-        if ((PlayerPrefs.GetInt("gameOver", 0) == 1 || isdead) && oneTimeEntrence)
-        {
-            oneTimeEntrence = false;
-            audioSource.clip = deadSound;
-            audioSource.PlayOneShot(deadSound);
-            GetComponent<Animator>().SetTrigger("die");
-            rb.velocity = new Vector2(0, 0);
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            if (game.life.Length > 0)
-                StartCoroutine(PlayAgain());
-        }
+        GetInput();
     }
 
-    IEnumerator PlayAgain()
-    {
-        game.life[game.currentLife].enabled = false;
-        game.currentLife--;
-        yield return new WaitForSeconds(2f);
-        transform.position = startPoint;
-    }
 
     void FixedUpdate()
     {
         MakeRayCast();
-        if (afterInitAudio && !isdead)
-            rb.velocity = new Vector2(speed * directionX, speed * directionY);
+        rb.velocity = new Vector2(speed * directionX, speed * directionY);
     }
 
     void GetInput()

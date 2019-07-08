@@ -4,73 +4,52 @@ using UnityEngine;
 
 public class GostControllerScript : MonoBehaviour
 {
-    PacManScript pacman;
     public LayerMask layermask;
+    public GostAI gostAI;
+    public GostScript gostScript;
+    public GhostGoHomeAIScript gostGoHomeAIScript;
+    public Vector2 startPoint;
+    PacManScript pacman;
     RaycastHit2D[] hitRound;
-
-    GostAI gostAI;
-    GostScript gostScript;
-    GhostGoHomeAIScript gostGoHomeAIScript;
-
     bool oneTimeEntrence;
-    bool oneTimeEntrence2;
-    Vector2 startPoint;
-    GameScript game;
+
     void Start()
     {
-        game = GameObject.Find("Main Camera").GetComponent<GameScript>();
-        oneTimeEntrence2 = true;
         startPoint = transform.position;
+        
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
-        oneTimeEntrence = true;
         gostAI = GameObject.Find(transform.name).GetComponent<GostAI>();
-        gostAI.enabled = false;
         gostScript = GameObject.Find(transform.name).GetComponent<GostScript>();
-        gostScript.enabled = true;
         gostGoHomeAIScript = GameObject.Find(transform.name).GetComponent<GhostGoHomeAIScript>();
-        gostGoHomeAIScript.enabled = false;
+
+        SetScript("gostScript");
+
+        oneTimeEntrence = true;
     }
-     IEnumerator PlayAgain()
-    {
-        yield return new WaitForSeconds(2f);
-        transform.position = startPoint;
-    }
+
     void FixedUpdate()
     {
         MakeRayCastHit2D();
-
-        if (PlayerPrefs.GetInt("gameOver", 0) == 1|| pacman.isdead && oneTimeEntrence2)
-        {
-            oneTimeEntrence2 = false;
-            gostGoHomeAIScript.enabled = false;
-            gostAI.enabled = false;
-            gostScript.enabled = false;
-            if (game.life.Length > 0)
-                StartCoroutine(PlayAgain());
-        }
 
         if (gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
         {
             gostScript.gate.GetComponent<BoxCollider2D>().enabled = false;
             gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
-            oneTimeEntrence = false;
-            gostGoHomeAIScript.enabled = true;
-            gostAI.enabled = false;
-            gostScript.enabled = false;
+
             gostScript.gate.SetActive(false);
+            oneTimeEntrence = false;
+            
+            SetScript("gostGoHomeAIScript");
         }
+
         if (gostScript.controllerOneTimeEntrence)
         {
             gostScript.controllerOneTimeEntrence = false;
             oneTimeEntrence = true;
         }
-        else
-        if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
-        {
-            gostAI.enabled = false;
-            gostScript.enabled = true;
-            gostGoHomeAIScript.enabled = false;
-        }
+
+        else if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
+            SetScript("gostScript");
 
         if (oneTimeEntrence && gostScript.startFindingPacman)
         {
@@ -78,17 +57,13 @@ public class GostControllerScript : MonoBehaviour
 
             if (FindingPacmanWithRayCast2D())
             {
-                gostAI.enabled = true;
-                gostScript.enabled = false;
-                gostGoHomeAIScript.enabled = false;
+                SetScript("gostAI");
                 StartCoroutine(FindPacmanAgain());
             }
             else
             {
+                SetScript("gostScript");
                 oneTimeEntrence = true;
-                gostAI.enabled = false;
-                gostScript.enabled = true;
-                gostGoHomeAIScript.enabled = false;
             }
         }
     }
@@ -126,6 +101,28 @@ public class GostControllerScript : MonoBehaviour
             {
                 pacman.isdead = true;
             }
+        }
+    }
+    void SetScript(string s)
+    {
+
+        switch (s)
+        {
+            case "gostScript":
+                gostAI.enabled = false;
+                gostScript.enabled = true;
+                gostGoHomeAIScript.enabled = false;
+                break;
+            case "gostAI":
+                gostAI.enabled = true;
+                gostScript.enabled = false;
+                gostGoHomeAIScript.enabled = false;
+                break;
+            case "gostGoHomeAIScript":
+                gostAI.enabled = false;
+                gostScript.enabled = false;
+                gostGoHomeAIScript.enabled = true;
+                break;
         }
     }
 }

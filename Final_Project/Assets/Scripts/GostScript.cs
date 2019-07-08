@@ -7,52 +7,50 @@ public class GostScript : MonoBehaviour
     public Transform wayPoint1;
     public Transform wayPoint2;
     public LayerMask layermask;
+    public bool startFindingPacman;
+    public bool controllerOneTimeEntrence;
+    public GameObject gate;
     PacManScript pacman;
     Rigidbody2D rb;
     RaycastHit2D hitUp;
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
     RaycastHit2D hitRight;
-    public GameObject gate;
-    List<int> options;
-    List<int> checkLoopDirections;
+    List<int> options = new List<int>();
+    List<int> checkLoopDirections = new List<int>();
     Vector2 p1;
     Vector2 p2;
+    string[] directions = { "up", "right", "down", "left" };
+    string lastdirection;
+    float speed = 0;
+    int directionX;
+    int directionY;
+    int rand;
+    int counter = 0;
+    bool upDownStarter;
+    bool oneTimeBlue; 
     bool gateOpen;
-    public bool startFindingPacman;
     bool oneTimeDirection;
     bool finishWaiting;
     bool getOutOfHome;
     bool[] freeDirection = { false, false, false, false };
-    string[] directions = { "up", "right", "down", "left" };
-    string lastdirection;
-    float speed;
-    int directionX;
-    int directionY;
-    int rand;
-    int counter;
-    bool upDownStarter;
-    bool oneTimeBlue;
-    public bool controllerOneTimeEntrence;
 
     private void Start()
     {
-        oneTimeBlue = true;
-        upDownStarter = true;
         Physics2D.IgnoreLayerCollision(11, 11);
+
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
 
-        options = new List<int>();
-        checkLoopDirections = new List<int>();
-        counter = 0;
-        speed = 0;
-        gateOpen = false;
+        oneTimeBlue = true;
+        upDownStarter = true;
         oneTimeDirection = true;
-        startFindingPacman = false;
         finishWaiting = true;
+        gateOpen = false;
+        startFindingPacman = false;
         getOutOfHome = false;
+
         StartCoroutine(StartWait());
     }
 
@@ -62,6 +60,18 @@ public class GostScript : MonoBehaviour
         speed = 5f;
         Switches("up");
         StartCoroutine(WaitForGate());
+    }
+
+    IEnumerator WaitForGate()
+    {
+        if (transform.name.Equals("PinkGost"))
+            yield return new WaitForSeconds(5f);
+        if (transform.name.Equals("LightBlueGost"))
+            yield return new WaitForSeconds(10f);
+        if (transform.name.Equals("YellowGost"))
+            yield return new WaitForSeconds(15f);
+        upDownStarter = false;
+        gateOpen = true;
     }
 
     void FixedUpdate()
@@ -188,17 +198,7 @@ public class GostScript : MonoBehaviour
         oneTimeBlue = true;
     }
 
-    IEnumerator WaitForGate()
-    {
-        if (transform.name.Equals("PinkGost"))
-            yield return new WaitForSeconds(5f);
-        if (transform.name.Equals("LightBlueGost"))
-            yield return new WaitForSeconds(10f);
-        if (transform.name.Equals("YellowGost"))
-            yield return new WaitForSeconds(15f);
-        upDownStarter = false;
-        gateOpen = true;
-    }
+    
 
     void Switches(string s)
     {

@@ -538,9 +538,9 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 5632
-  gate: {fileID: 0}
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
+  gate: {fileID: 1871076032}
 --- !u!114 &228266117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,7 +582,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 566151545}
-  nextWaypointDistance: 3
 --- !u!114 &228266119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,6 +597,10 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 4096
+  gostAI: {fileID: 0}
+  gostScript: {fileID: 0}
+  gostGoHomeAIScript: {fileID: 0}
+  startPoint: {x: 0, y: 0}
 --- !u!114 &228266120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -611,8 +614,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1871076033}
-  nextWaypointDistance: 3
-  reachedEndOfPath: 0
 --- !u!1 &274482977 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4680545933841470903, guid: 18319e164f9d5d04ea0f2cd23e904343,
@@ -631,7 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67c13ed5c53c424f97644d3df0e9a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oneTimeEntrence: 1
 --- !u!4 &280644488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8843712055884146306, guid: aa71db3e3b487544898a396aff07b24f,
@@ -798,9 +798,9 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 5632
-  gate: {fileID: 0}
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
+  gate: {fileID: 1871076032}
 --- !u!114 &318341308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -844,6 +844,10 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 4096
+  gostAI: {fileID: 0}
+  gostScript: {fileID: 0}
+  gostGoHomeAIScript: {fileID: 0}
+  startPoint: {x: 0, y: 0}
 --- !u!114 &318341310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,7 +861,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 566151545}
-  nextWaypointDistance: 3
 --- !u!114 &318341311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,8 +874,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1871076033}
-  nextWaypointDistance: 3
-  reachedEndOfPath: 0
 --- !u!1 &525177488
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &525177489
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1558,9 +1559,9 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 5632
-  gate: {fileID: 0}
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
+  gate: {fileID: 1871076032}
 --- !u!114 &1002108144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,6 +1605,10 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 4096
+  gostAI: {fileID: 0}
+  gostScript: {fileID: 0}
+  gostGoHomeAIScript: {fileID: 0}
+  startPoint: {x: 0, y: 0}
 --- !u!114 &1002108146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1617,7 +1622,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 566151545}
-  nextWaypointDistance: 3
 --- !u!114 &1002108147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1631,8 +1635,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1871076033}
-  nextWaypointDistance: 3
-  reachedEndOfPath: 0
 --- !u!1001 &1017753790
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2065,9 +2067,9 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 5632
-  gate: {fileID: 0}
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
+  gate: {fileID: 1871076032}
 --- !u!114 &1065933249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2083,6 +2085,10 @@ MonoBehaviour:
   layermask:
     serializedVersion: 2
     m_Bits: 4096
+  gostAI: {fileID: 0}
+  gostScript: {fileID: 0}
+  gostGoHomeAIScript: {fileID: 0}
+  startPoint: {x: 0, y: 0}
 --- !u!114 &1065933250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2096,7 +2102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 566151545}
-  nextWaypointDistance: 3
 --- !u!114 &1065933251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2138,8 +2143,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1871076033}
-  nextWaypointDistance: 3
-  reachedEndOfPath: 0
 --- !u!1 &1215930323 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4317484398798112347, guid: 856cda94f77c1ff44b9927ecf9b4e72b,
@@ -2158,7 +2161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67c13ed5c53c424f97644d3df0e9a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oneTimeEntrence: 1
 --- !u!1 &1242118428
 GameObject:
   m_ObjectHideFlags: 0

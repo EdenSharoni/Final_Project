@@ -7,15 +7,13 @@ public class GostAI : MonoBehaviour
 {
 
     public Transform target;
-    float speed = 35f;
-    public float nextWaypointDistance = 3f;
-
-    Path path;
-    int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
-
     Seeker seeker;
     Rigidbody2D rb;
+    Path path;
+    float speed = 35f;
+    float nextWaypointDistance = 3f;
+    int currentWaypoint = 0;
+    bool reachedEndOfPath = false;
 
     void Start()
     {
@@ -28,8 +26,7 @@ public class GostAI : MonoBehaviour
     void UpdatePath()
     {
         if (seeker.IsDone())
-            seeker.StartPath(rb.position, target.position, OnPathComplete);
-            
+            seeker.StartPath(rb.position, target.position, OnPathComplete);    
     }
 
     void OnPathComplete(Path p)

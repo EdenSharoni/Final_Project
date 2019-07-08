@@ -6,15 +6,13 @@ using Pathfinding;
 public class GhostGoHomeAIScript : MonoBehaviour
 {
     public Transform target;
-    float speed = 40f;
-    public float nextWaypointDistance = 3f;
-
-    Path path;
-    int currentWaypoint = 0;
-    public bool reachedEndOfPath = false;
-
     Seeker seeker;
     Rigidbody2D rb;
+    Path path;
+    float speed = 40f;
+    float nextWaypointDistance = 3f;
+    int currentWaypoint = 0;
+    bool reachedEndOfPath = false;
 
     void Start()
     {
@@ -28,7 +26,6 @@ public class GhostGoHomeAIScript : MonoBehaviour
     {
         if (seeker.IsDone())
             seeker.StartPath(rb.position, target.position, OnPathComplete);
-
     }
 
     void OnPathComplete(Path p)
@@ -42,7 +39,6 @@ public class GhostGoHomeAIScript : MonoBehaviour
 
     void FixedUpdate()
     {
-
         if (path == null)
             return;
         if (currentWaypoint >= path.vectorPath.Count)
