@@ -41,18 +41,26 @@ public class GostScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
         initGhost();
+        getOutOfHome = false;
     }
 
     public void initGhost()
     {
+        directionX = 0;
+        directionY = 0;
+        gate.SetActive(true);
         oneTimeBlue = true;
         upDownStarter = true;
         oneTimeDirection = true;
         finishWaiting = true;
         gateOpen = false;
         startFindingPacman = false;
-        getOutOfHome = false;
         speed = 0;
+        counter = 0;
+        gate.GetComponent<BoxCollider2D>().enabled = true;
+        gate.GetComponent<PlatformEffector2D>().enabled = true;
+        GetComponent<Animator>().SetLayerWeight(2, 0);
+        GetComponent<Animator>().SetBool("blue", false);
         StartCoroutine(StartWait());
     }
 
@@ -64,7 +72,7 @@ public class GostScript : MonoBehaviour
         StartCoroutine(WaitForGate());
     }
 
-    public IEnumerator WaitForGate()
+    IEnumerator WaitForGate()
     {
         if (transform.name.Equals("PinkGost"))
             yield return new WaitForSeconds(5f);
@@ -72,21 +80,32 @@ public class GostScript : MonoBehaviour
             yield return new WaitForSeconds(10f);
         if (transform.name.Equals("YellowGost"))
             yield return new WaitForSeconds(15f);
+
         upDownStarter = false;
         gateOpen = true;
     }
 
     void FixedUpdate()
     {
+        if (transform.name.Equals("LightBlueGost"))
+        {
+            /*Debug.Log("startFindingPacman: " + startFindingPacman);
+            Debug.Log("speed: " + speed);
+            Debug.Log("upDownStarter: " + upDownStarter);
+            //Debug.Log(lastdirection);
+            Debug.Log("gateOpen: " + gateOpen);
+            Debug.Log("getOutOfHome: " + getOutOfHome);*/
+        }
+
         MakeRayCast();
 
         if (pacman.ghostBlue && !gateOpen && oneTimeBlue)
             StartCoroutine(Blue());
 
+
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
         GetOutOfHome();
-        
 
         if (transform.position == wayPoint2.position && speed == 5f)
         {
@@ -102,10 +121,14 @@ public class GostScript : MonoBehaviour
             Algorithm();
         }
     }
+
     void GetOutOfHome()
     {
+        if(transform.name.Equals("LightBlueGost"))
+            Debug.Log(getOutOfHome + " " + gateOpen + " " + !GetComponent<Animator>().GetBool("blue"));
         if (getOutOfHome && gateOpen && !GetComponent<Animator>().GetBool("blue"))
         {
+            Debug.Log("Get Out Of Home");
             Vector2 p1 = Vector2.MoveTowards(transform.position, wayPoint1.position, speed * Time.deltaTime);
             GetComponent<Rigidbody2D>().MovePosition(p1);
             if (transform.position.x == p1.x)
@@ -116,6 +139,7 @@ public class GostScript : MonoBehaviour
             }
         }
     }
+
     void Algorithm()
     {
         if (finishWaiting)
@@ -170,6 +194,7 @@ public class GostScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("gostHome"))
         {
+            Debug.Log("Trigger");
             GetComponent<Animator>().SetLayerWeight(2, 0);
             GetComponent<Animator>().SetBool("blue", false);
             gate.GetComponent<BoxCollider2D>().enabled = true;
@@ -206,8 +231,6 @@ public class GostScript : MonoBehaviour
         pacman.ghostBlue = false;
         oneTimeBlue = true;
     }
-
-
 
     void Switches(string s)
     {

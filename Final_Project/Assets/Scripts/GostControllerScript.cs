@@ -101,6 +101,7 @@ public class GostControllerScript : MonoBehaviour
         {
             if (gostScript.GetComponent<Animator>().GetBool("blue"))
             {
+                PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
                 GetComponent<Animator>().SetLayerWeight(2, 1);
             }
             else

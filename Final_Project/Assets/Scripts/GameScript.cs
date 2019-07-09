@@ -63,6 +63,7 @@ public class GameScript : MonoBehaviour
 
         if ((board.transform.childCount == 0 || pacman.isdead) && oneTimeEntrence)
         {
+            StopAllCoroutines();
             oneTimeEntrence = false;
             gameOver.enabled = true;
             audioSource.Stop();
@@ -73,9 +74,15 @@ public class GameScript : MonoBehaviour
             pacman.GetComponent<Animator>().SetTrigger("die");
             pacman.GetComponent<Animator>().SetBool("move", false);
             pacman.rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            pacman.StopAllCoroutines();
 
             for (int i = 0; i < 4; i++)
+            {
                 ghost[i].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                ghost[i].StopAllCoroutines();
+                ghost[i].gostScript.StopAllCoroutines();
+            }
+                
 
             if (currentLife >= 0 && board.transform.childCount != 0)
                 StartCoroutine(PlayAgain());
@@ -86,25 +93,27 @@ public class GameScript : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
+        pacman.isdead = false;
+        oneTimeEntrence = true;
+
+        life[currentLife].enabled = false;
+        currentLife--;
+        gameOver.enabled = false;
+
         pacman.transform.position = pacman.startPoint;
+        pacman.initPacman();
         for (int i = 0; i < 4; i++)
         {
             ghost[i].transform.position = ghost[i].startPoint;
             ghost[i].gostScript.enabled = false;
             ghost[i].gostAI.enabled = false;
             ghost[i].gostGoHomeAIScript.enabled = false;
-        }
-        life[currentLife].enabled = false;
-        currentLife--;
-        gameOver.enabled = false;
-        pacman.initPacman();
-        for (int i = 0; i < 4; i++)
-        {
             ghost[i].initGhost();
             ghost[i].gostScript.initGhost();
         }
-        pacman.isdead = false;
-        oneTimeEntrence = true;
+
+        yield return new WaitForSeconds(5f);
+        audioSource.Play();
     }
 
     public void VolumeOn()

@@ -27,28 +27,30 @@ public class PacManScript : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
-        audioSource.PlayOneShot(audioClip);
-
-        ghostBlue = false;
-        isdead = false;
-
-        StartCoroutine(Wait());
-    }
-
-    IEnumerator Wait()
-    {
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        yield return new WaitForSeconds(audioClip.length);
         initPacman();
     }
 
     public void initPacman()
     {
+        StartCoroutine(Wait());
+    }
+
+    IEnumerator Wait()
+    {
+        audioSource.PlayOneShot(audioClip);
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(audioClip.length);
+        startPacman();
+    }
+
+    void startPacman()
+    {
+        ghostBlue = false;
+        isdead = false;
         GetComponent<Animator>().SetBool("move", true);
         directionX = 1;
         directionY = 0;        
         transform.eulerAngles = new Vector3(0, 0, 0);
-
         audioSource.loop = true;
         audioSource.volume = 0.5f;
         audioSource.clip = wakkawakka;
