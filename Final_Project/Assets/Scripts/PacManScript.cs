@@ -10,9 +10,9 @@ public class PacManScript : MonoBehaviour
     public AudioClip deadSound;
     public Rigidbody2D rb;
     public LayerMask layermask;
-    public Vector2 startPoint;
     public bool isdead;
     public bool ghostBlue;
+    Vector2 startPoint;
     RaycastHit2D hitUp;
     RaycastHit2D hitDown;
     RaycastHit2D hitLeft;
@@ -37,6 +37,7 @@ public class PacManScript : MonoBehaviour
 
     IEnumerator Wait()
     {
+        transform.position = startPoint;
         audioSource.PlayOneShot(audioClip);
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(audioClip.length);

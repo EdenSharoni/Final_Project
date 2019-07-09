@@ -151,7 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f24556c813bcc48b14cc67518de29f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   audioClip: {fileID: 8300000, guid: d6a4f195fc7efd641b1ce49940b5e544, type: 3}
   wakkawakka: {fileID: 8300000, guid: 85cc1d2035698c04d8d5df63906b67f7, type: 3}
-  afterInitAudio: 0
+  deadSound: {fileID: 8300000, guid: 4a3f224caf4d469408174a57e891c4d5, type: 3}
+  rb: {fileID: 0}
+  layermask:
+    serializedVersion: 2
+    m_Bits: 0
   isdead: 0
+  ghostBlue: 0

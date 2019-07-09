@@ -124,11 +124,8 @@ public class GostScript : MonoBehaviour
 
     void GetOutOfHome()
     {
-        if(transform.name.Equals("LightBlueGost"))
-            Debug.Log(getOutOfHome + " " + gateOpen + " " + !GetComponent<Animator>().GetBool("blue"));
         if (getOutOfHome && gateOpen && !GetComponent<Animator>().GetBool("blue"))
         {
-            Debug.Log("Get Out Of Home");
             Vector2 p1 = Vector2.MoveTowards(transform.position, wayPoint1.position, speed * Time.deltaTime);
             GetComponent<Rigidbody2D>().MovePosition(p1);
             if (transform.position.x == p1.x)
@@ -194,7 +191,6 @@ public class GostScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("gostHome"))
         {
-            Debug.Log("Trigger");
             GetComponent<Animator>().SetLayerWeight(2, 0);
             GetComponent<Animator>().SetBool("blue", false);
             gate.GetComponent<BoxCollider2D>().enabled = true;

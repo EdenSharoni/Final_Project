@@ -5,18 +5,21 @@ using UnityEngine;
 public class GostControllerScript : MonoBehaviour
 {
     public LayerMask layermask;
-    public GostAI gostAI;
-    public GostScript gostScript;
-    public GhostGoHomeAIScript gostGoHomeAIScript;
-    public Vector2 startPoint;
+    GostAI gostAI;
+    GostScript gostScript;
+    GhostGoHomeAIScript gostGoHomeAIScript;
+    Vector2 startPoint;
+    AudioSource source;
     PacManScript pacman;
     RaycastHit2D[] hitRound;
     bool oneTimeEntrence;
+    bool oneTimeEat;
 
     void Start()
     {
         startPoint = transform.position;
-        
+        source = GetComponent<AudioSource>();
+
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         gostAI = GameObject.Find(transform.name).GetComponent<GostAI>();
         gostScript = GameObject.Find(transform.name).GetComponent<GostScript>();
@@ -27,11 +30,20 @@ public class GostControllerScript : MonoBehaviour
     }
     public void initGhost()
     {
+        transform.position = startPoint;
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         SetScript("gostScript");
         oneTimeEntrence = true;
+        oneTimeEat = true;
+        gostScript.initGhost();
     }
+    public void StopAllCoroutinesInAllScripts()
+    {
+        StopAllCoroutines();
+        gostScript.StopAllCoroutines();
+    }
+
     void FixedUpdate()
     {
         
@@ -52,6 +64,7 @@ public class GostControllerScript : MonoBehaviour
         {
             gostScript.controllerOneTimeEntrence = false;
             oneTimeEntrence = true;
+            oneTimeEat = true;
         }
 
         else if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
@@ -101,6 +114,12 @@ public class GostControllerScript : MonoBehaviour
         {
             if (gostScript.GetComponent<Animator>().GetBool("blue"))
             {
+                if (oneTimeEat)
+                {
+                    oneTimeEat = false;
+                    source.Play();
+                }
+                
                 PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
                 GetComponent<Animator>().SetLayerWeight(2, 1);
             }
