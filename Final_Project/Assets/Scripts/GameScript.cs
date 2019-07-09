@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameScript : MonoBehaviour
 {
+    public AudioClip main;
+    public AudioClip ghostBlueSound;
     public Button volumeOn;
     public Button volumeOff;
     public Text score;
@@ -29,7 +31,7 @@ public class GameScript : MonoBehaviour
         ghost[3] = GameObject.Find("YellowGost").GetComponent<GostControllerScript>();
         audioSource = GetComponent<AudioSource>();
         board = GameObject.Find("Board");
-
+        audioSource.volume = 0.3f;
         volumeOn.gameObject.SetActive(true);
         volumeOff.gameObject.SetActive(false);
         volumeOn.enabled = true;
@@ -51,6 +53,7 @@ public class GameScript : MonoBehaviour
         ready.enabled = true;
         yield return new WaitForSeconds(5f);
         ready.enabled = false;
+        audioSource.clip = main;
         audioSource.loop = true;
         audioSource.Play();
     }
@@ -58,6 +61,19 @@ public class GameScript : MonoBehaviour
     private void Update()
     {
         score.text = PlayerPrefs.GetInt("points").ToString();
+
+        if (pacman.ghostBlue && audioSource.clip == main)
+        {
+            audioSource.Stop();
+            audioSource.clip = ghostBlueSound;
+            audioSource.Play();
+        }
+        else if(!pacman.ghostBlue && audioSource.clip == ghostBlueSound)
+        {
+            audioSource.Stop();
+            audioSource.clip = main;
+            audioSource.Play();
+        }
 
         if ((board.transform.childCount == 0 || pacman.isdead) && oneTimeEntrence)
         {

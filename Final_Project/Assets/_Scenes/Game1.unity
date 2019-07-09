@@ -500,7 +500,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.8749999
+  m_Radius: 0.9
 --- !u!50 &228266115
 Rigidbody2D:
   serializedVersion: 4
@@ -595,6 +595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6606995f616534db9629ec473bf28a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  ghostFindingHome: {fileID: 8300000, guid: 69d3c827f5686324994f4e7581a6f37a, type: 3}
   layermask:
     serializedVersion: 2
     m_Bits: 4096
@@ -621,7 +623,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -853,7 +855,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.87499994
+  m_Radius: 0.9
 --- !u!50 &318341306
 Rigidbody2D:
   serializedVersion: 4
@@ -935,6 +937,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6606995f616534db9629ec473bf28a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  ghostFindingHome: {fileID: 8300000, guid: 69d3c827f5686324994f4e7581a6f37a, type: 3}
   layermask:
     serializedVersion: 2
     m_Bits: 4096
@@ -974,7 +978,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1766,7 +1770,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.875
+  m_Radius: 0.9
 --- !u!114 &1002108143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1827,6 +1831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6606995f616534db9629ec473bf28a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  ghostFindingHome: {fileID: 8300000, guid: 69d3c827f5686324994f4e7581a6f37a, type: 3}
   layermask:
     serializedVersion: 2
     m_Bits: 4096
@@ -1866,7 +1872,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2346,7 +2352,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.87499994
+  m_Radius: 0.9
 --- !u!50 &1065933247
 Rigidbody2D:
   serializedVersion: 4
@@ -2400,6 +2406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6606995f616534db9629ec473bf28a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  ghostFindingHome: {fileID: 8300000, guid: 69d3c827f5686324994f4e7581a6f37a, type: 3}
   layermask:
     serializedVersion: 2
     m_Bits: 4096
@@ -2467,7 +2475,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3093,6 +3101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08454fd3002654b49b829590d87fcf4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main: {fileID: 8300000, guid: 219f9b3396325dd42a4076e9d9e6009b, type: 3}
+  ghostBlueSound: {fileID: 8300000, guid: 0b5f56e0279398946bce2cc8fc241293, type: 3}
   volumeOn: {fileID: 1950879912}
   volumeOff: {fileID: 1035795068}
   score: {fileID: 648079405}
@@ -3112,7 +3122,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 219f9b3396325dd42a4076e9d9e6009b, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

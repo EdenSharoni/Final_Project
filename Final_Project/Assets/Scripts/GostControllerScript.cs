@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GostControllerScript : MonoBehaviour
 {
+    public AudioClip ghostEat;
+    public AudioClip ghostFindingHome;
     public LayerMask layermask;
     GostAI gostAI;
     GostScript gostScript;
@@ -26,7 +28,7 @@ public class GostControllerScript : MonoBehaviour
         gostGoHomeAIScript = GameObject.Find(transform.name).GetComponent<GhostGoHomeAIScript>();
 
         initGhost();
-   
+
     }
     public void initGhost()
     {
@@ -46,7 +48,7 @@ public class GostControllerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+
         MakeRayCastHit2D();
 
         if (gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
@@ -55,8 +57,13 @@ public class GostControllerScript : MonoBehaviour
             gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
 
             gostScript.gate.SetActive(false);
-            oneTimeEntrence = false;
-            
+            if (oneTimeEntrence)
+            {
+                oneTimeEntrence = false;
+                source.clip = ghostFindingHome;
+                source.loop = true;
+                source.Play();
+            }
             SetScript("gostGoHomeAIScript");
         }
 
@@ -68,7 +75,11 @@ public class GostControllerScript : MonoBehaviour
         }
 
         else if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
+        {
+            source.Stop();
             SetScript("gostScript");
+        }
+
 
         if (oneTimeEntrence && gostScript.startFindingPacman)
         {
@@ -117,9 +128,9 @@ public class GostControllerScript : MonoBehaviour
                 if (oneTimeEat)
                 {
                     oneTimeEat = false;
-                    source.Play();
+                    source.PlayOneShot(ghostEat);
                 }
-                
+
                 PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
                 GetComponent<Animator>().SetLayerWeight(2, 1);
             }

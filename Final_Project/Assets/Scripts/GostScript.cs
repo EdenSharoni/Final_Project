@@ -75,11 +75,11 @@ public class GostScript : MonoBehaviour
     IEnumerator WaitForGate()
     {
         if (transform.name.Equals("PinkGost"))
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3f);
         if (transform.name.Equals("LightBlueGost"))
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(8f);
         if (transform.name.Equals("YellowGost"))
-            yield return new WaitForSeconds(15f);
+            yield return new WaitForSeconds(12f);
 
         upDownStarter = false;
         gateOpen = true;
@@ -87,21 +87,10 @@ public class GostScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (transform.name.Equals("LightBlueGost"))
-        {
-            /*Debug.Log("startFindingPacman: " + startFindingPacman);
-            Debug.Log("speed: " + speed);
-            Debug.Log("upDownStarter: " + upDownStarter);
-            //Debug.Log(lastdirection);
-            Debug.Log("gateOpen: " + gateOpen);
-            Debug.Log("getOutOfHome: " + getOutOfHome);*/
-        }
-
         MakeRayCast();
 
         if (pacman.ghostBlue && !gateOpen && oneTimeBlue)
             StartCoroutine(Blue());
-
 
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
@@ -331,21 +320,16 @@ public class GostScript : MonoBehaviour
 
     void MakeRayCast()
     {
-        //Maybe circle to big
         hitUp = Physics2D.CircleCast(transform.position, 1f, Vector2.up, 1f, layermask);
-        //hitUp = Physics2D.Raycast(transform.position, Vector2.up, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.up);
 
         hitDown = Physics2D.CircleCast(transform.position, 1f, Vector2.down, 1f, layermask);
-        //hitDown = Physics2D.Raycast(transform.position, Vector2.down, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.down);
 
         hitRight = Physics2D.CircleCast(transform.position, 1f, Vector2.right, 1f, layermask);
-        //hitRight = Physics2D.Raycast(transform.position, Vector2.right, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.right);
 
         hitLeft = Physics2D.CircleCast(transform.position, 1f, Vector2.left, 1f, layermask);
-        //hitLeft = Physics2D.Raycast(transform.position, Vector2.left, 2f, layermask);
         Debug.DrawRay(transform.position, Vector2.left);
     }
 }

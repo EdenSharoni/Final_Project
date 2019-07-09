@@ -20,9 +20,11 @@ public class PacManScript : MonoBehaviour
     float speed = 10f;
     int directionX;
     int directionY;
+    bool anotherDot;
 
     private void Start()
     {
+        anotherDot = true;
         startPoint = transform.position;
 
         rb = GetComponent<Rigidbody2D>();
@@ -50,16 +52,13 @@ public class PacManScript : MonoBehaviour
         isdead = false;
         GetComponent<Animator>().SetBool("move", true);
         directionX = 1;
-        directionY = 0;        
+        directionY = 0;
         transform.eulerAngles = new Vector3(0, 0, 0);
-        audioSource.loop = true;
-        audioSource.volume = 0.5f;
-        audioSource.clip = wakkawakka;
-        audioSource.Play();
-        
+        audioSource.volume = 0.3f;
+
         rb.constraints = RigidbodyConstraints2D.None;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        
+
     }
     private void Update()
     {
@@ -108,16 +107,27 @@ public class PacManScript : MonoBehaviour
         if (collision.gameObject.CompareTag("powerupDot"))
         {
             ghostBlue = true;
+            if (anotherDot)
+                audioSource.PlayOneShot(wakkawakka);
+            StartCoroutine(WaitForSoundToEnd());
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 50);
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.CompareTag("dots"))
         {
+            if (anotherDot)
+                StartCoroutine(WaitForSoundToEnd());
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 10);
             Destroy(collision.gameObject);
         }
     }
-
+    IEnumerator WaitForSoundToEnd()
+    {
+        anotherDot = false;
+        audioSource.PlayOneShot(wakkawakka);
+        yield return new WaitForSeconds(wakkawakka.length);
+        anotherDot = true;
+    }
     void MakeRayCast()
     {
         hitUp = Physics2D.CircleCast(transform.position, 1f, Vector2.up, 1f, layermask);

@@ -9,7 +9,7 @@ public class GhostGoHomeAIScript : MonoBehaviour
     Seeker seeker;
     Rigidbody2D rb;
     Path path;
-    float speed = 40f;
+    float speed = 90f;
     float nextWaypointDistance = 3f;
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
@@ -18,6 +18,7 @@ public class GhostGoHomeAIScript : MonoBehaviour
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+        rb.drag = 3f;
         InvokeRepeating("UpdatePath", 0f, .5f);
         seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
