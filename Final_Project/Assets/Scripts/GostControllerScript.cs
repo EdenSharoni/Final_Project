@@ -57,6 +57,7 @@ public class GostControllerScript : MonoBehaviour
 
         if (GetComponent<Animator>().GetLayerWeight(2) == 1)
         {
+            transform.gameObject.layer = 13;
             if (oneTimeEntrence)
             {
                 oneTimeEntrence = false;
@@ -144,7 +145,6 @@ public class GostControllerScript : MonoBehaviour
         oneTimeEat = false;
         source.PlayOneShot(ghostEat);
         GetComponent<Animator>().SetLayerWeight(2, 1);
-        transform.gameObject.layer = 13;
         if (pacman.ghostBlueCount == 1)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);

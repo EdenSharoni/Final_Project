@@ -85,7 +85,7 @@ public class GostScript : MonoBehaviour
         MakeRayCast();
 
         if (pacman.ghostBlue && !gateOpen && oneTimeBlue)
-            StartCoroutine(Blue());            
+            StartCoroutine(Blue());
 
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
@@ -252,12 +252,9 @@ public class GostScript : MonoBehaviour
     {
         if (hitUp.collider != null)
         {
-            if (hitUp.collider.name.Equals("Wall"))
-            {
-                if (freeDirection[0] == true)
-                    oneTimeDirection = true;
-                freeDirection[0] = false;
-            }
+            if (freeDirection[0] == true)
+                oneTimeDirection = true;
+            freeDirection[0] = false;
         }
         else
         {
@@ -268,12 +265,9 @@ public class GostScript : MonoBehaviour
 
         if (hitRight.collider != null)
         {
-            if (hitRight.collider.name.Equals("Wall"))
-            {
-                if (freeDirection[1] == true)
-                    oneTimeDirection = true;
-                freeDirection[1] = false;
-            }
+            if (freeDirection[1] == true)
+                oneTimeDirection = true;
+            freeDirection[1] = false;
         }
         else
         {
@@ -284,12 +278,9 @@ public class GostScript : MonoBehaviour
 
         if (hitDown.collider != null)
         {
-            if (hitDown.collider.name.Equals("Wall") || hitDown.collider.name.Equals("Gate"))
-            {
-                if (freeDirection[2] == true)
-                    oneTimeDirection = true;
-                freeDirection[2] = false;
-            }
+            if (freeDirection[2] == true)
+                oneTimeDirection = true;
+            freeDirection[2] = false;
         }
         else
         {
@@ -300,9 +291,8 @@ public class GostScript : MonoBehaviour
 
         if (hitLeft.collider != null)
         {
-            if (hitLeft.collider.name.Equals("Wall"))
-                if (freeDirection[3] == true)
-                    oneTimeDirection = true;
+            if (freeDirection[3] == true)
+                oneTimeDirection = true;
             freeDirection[3] = false;
         }
         else

@@ -538,7 +538,7 @@ MonoBehaviour:
   wayPoint2: {fileID: 591665263}
   layermask:
     serializedVersion: 2
-    m_Bits: 5632
+    m_Bits: 1536
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
   oneTimeBlue: 0
