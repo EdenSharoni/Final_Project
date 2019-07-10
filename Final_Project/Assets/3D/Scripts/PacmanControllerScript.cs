@@ -9,6 +9,10 @@ public class PacmanControllerScript : MonoBehaviour
 
     public Text scoreText;
 
+    public Text lifesText;
+
+    public bool blue3DGhost;
+
     private Animator animator = null;
 
     private Vector3 up = Vector3.zero,
@@ -19,7 +23,10 @@ public class PacmanControllerScript : MonoBehaviour
 
     private Vector3 initialPosition = Vector3.zero;
 
-    private int count;
+    private int countPoints;
+    private int lifesCount;
+    private bool isDied;
+    private int ghostsCount = 4;
 
     public void Reset()
     {
@@ -27,6 +34,12 @@ public class PacmanControllerScript : MonoBehaviour
         animator.SetBool("isDead", false);
         animator.SetBool("isMoving", false);
         currentDirection = down;
+        if (isDied)
+        {
+            lifesCount--;
+            setLifes();
+            isDied = false;
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -37,8 +50,11 @@ public class PacmanControllerScript : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        count = 0;
+        countPoints = 0;
         setScore();
+
+        lifesCount = 3;
+        setLifes();
 
         Reset();
     }
@@ -66,22 +82,63 @@ public class PacmanControllerScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Ghost3D"))
+        if (lifesCount <= 0 || ghostsCount <= 0)
+            endGame();
+
+        if (blue3DGhost)
+        {
+            if (collision.collider.CompareTag("Ghost3D"))
+            {
+                Destroy(collision.collider.gameObject);
+                ghostsCount--;
+            }
+
+        }
+        else if (collision.collider.CompareTag("Ghost3D"))
+        {
             animator.SetBool("isDead", true);
+            isDied = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Food3D")
+        if (other.CompareTag("Food3D"))
         {
-            Destroy(other.transform.gameObject);
-            count += 10;
+            countPoints += 10;
             setScore();
+            Destroy(other.transform.gameObject);
+        }
+        else if (other.CompareTag("PowerFood3D"))
+        {            
+            StartCoroutine(WaitForFixedSeconds());
+            countPoints += 50;
+            setScore();
+            Destroy(other.transform.gameObject);
         }
     }
 
     void setScore()
     {
-        scoreText.text = "Score:" + count.ToString();
+        scoreText.text = "Score: " + countPoints.ToString();
+    }
+
+    void setLifes()
+    {
+        lifesText.text = "Lifes: " + lifesCount.ToString();
+    }
+
+    void endGame()
+    {
+        
+    }
+
+    IEnumerator WaitForFixedSeconds()
+    {
+        // change color to blue
+        blue3DGhost = true;
+        yield return new WaitForSeconds(10f);
+        blue3DGhost = false;
+        // change color to original
     }
 }
