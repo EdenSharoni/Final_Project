@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PacmanControllerScript : MonoBehaviour
 {
     public float movementSpeed = 0f;
+
+    public Text scoreText;
 
     private Animator animator = null;
 
@@ -15,6 +18,8 @@ public class PacmanControllerScript : MonoBehaviour
                     currentDirection = Vector3.zero;
 
     private Vector3 initialPosition = Vector3.zero;
+
+    private int count;
 
     public void Reset()
     {
@@ -31,6 +36,9 @@ public class PacmanControllerScript : MonoBehaviour
         initialPosition = transform.position;
 
         animator = GetComponent<Animator>();
+
+        count = 0;
+        setScore();
 
         Reset();
     }
@@ -56,9 +64,24 @@ public class PacmanControllerScript : MonoBehaviour
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ghost3D"))
+            animator.SetBool("isDead", true);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ghost3D"))
-            animator.SetBool("isDead", true);
+        if (other.gameObject.tag == "Food3D")
+        {
+            Destroy(other.transform.gameObject);
+            count += 10;
+            setScore();
+        }
+    }
+
+    void setScore()
+    {
+        scoreText.text = "Score:" + count.ToString();
     }
 }
