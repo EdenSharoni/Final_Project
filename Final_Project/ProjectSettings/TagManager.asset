@@ -21,6 +21,8 @@ TagManager:
   - mazepassage
   - Pacman3D
   - Ghost3D
+  - Food3D
+  - PowerFood3D
   layers:
   - Default
   - TransparentFX

@@ -1,10 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PacmanControllerScript : MonoBehaviour
 {
     public float movementSpeed = 0f;
+
+    public Text scoreText;
+
+    public Text lifesText;
+
+    public bool blue3DGhost;
 
     private Animator animator = null;
 
@@ -16,12 +23,23 @@ public class PacmanControllerScript : MonoBehaviour
 
     private Vector3 initialPosition = Vector3.zero;
 
+    private int countPoints;
+    private int lifesCount;
+    private bool isDied;
+    private int ghostsCount = 4;
+
     public void Reset()
     {
         transform.position = initialPosition;
         animator.SetBool("isDead", false);
         animator.SetBool("isMoving", false);
         currentDirection = down;
+        if (isDied)
+        {
+            lifesCount--;
+            setLifes();
+            isDied = false;
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -31,6 +49,12 @@ public class PacmanControllerScript : MonoBehaviour
         initialPosition = transform.position;
 
         animator = GetComponent<Animator>();
+
+        countPoints = 0;
+        setScore();
+
+        lifesCount = 3;
+        setLifes();
 
         Reset();
     }
@@ -56,9 +80,65 @@ public class PacmanControllerScript : MonoBehaviour
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (lifesCount <= 0 || ghostsCount <= 0)
+            endGame();
+
+        if (blue3DGhost)
+        {
+            if (collision.collider.CompareTag("Ghost3D"))
+            {
+                Destroy(collision.collider.gameObject);
+                ghostsCount--;
+            }
+
+        }
+        else if (collision.collider.CompareTag("Ghost3D"))
+        {
+            animator.SetBool("isDead", true);
+            isDied = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ghost3D"))
-            animator.SetBool("isDead", true);
+        if (other.CompareTag("Food3D"))
+        {
+            countPoints += 10;
+            setScore();
+            Destroy(other.transform.gameObject);
+        }
+        else if (other.CompareTag("PowerFood3D"))
+        {            
+            StartCoroutine(WaitForFixedSeconds());
+            countPoints += 50;
+            setScore();
+            Destroy(other.transform.gameObject);
+        }
+    }
+
+    void setScore()
+    {
+        scoreText.text = "Score: " + countPoints.ToString();
+    }
+
+    void setLifes()
+    {
+        lifesText.text = "Lifes: " + lifesCount.ToString();
+    }
+
+    void endGame()
+    {
+        
+    }
+
+    IEnumerator WaitForFixedSeconds()
+    {
+        // change color to blue
+        blue3DGhost = true;
+        yield return new WaitForSeconds(10f);
+        blue3DGhost = false;
+        // change color to original
     }
 }

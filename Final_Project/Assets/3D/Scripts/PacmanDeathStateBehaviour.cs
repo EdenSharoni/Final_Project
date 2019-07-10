@@ -10,7 +10,7 @@ public class PacmanDeathStateBehaviour : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!pacmanController)
-            pacmanController = GameObject.Find("Pacman").GetComponent<PacmanControllerScript>();
+            pacmanController = GameObject.Find("Pacman3D").GetComponent<PacmanControllerScript>();
 
         if (stateInfo.shortNameHash == death)
             animator.applyRootMotion = false;
