@@ -215,6 +215,7 @@ public class GostScript : MonoBehaviour
         GetComponent<Animator>().SetBool("blue", false);
         pacman.ghostBlue = false;
         oneTimeBlue = true;
+        pacman.ghostBlueCount = 0;
     }
 
     void Switches(string s)

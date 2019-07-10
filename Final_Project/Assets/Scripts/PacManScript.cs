@@ -21,6 +21,7 @@ public class PacManScript : MonoBehaviour
     int directionX;
     int directionY;
     bool anotherDot;
+    public int ghostBlueCount;
 
     private void Start()
     {
@@ -48,6 +49,7 @@ public class PacManScript : MonoBehaviour
 
     void startPacman()
     {
+        ghostBlueCount = 0;
         ghostBlue = false;
         isdead = false;
         GetComponent<Animator>().SetBool("move", true);

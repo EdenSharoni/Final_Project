@@ -16,9 +16,13 @@ public class GostControllerScript : MonoBehaviour
     RaycastHit2D[] hitRound;
     bool oneTimeEntrence;
     bool oneTimeEat;
+    public GameObject[] ghostPoints = new GameObject[4];
 
     void Start()
     {
+        for (int i = 0; i < 4; i++)
+            ghostPoints[i].SetActive(false);
+
         startPoint = transform.position;
         source = GetComponent<AudioSource>();
 
@@ -127,10 +131,12 @@ public class GostControllerScript : MonoBehaviour
             {
                 if (oneTimeEat)
                 {
+                    pacman.ghostBlueCount++;
                     oneTimeEat = false;
                     source.PlayOneShot(ghostEat);
-                    PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
+
                     GetComponent<Animator>().SetLayerWeight(2, 1);
+                    StartCoroutine(Wait());
                 }
             }
             else
@@ -140,6 +146,38 @@ public class GostControllerScript : MonoBehaviour
         }
 
     }
+    IEnumerator Wait()
+    {
+        if (pacman.ghostBlueCount == 1)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
+            ghostPoints[0].transform.position = transform.position;
+            ghostPoints[0].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 2)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
+            ghostPoints[1].transform.position = transform.position;
+            ghostPoints[1].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 3)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
+            ghostPoints[2].transform.position = transform.position;
+            ghostPoints[2].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 4)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
+            ghostPoints[3].transform.position = transform.position;
+            ghostPoints[3].SetActive(true);
+        }
+
+        yield return new WaitForSeconds(1f);
+        for(int i = 0; i<4; i++)
+            ghostPoints[i].SetActive(false);
+    }
+
     void SetScript(string s)
     {
 
