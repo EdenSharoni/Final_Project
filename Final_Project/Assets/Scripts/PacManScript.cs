@@ -12,7 +12,6 @@ public class PacManScript : MonoBehaviour
     public LayerMask layermask;
     public bool isdead;
     public bool ghostBlue;
-    public int ghostBlueCounter;
     Vector2 startPoint;
     RaycastHit2D hitUp;
     RaycastHit2D hitDown;
@@ -49,7 +48,6 @@ public class PacManScript : MonoBehaviour
 
     void startPacman()
     {
-        ghostBlueCounter = 0;
         ghostBlue = false;
         isdead = false;
         GetComponent<Animator>().SetBool("move", true);
@@ -110,7 +108,8 @@ public class PacManScript : MonoBehaviour
         {
             ghostBlue = true;
             if (anotherDot)
-                StartCoroutine(WaitForSoundToEnd());
+                audioSource.PlayOneShot(wakkawakka);
+            StartCoroutine(WaitForSoundToEnd());
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 50);
             Destroy(collision.gameObject);
         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GostControllerScript : MonoBehaviour
 {
@@ -15,14 +14,11 @@ public class GostControllerScript : MonoBehaviour
     AudioSource source;
     PacManScript pacman;
     RaycastHit2D[] hitRound;
-    public GameObject[] ghostPoints = new GameObject[4];
     bool oneTimeEntrence;
     bool oneTimeEat;
-    
+
     void Start()
     {
-        for (int i = 0; i < 4; i++)
-            ghostPoints[i].SetActive(false);
         startPoint = transform.position;
         source = GetComponent<AudioSource>();
 
@@ -131,13 +127,12 @@ public class GostControllerScript : MonoBehaviour
             {
                 if (oneTimeEat)
                 {
-                    pacman.ghostBlueCounter++;
                     oneTimeEat = false;
                     source.PlayOneShot(ghostEat);
-                    StartCoroutine(Wait());
-
-                    GetComponent<Animator>().SetLayerWeight(2, 1);
                 }
+
+                PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
+                GetComponent<Animator>().SetLayerWeight(2, 1);
             }
             else
             {
@@ -146,38 +141,6 @@ public class GostControllerScript : MonoBehaviour
         }
 
     }
-    IEnumerator Wait()
-    {
-        if (pacman.ghostBlueCounter == 1)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
-            ghostPoints[0].gameObject.transform.position = transform.position;
-            ghostPoints[0].SetActive(true);
-        }
-        else if (pacman.ghostBlueCounter == 2)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
-            ghostPoints[1].gameObject.transform.position = transform.position;
-            ghostPoints[1].SetActive(true);
-        }
-        else if (pacman.ghostBlueCounter == 3)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
-            ghostPoints[2].gameObject.transform.position = transform.position;
-            ghostPoints[2].SetActive(true);
-
-        }
-        else if (pacman.ghostBlueCounter == 4)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
-            ghostPoints[3].gameObject.transform.position = transform.position;
-            ghostPoints[3].SetActive(true);
-        }
-        yield return new WaitForSeconds(1f);
-        for (int i = 0; i < 4; i++)
-            ghostPoints[i].SetActive(false);
-    }
-
     void SetScript(string s)
     {
 
