@@ -7,6 +7,7 @@ public class GostControllerScript : MonoBehaviour
     public AudioClip ghostEat;
     public AudioClip ghostFindingHome;
     public LayerMask layermask;
+    public GameObject[] ghostPoints = new GameObject[4];
     GostAI gostAI;
     GostScript gostScript;
     GhostGoHomeAIScript gostGoHomeAIScript;
@@ -16,7 +17,6 @@ public class GostControllerScript : MonoBehaviour
     RaycastHit2D[] hitRound;
     bool oneTimeEntrence;
     bool oneTimeEat;
-    public GameObject[] ghostPoints = new GameObject[4];
 
     void Start()
     {
@@ -44,9 +44,9 @@ public class GostControllerScript : MonoBehaviour
         oneTimeEat = true;
         gostScript.initGhost();
     }
+
     public void StopAllCoroutinesInAllScripts()
     {
-        StopAllCoroutines();
         gostScript.StopAllCoroutines();
     }
 
@@ -55,12 +55,8 @@ public class GostControllerScript : MonoBehaviour
 
         MakeRayCastHit2D();
 
-        if (gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1)
+        if (GetComponent<Animator>().GetLayerWeight(2) == 1)
         {
-            gostScript.gate.GetComponent<BoxCollider2D>().enabled = false;
-            gostScript.gate.GetComponent<PlatformEffector2D>().enabled = false;
-
-            gostScript.gate.SetActive(false);
             if (oneTimeEntrence)
             {
                 oneTimeEntrence = false;
@@ -78,9 +74,10 @@ public class GostControllerScript : MonoBehaviour
             oneTimeEat = true;
         }
 
-        else if (pacman.ghostBlue && !(gostScript.GetComponent<Animator>().GetLayerWeight(2) == 1))
+        else if (pacman.ghostBlue && GetComponent<Animator>().GetLayerWeight(2) != 1)
         {
             source.Stop();
+            transform.gameObject.layer = 11;
             SetScript("gostScript");
         }
 
@@ -127,27 +124,27 @@ public class GostControllerScript : MonoBehaviour
     {
         if (collision.transform.name.Equals("Pacman"))
         {
-            if (gostScript.GetComponent<Animator>().GetBool("blue"))
+            if (GetComponent<Animator>().GetBool("blue"))
             {
                 if (oneTimeEat)
-                {
-                    pacman.ghostBlueCount++;
-                    oneTimeEat = false;
-                    source.PlayOneShot(ghostEat);
-
-                    GetComponent<Animator>().SetLayerWeight(2, 1);
                     StartCoroutine(Wait());
-                }
             }
             else
             {
-                pacman.isdead = true;
+               if (GetComponent<Animator>().GetLayerWeight(2) != 1)
+                    pacman.isdead = true;
             }
         }
 
     }
     IEnumerator Wait()
     {
+        oneTimeEntrence = true;
+        pacman.ghostBlueCount++;
+        oneTimeEat = false;
+        source.PlayOneShot(ghostEat);
+        GetComponent<Animator>().SetLayerWeight(2, 1);
+        transform.gameObject.layer = 13;
         if (pacman.ghostBlueCount == 1)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
@@ -174,7 +171,7 @@ public class GostControllerScript : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        for(int i = 0; i<4; i++)
+        for (int i = 0; i < 4; i++)
             ghostPoints[i].SetActive(false);
     }
 

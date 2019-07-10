@@ -541,7 +541,7 @@ MonoBehaviour:
     m_Bits: 5632
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
-  gate: {fileID: 1871076032}
+  oneTimeBlue: 0
 --- !u!114 &228266117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
     m_Bits: 5632
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
-  gate: {fileID: 1871076032}
+  oneTimeBlue: 0
 --- !u!114 &318341308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1879,7 +1879,7 @@ MonoBehaviour:
     m_Bits: 5632
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
-  gate: {fileID: 1871076032}
+  oneTimeBlue: 0
 --- !u!114 &1002108144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2275,7 +2275,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1616337342}
-        m_MethodName: VolumeOff
+        m_MethodName: VolumeOn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2487,7 +2487,7 @@ MonoBehaviour:
     m_Bits: 5632
   startFindingPacman: 0
   controllerOneTimeEntrence: 0
-  gate: {fileID: 1871076032}
+  oneTimeBlue: 0
 --- !u!114 &1065933249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3635,7 +3635,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1616337342}
-        m_MethodName: VolumeOn
+        m_MethodName: VolumeOff
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -9,7 +9,7 @@ public class GostScript : MonoBehaviour
     public LayerMask layermask;
     public bool startFindingPacman;
     public bool controllerOneTimeEntrence;
-    public GameObject gate;
+    GameObject gate;
     PacManScript pacman;
     Rigidbody2D rb;
     RaycastHit2D hitUp;
@@ -26,7 +26,7 @@ public class GostScript : MonoBehaviour
     int rand;
     int counter = 0;
     bool upDownStarter;
-    bool oneTimeBlue;
+    public bool oneTimeBlue;
     bool gateOpen;
     bool oneTimeDirection;
     bool finishWaiting;
@@ -35,8 +35,6 @@ public class GostScript : MonoBehaviour
 
     private void Start()
     {
-        Physics2D.IgnoreLayerCollision(11, 11);
-
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
         rb = GetComponent<Rigidbody2D>();
         gate = GameObject.Find("Gate");
@@ -57,8 +55,6 @@ public class GostScript : MonoBehaviour
         startFindingPacman = false;
         speed = 0;
         counter = 0;
-        gate.GetComponent<BoxCollider2D>().enabled = true;
-        gate.GetComponent<PlatformEffector2D>().enabled = true;
         GetComponent<Animator>().SetLayerWeight(2, 0);
         GetComponent<Animator>().SetBool("blue", false);
         StartCoroutine(StartWait());
@@ -80,7 +76,6 @@ public class GostScript : MonoBehaviour
             yield return new WaitForSeconds(8f);
         if (transform.name.Equals("YellowGost"))
             yield return new WaitForSeconds(12f);
-
         upDownStarter = false;
         gateOpen = true;
     }
@@ -90,7 +85,7 @@ public class GostScript : MonoBehaviour
         MakeRayCast();
 
         if (pacman.ghostBlue && !gateOpen && oneTimeBlue)
-            StartCoroutine(Blue());
+            StartCoroutine(Blue());            
 
         rb.velocity = new Vector2(speed * directionX, speed * directionY);
 
@@ -182,8 +177,6 @@ public class GostScript : MonoBehaviour
         {
             GetComponent<Animator>().SetLayerWeight(2, 0);
             GetComponent<Animator>().SetBool("blue", false);
-            gate.GetComponent<BoxCollider2D>().enabled = true;
-            gate.GetComponent<PlatformEffector2D>().enabled = true;
 
             speed = 5f;
             getOutOfHome = true;
@@ -216,6 +209,7 @@ public class GostScript : MonoBehaviour
         pacman.ghostBlue = false;
         oneTimeBlue = true;
         pacman.ghostBlueCount = 0;
+        transform.gameObject.layer = 11;
     }
 
     void Switches(string s)
