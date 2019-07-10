@@ -129,10 +129,9 @@ public class GostControllerScript : MonoBehaviour
                 {
                     oneTimeEat = false;
                     source.PlayOneShot(ghostEat);
+                    PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
+                    GetComponent<Animator>().SetLayerWeight(2, 1);
                 }
-
-                PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
-                GetComponent<Animator>().SetLayerWeight(2, 1);
             }
             else
             {
