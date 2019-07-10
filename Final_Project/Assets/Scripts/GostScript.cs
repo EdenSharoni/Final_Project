@@ -80,7 +80,6 @@ public class GostScript : MonoBehaviour
             yield return new WaitForSeconds(8f);
         if (transform.name.Equals("YellowGost"))
             yield return new WaitForSeconds(12f);
-
         upDownStarter = false;
         gateOpen = true;
     }
@@ -213,6 +212,7 @@ public class GostScript : MonoBehaviour
         GetComponent<Animator>().SetBool("blue", true);
         yield return new WaitForSeconds(10f);
         GetComponent<Animator>().SetBool("blue", false);
+        pacman.ghostBlueCounter = 0;
         pacman.ghostBlue = false;
         oneTimeBlue = true;
     }
