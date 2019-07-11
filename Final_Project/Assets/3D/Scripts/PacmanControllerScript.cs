@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,7 @@ public class PacmanControllerScript : MonoBehaviour
                     currentDirection = Vector3.zero;
 
     private Vector3 initialPosition = Vector3.zero;
+    private NavMeshScript agent;
 
     private int countPoints;
     private int lifesCount;
@@ -49,6 +51,8 @@ public class PacmanControllerScript : MonoBehaviour
         initialPosition = transform.position;
 
         animator = GetComponent<Animator>();
+
+        //Physics.IgnoreLayerCollision(14, 14);
 
         countPoints = 0;
         setScore();
@@ -89,7 +93,9 @@ public class PacmanControllerScript : MonoBehaviour
         {
             if (collision.collider.CompareTag("Ghost3D"))
             {
-                Destroy(collision.collider.gameObject);
+                agent = collision.collider.gameObject.GetComponent<NavMeshScript>();
+                agent.isGhostDead = true;
+                StartCoroutine(WaitForGhostToReturn(collision.collider.gameObject));
                 ghostsCount--;
             }
 
@@ -140,5 +146,12 @@ public class PacmanControllerScript : MonoBehaviour
         yield return new WaitForSeconds(10f);
         blue3DGhost = false;
         // change color to original
+    }
+
+    IEnumerator WaitForGhostToReturn(GameObject ghost)
+    {
+        ghost.SetActive(false);
+        yield return new WaitForSeconds(3f);
+        ghost.SetActive(true);
     }
 }
