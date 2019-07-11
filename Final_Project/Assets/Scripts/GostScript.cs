@@ -288,7 +288,6 @@ public class GostScript : MonoBehaviour
                 oneTimeDirection = true;
             freeDirection[2] = true;
         }
-
         if (hitLeft.collider != null)
         {
             if (freeDirection[3] == true)
