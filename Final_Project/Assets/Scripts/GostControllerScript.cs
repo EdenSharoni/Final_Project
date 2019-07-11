@@ -14,7 +14,7 @@ public class GostControllerScript : MonoBehaviour
     Vector2 startPoint;
     AudioSource source;
     PacManScript pacman;
-    RaycastHit2D[] hitRound;
+    RaycastHit2D hitRound;
     bool oneTimeEntrence;
     bool oneTimeEat;
 
@@ -108,16 +108,15 @@ public class GostControllerScript : MonoBehaviour
 
     bool FindingPacmanWithRayCast2D()
     {
-        foreach (RaycastHit2D hit in hitRound)
-            if (hit.transform.name.Equals("Pacman"))
-                return true;
-        return false;
+        if (hitRound.collider != null)
+            return true;
+        else return false;
     }
 
     void MakeRayCastHit2D()
     {
         Quaternion q = Quaternion.AngleAxis(2000 * Time.time, Vector3.forward);
-        hitRound = Physics2D.RaycastAll(transform.position, q * Vector2.up, 10f, layermask);
+        hitRound = Physics2D.Raycast(transform.position, q * Vector2.up, 10f, layermask);
         Debug.DrawRay(transform.position, q * Vector3.up * 10f);
     }
 
@@ -130,14 +129,11 @@ public class GostControllerScript : MonoBehaviour
                 if (oneTimeEat)
                     StartCoroutine(Wait());
             }
-            else
-            {
-               if (GetComponent<Animator>().GetLayerWeight(2) != 1)
-                    pacman.isdead = true;
-            }
+            else if (GetComponent<Animator>().GetLayerWeight(2) != 1)
+                pacman.isdead = true;
         }
-
     }
+
     IEnumerator Wait()
     {
         oneTimeEntrence = true;

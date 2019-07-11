@@ -100,6 +100,7 @@ public class GameScript : MonoBehaviour
 
             if (pacman.isdead)
             {
+                pacman.GetComponent<Animator>().enabled = true;
                 pacman.audioSource.clip = pacman.deadSound;
                 pacman.audioSource.PlayOneShot(pacman.deadSound);
                 pacman.GetComponent<Animator>().SetTrigger("die");

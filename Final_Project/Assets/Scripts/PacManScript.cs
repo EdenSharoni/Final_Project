@@ -78,29 +78,32 @@ public class PacManScript : MonoBehaviour
 
     void GetInput()
     {
-        //Adjust the direction
-        if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider == null) Right();
-        else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider == null) Left();
-        else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider == null) Down();
-        else if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider == null) Up();
+        if (!isdead)
+        {
+            //Adjust the direction
+            if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider == null) Right();
+            else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider == null) Left();
+            else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider == null) Down();
+            else if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider == null) Up();
 
-        //Save The input that was not free
-        if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider != null) saveLastPress = "up";
-        else if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider != null) saveLastPress = "right";
-        else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider != null) saveLastPress = "down";
-        else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider != null) saveLastPress = "left";
+            //Save The input that was not free
+            if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider != null) saveLastPress = "up";
+            else if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider != null) saveLastPress = "right";
+            else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider != null) saveLastPress = "down";
+            else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider != null) saveLastPress = "left";
 
-        //Turn to the free direction
-        if (hitRight.collider == null && saveLastPress == "right") Right();
-        else if (hitLeft.collider == null && saveLastPress == "left") Left();
-        else if (hitUp.collider == null && saveLastPress == "up") Up();
-        else if (hitDown.collider == null && saveLastPress == "down") Down();
+            //Turn to the free direction
+            if (hitRight.collider == null && saveLastPress == "right") Right();
+            else if (hitLeft.collider == null && saveLastPress == "left") Left();
+            else if (hitUp.collider == null && saveLastPress == "up") Up();
+            else if (hitDown.collider == null && saveLastPress == "down") Down();
 
-        //Pacman hit the wall and animation stops
-        if (hitRight.collider != null && currentDirection == "right") GetComponent<Animator>().enabled = false;
-        else if (hitLeft.collider != null && currentDirection == "left") GetComponent<Animator>().enabled = false;   
-        else if (hitUp.collider != null && currentDirection == "up") GetComponent<Animator>().enabled = false;
-        else if (hitDown.collider != null && currentDirection == "down") GetComponent<Animator>().enabled = false;
+            //Pacman hit the wall and animation stops
+            if (hitRight.collider != null && currentDirection == "right") GetComponent<Animator>().enabled = false;
+            else if (hitLeft.collider != null && currentDirection == "left") GetComponent<Animator>().enabled = false;
+            else if (hitUp.collider != null && currentDirection == "up") GetComponent<Animator>().enabled = false;
+            else if (hitDown.collider != null && currentDirection == "down") GetComponent<Animator>().enabled = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
