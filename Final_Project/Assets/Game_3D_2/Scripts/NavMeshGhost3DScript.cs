@@ -19,6 +19,14 @@ public class NavMeshGhost3DScript : MonoBehaviour
     RaycastHit left;
     RaycastHit right;
     public LayerMask layermask;
+    bool[] freeDirection = { false, false, false, false };
+    bool oneTimeDirection;
+    bool finishWaiting;
+    int counter = 0;
+    List<int> options = new List<int>();
+    List<int> checkLoopDirections = new List<int>();
+    string lastdirection;
+    int rand;
 
     void Start()
     {
@@ -32,11 +40,14 @@ public class NavMeshGhost3DScript : MonoBehaviour
         directions[1] = Vector3.right;
         directions[2] = Vector3.back;
         directions[3] = Vector3.left;
-        StartCoroutine(Wait());
+        StartCoroutine(WaitInit());
 
     }
-    IEnumerator Wait()
+    IEnumerator WaitInit()
     {
+        counter = 0;
+        finishWaiting = true;
+        oneTimeDirection = true;
         oneTimeBlue = true;
         transform.position = startPosition;
         original = material.color;
@@ -72,6 +83,83 @@ public class NavMeshGhost3DScript : MonoBehaviour
         agent.SetDestination(target.position);
     }
 
+    void Algorithm()
+    {
+        if (finishWaiting)
+        {
+            finishWaiting = false;
+
+            FindRayCastHit();
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (freeDirection[i] == true)
+                {
+                    counter++;
+                    options.Add(i);
+                }
+            }
+
+            if (oneTimeDirection && (counter != 0))
+            {
+                oneTimeDirection = false;
+
+                if (checkLoopDirections.Count > 2)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        rand = Random.Range(0, counter);
+                        if (checkLoopDirections[checkLoopDirections.Count - 2] != options[rand])
+                            break;
+                    }
+                }
+                else
+                    rand = Random.Range(0, counter);
+                checkLoopDirections.Add(options[rand]);
+                //lastdirection = directions[options[rand]];
+                Switches(lastdirection);
+            }
+            StartCoroutine(Wait());
+        }
+    }
+
+    void Switches(string s)
+    {
+        GetComponent<Animator>().SetBool("up", false);
+        GetComponent<Animator>().SetBool("down", false);
+        GetComponent<Animator>().SetBool("left", false);
+        GetComponent<Animator>().SetBool("right", false);
+
+        switch (s)
+        {
+            case "right":
+                lastdirection = "right";
+                GetComponent<Animator>().SetBool("right", true);
+                break;
+            case "left":
+                lastdirection = "left";
+                GetComponent<Animator>().SetBool("left", true);
+                break;
+            case "up":
+                lastdirection = "up";
+                GetComponent<Animator>().SetBool("up", true);
+                break;
+            case "down":
+                lastdirection = "down";
+                GetComponent<Animator>().SetBool("down", true);
+                break;
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        if (checkLoopDirections.Count > 5)
+            checkLoopDirections.Clear();
+        options.Clear();
+        counter = 0;
+        yield return new WaitForSeconds(0.5f);
+        finishWaiting = true;
+    }
     IEnumerator Blue()
     {
         oneTimeBlue = false;
@@ -88,7 +176,20 @@ public class NavMeshGhost3DScript : MonoBehaviour
         Debug.DrawRay(transform.position, Vector3.back * 5f, Color.red);
         Debug.DrawRay(transform.position, Vector3.right * 5f, Color.red);
         Debug.DrawRay(transform.position, Vector3.left * 5f, Color.red);
+
         if (Physics.Raycast(transform.position, Vector3.forward * 5f, out forward, 5, layermask))
+        {
+            Debug.Log(forward.collider.tag);
+        }
+        else if (Physics.Raycast(transform.position, Vector3.forward * 5f, out backwards, 5, layermask))
+        {
+            Debug.Log(forward.collider.tag);
+        }
+        else if (Physics.Raycast(transform.position, Vector3.forward * 5f, out right, 5, layermask))
+        {
+            Debug.Log(forward.collider.tag);
+        }
+        else if (Physics.Raycast(transform.position, Vector3.forward * 5f, out left, 5, layermask))
         {
             Debug.Log(forward.collider.tag);
         }
