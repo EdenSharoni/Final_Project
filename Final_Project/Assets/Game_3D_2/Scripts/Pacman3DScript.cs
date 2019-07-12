@@ -79,9 +79,10 @@ public class Pacman3DScript : MonoBehaviour
         transform.localEulerAngles = currentDirection;
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("powerupDot"))
+        if (other.gameObject.CompareTag("PowerFood3D"))
         {
             ghostBlue = true;
             if (anotherDot)
