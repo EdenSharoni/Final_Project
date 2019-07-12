@@ -12,6 +12,13 @@ public class NavMeshGhost3DScript : MonoBehaviour
     Vector3[] directions = new Vector3[4];
     private Material material;
     private Color original;
+    bool oneTimeBlue;
+
+    RaycastHit forward;
+    RaycastHit backwards;
+    RaycastHit left;
+    RaycastHit right;
+    public LayerMask layermask;
 
     void Start()
     {
@@ -20,13 +27,21 @@ public class NavMeshGhost3DScript : MonoBehaviour
         startPosition = transform.position;
 
         material = GetComponent<Renderer>().material;
-        original = material.color;
 
         directions[0] = Vector3.forward;
         directions[1] = Vector3.right;
         directions[2] = Vector3.back;
         directions[3] = Vector3.left;
+        StartCoroutine(Wait());
+
+    }
+    IEnumerator Wait()
+    {
+        oneTimeBlue = true;
+        transform.position = startPosition;
+        original = material.color;
         agent.speed = 0;
+        yield return new WaitForSeconds(5f);
         StartCoroutine(WaitToGetOut());
     }
 
@@ -47,8 +62,35 @@ public class NavMeshGhost3DScript : MonoBehaviour
         agent.speed = 8;
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        FindRayCastHit();
+
+        if (pacman.ghostBlue && oneTimeBlue)
+            StartCoroutine(Blue());
+
         agent.SetDestination(target.position);
+    }
+
+    IEnumerator Blue()
+    {
+        oneTimeBlue = false;
+        material.color = Color.blue;
+        yield return new WaitForSeconds(3f);
+        pacman.ghostBlue = false;
+        material.color = original;
+        oneTimeBlue = true;
+    }
+
+    void FindRayCastHit()
+    {
+        Debug.DrawRay(transform.position, Vector3.forward * 5f, Color.red);
+        Debug.DrawRay(transform.position, Vector3.back * 5f, Color.red);
+        Debug.DrawRay(transform.position, Vector3.right * 5f, Color.red);
+        Debug.DrawRay(transform.position, Vector3.left * 5f, Color.red);
+        if (Physics.Raycast(transform.position, Vector3.forward * 5f, out forward, 5, layermask))
+        {
+            Debug.Log(forward.collider.tag);
+        }
     }
 }

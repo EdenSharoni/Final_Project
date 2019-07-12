@@ -23,6 +23,7 @@ TagManager:
   - Ghost3D
   - Food3D
   - PowerFood3D
+  - Wall3D
   layers:
   - Default
   - TransparentFX
