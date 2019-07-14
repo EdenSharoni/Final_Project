@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pacman3DScript : MonoBehaviour
 {
-    AudioSource audioSource;
+    public AudioSource audioSource;
     public AudioClip audioClip;
     public AudioClip wakkawakka;
     public AudioClip deadSound;
@@ -17,17 +17,17 @@ public class Pacman3DScript : MonoBehaviour
     int directionY;
     bool anotherDot;
     public int ghostBlueCount;
-
+    bool isMoving;
 
     private Vector3 up = Vector3.zero,
                     right = new Vector3(0, 90, 0),
                     down = new Vector3(0, 180, 0),
                     left = new Vector3(0, 270, 0),
                     currentDirection = Vector3.zero;
-    private NavMeshScript agent;
 
     void Start()
     {
+        isMoving = false;
         currentDirection = down;
         rb = GetComponent<Rigidbody>();
         startPoint = transform.position;
@@ -57,7 +57,7 @@ public class Pacman3DScript : MonoBehaviour
         anotherDot = true;
         ghostBlue = false;
         isdead = false;
-        GetComponent<Animator>().SetBool("move", true);
+        //GetComponent<Animator>().SetBool("move", true);
         directionX = 1;
         directionY = 0;
         transform.eulerAngles = new Vector3(0, 0, 0);
@@ -71,15 +71,21 @@ public class Pacman3DScript : MonoBehaviour
 
     void GetInput()
     {
-        if (!isdead)
-        {
-            if (Input.GetKey(KeyCode.UpArrow)) currentDirection = up;
-            else if (Input.GetKey(KeyCode.RightArrow)) currentDirection = right;
-            else if (Input.GetKey(KeyCode.DownArrow)) currentDirection = down;
-            else if (Input.GetKey(KeyCode.LeftArrow)) currentDirection = left;
-        }
+        isMoving = true;
+
+        if (isdead) isMoving = false;
+        else if (Input.GetKey(KeyCode.UpArrow)) currentDirection = up;
+        else if (Input.GetKey(KeyCode.RightArrow)) currentDirection = right;
+        else if (Input.GetKey(KeyCode.DownArrow)) currentDirection = down;
+        else if (Input.GetKey(KeyCode.LeftArrow)) currentDirection = left;
+        else isMoving = false;
+
         transform.localEulerAngles = currentDirection;
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+
+        GetComponent<Animator>().SetBool("move", isMoving);
+
+        if (isMoving)
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)

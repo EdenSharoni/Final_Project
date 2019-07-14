@@ -153,7 +153,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 return true;
         return false;
     }
-
+    
     void GetOutOfHome()
     {
         GetComponent<CapsuleCollider>().isTrigger = true;
@@ -229,9 +229,10 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 if (oneTimeEat)
                     StartCoroutine(WaitForAnotherEat());
             }
+            else
+                pacman.isdead = true;
         }
-        else
-            pacman.isdead = true;
+        
     }
 
     IEnumerator WaitForAnotherEat()
@@ -339,6 +340,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     IEnumerator Blue()
     {
+        pacman.ghostBlue = true;
         oneTimeBlue = false;
         material.color = Color.blue;
         yield return new WaitForSeconds(3f);
