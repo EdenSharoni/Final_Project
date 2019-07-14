@@ -5,10 +5,13 @@ using UnityEngine.AI;
 
 public class NavMeshGhost3DScript : MonoBehaviour
 {
+    AudioSource source;
+    public AudioClip ghostEat;
     public Transform target;
     public Transform wayPoint;
     public Transform wayPoint2;
     private NavMeshAgent agent;
+    public GameObject[] ghostPoints = new GameObject[4];
     Pacman3DScript pacman;
     Vector3 startPosition;
     private Material material;
@@ -36,10 +39,16 @@ public class NavMeshGhost3DScript : MonoBehaviour
     bool startFindingPacman;
     bool agentBool;
     Quaternion q;
-
+    bool oneTimeEat;
 
     void Start()
     {
+        source = GetComponent<AudioSource>();
+        for (int i = 0; i < 4; i++)
+            ghostPoints[i].SetActive(false);
+
+        Physics.IgnoreLayerCollision(14, 14, true);
+        oneTimeEat = true;
         agentBool = false;
         startFindingPacman = false;
         gotowaypoint2 = false;
@@ -105,10 +114,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 agent.SetDestination(target.position);
             else
             {
-                StartCoroutine(Wait());
                 Algorithm();
-            }
-                
+            } 
         }
 
         if (pacman.ghostBlue && oneTimeBlue)
@@ -213,6 +220,59 @@ public class NavMeshGhost3DScript : MonoBehaviour
         finishWaiting = true;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.name.Equals("Pacman3D"))
+        {
+            if (pacman.ghostBlue)
+            {
+                if (oneTimeEat)
+                    StartCoroutine(WaitForAnotherEat());
+            }
+        }
+        else
+            pacman.isdead = true;
+    }
+
+    IEnumerator WaitForAnotherEat()
+    {
+        oneTimeEntrence = true;
+        pacman.ghostBlueCount++;
+        oneTimeEat = false;
+        source.PlayOneShot(ghostEat);
+        if (pacman.ghostBlueCount == 1)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
+            ghostPoints[0].transform.position = transform.position;
+            //ghostPoints[0].transform.rotation = transform.rotation;
+            ghostPoints[0].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 2)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
+            ghostPoints[1].transform.position = transform.position;
+            //ghostPoints[1].transform.rotation = transform.rotation;
+            ghostPoints[1].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 3)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
+            ghostPoints[2].transform.position = transform.position;
+            //ghostPoints[2].transform.rotation = transform.rotation;
+            ghostPoints[2].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 4)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
+            ghostPoints[3].transform.position = transform.position;
+            //ghostPoints[3].transform.rotation = transform.rotation;
+            ghostPoints[3].SetActive(true);
+        }
+
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < 4; i++)
+            ghostPoints[i].SetActive(false);
+    }
 
 
     void FindRayCastHit()

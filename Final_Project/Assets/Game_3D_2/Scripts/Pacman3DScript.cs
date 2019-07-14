@@ -16,6 +16,7 @@ public class Pacman3DScript : MonoBehaviour
     int directionX;
     int directionY;
     bool anotherDot;
+    public int ghostBlueCount;
 
 
     private Vector3 up = Vector3.zero,
@@ -51,6 +52,7 @@ public class Pacman3DScript : MonoBehaviour
 
     void startPacman()
     {
+        ghostBlueCount = 0;
         speed = 10f;
         anotherDot = true;
         ghostBlue = false;
