@@ -19,6 +19,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     RaycastHit backwards;
     RaycastHit left;
     RaycastHit right;
+    RaycastHit hitRound;
     public LayerMask layermask;
     bool[] freeDirection = { false, false, false, false };
     bool oneTimeDirection;
@@ -33,8 +34,13 @@ public class NavMeshGhost3DScript : MonoBehaviour
     Vector3 moveDirection;
     bool gotowaypoint2;
     bool startFindingPacman;
+    bool agentBool;
+    Quaternion q;
+
+
     void Start()
     {
+        agentBool = false;
         startFindingPacman = false;
         gotowaypoint2 = false;
         oneTimeEntrence = true;
@@ -82,8 +88,28 @@ public class NavMeshGhost3DScript : MonoBehaviour
         speed = 10f;
     }
 
+
+
     void FixedUpdate()
     {
+        MakeRayCast();
+
+        if (startFindingPacman)
+        {
+            if (FindingPacmanWithRayCast())
+            {
+                agentBool = true;
+                StartCoroutine(FindPacmanAgain());
+            }
+            if (agentBool)
+                agent.SetDestination(target.position);
+            else
+            {
+                StartCoroutine(Wait());
+                Algorithm();
+            }
+                
+        }
 
         if (pacman.ghostBlue && oneTimeBlue)
             StartCoroutine(Blue());
@@ -93,18 +119,32 @@ public class NavMeshGhost3DScript : MonoBehaviour
             GetComponent<CapsuleCollider>().isTrigger = false;
             startFindingPacman = true;
         }
-            
-
-        //agent.SetDestination(target.position);
 
         if (speed == 10f && !startFindingPacman)
             GetOutOfHome();
 
-        if (startFindingPacman)
-            Algorithm();
-
-        if (moveDirection != null)
+        if (moveDirection != null && !agentBool)
             transform.Translate(moveDirection * speed * Time.deltaTime);
+    }
+
+    IEnumerator FindPacmanAgain()
+    {
+        yield return new WaitForSeconds(3f);
+        agentBool = false;
+    }
+
+    void MakeRayCast()
+    {
+        q = Quaternion.AngleAxis(2000 * Time.time, Vector3.up);
+        Debug.DrawRay(transform.position, q * Vector3.forward * 10f);
+    }
+
+    bool FindingPacmanWithRayCast()
+    {
+        if (Physics.Raycast(transform.position, q * Vector3.forward, out hitRound))
+            if (hitRound.collider.name.Equals("Pacman3D"))
+                return true;
+        return false;
     }
 
     void GetOutOfHome()
@@ -173,9 +213,10 @@ public class NavMeshGhost3DScript : MonoBehaviour
         finishWaiting = true;
     }
 
+
+
     void FindRayCastHit()
     {
-
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.forward, out forward, 3f, layermask))
         {
             if (freeDirection[0] == true)
