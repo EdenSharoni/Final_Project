@@ -24,6 +24,8 @@ TagManager:
   - Food3D
   - PowerFood3D
   - Wall3D
+  - waypoint13D
+  - waypoint23D
   layers:
   - Default
   - TransparentFX
