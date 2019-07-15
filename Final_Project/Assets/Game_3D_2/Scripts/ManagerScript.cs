@@ -7,21 +7,19 @@ public class ManagerScript : MonoBehaviour
 {
     public AudioClip main;
     public AudioClip ghostBlueSound;
-    //public Button volumeOn;
-    //public Button volumeOff;
-    //public Text score;
-   // public Image ready;
-   // public Image gameOver;
-    //public Image[] life = new Image[3];
+    public Button volumeOn;
+    public Button volumeOff;
+    public Text score;
+    public Image ready;
+    public Image gameOver;
+    public Image[] life = new Image[3];
     NavMeshGhost3DScript[] ghost = new NavMeshGhost3DScript[8];
     AudioSource audioSource;
     Pacman3DScript pacman;
-    GameObject board;
     int currentLife = 2;
     bool oneTimeEntrence;
     GameObject food;
 
-    // Start is called before the first frame update
     void Start()
     {
         PlayerPrefs.SetInt("points", 0);
@@ -38,10 +36,10 @@ public class ManagerScript : MonoBehaviour
 
         food = GameObject.Find("Food3D");
         audioSource = GetComponent<AudioSource>();
-        //volumeOn.gameObject.SetActive(true);
-        //volumeOff.gameObject.SetActive(false);
-        //volumeOn.enabled = true;
-        //volumeOff.enabled = false;
+        volumeOn.gameObject.SetActive(true);
+        volumeOff.gameObject.SetActive(false);
+        volumeOn.enabled = true;
+        volumeOff.enabled = false;
 
         init();
 
@@ -50,33 +48,26 @@ public class ManagerScript : MonoBehaviour
     {
         StartCoroutine(Starter());
     }
+
     IEnumerator Starter()
     {
         audioSource.clip = main;
         pacman.isdead = false;
         oneTimeEntrence = true;
-        //gameOver.enabled = false;
-        //ready.enabled = true;
+        gameOver.enabled = false;
+        ready.enabled = true;
         yield return new WaitForSeconds(5f);
         VolumeOn();
-        //ready.enabled = false;
+        ready.enabled = false;
         audioSource.loop = true;
         audioSource.Play();
-    }
-    public void VolumeOn()
-    {
-        for (int i = 0; i < 8; i++)
-            ghost[i].GetComponent<AudioSource>().volume = 1f;
-        pacman.audioSource.volume = 1f;
-        audioSource.volume = 1f;
-        //volumeOn.enabled = true;
-        //volumeOff.enabled = false;
-        //volumeOn.gameObject.SetActive(true);
-        //volumeOff.gameObject.SetActive(false);
     }
 
     void Update()
     {
+
+        score.text = PlayerPrefs.GetInt("points").ToString();
+
         if (pacman.ghostBlue && audioSource.clip == main && !pacman.isdead)
         {
             audioSource.Stop();
@@ -93,20 +84,21 @@ public class ManagerScript : MonoBehaviour
         {
             StopAllCoroutines();
             oneTimeEntrence = false;
-            //gameOver.enabled = true;
+            gameOver.enabled = true;
             audioSource.Stop();
 
             pacman.audioSource.Stop();
+            pacman.speed = 0f;
             pacman.GetComponent<Animator>().SetBool("move", false);
             pacman.ghostBlue = false;
-            pacman.rb.constraints = RigidbodyConstraints.FreezeAll;
             pacman.StopAllCoroutines();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
+                ghost[i].speed = 0f;
                 ghost[i].GetComponent<AudioSource>().Stop();
-                ghost[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                 ghost[i].StopAllCoroutines();
+                ghost[i].gameObject.GetComponent<Renderer>().enabled = false;
             }
 
             if (pacman.isdead)
@@ -117,8 +109,48 @@ public class ManagerScript : MonoBehaviour
                 pacman.GetComponent<Animator>().SetTrigger("die");
             }
 
-            /*if (currentLife >= 0 && board.transform.childCount != 0)
-                StartCoroutine(PlayAgain());*/
+            if (currentLife >= 0 && food.transform.childCount != 0)
+                StartCoroutine(PlayAgain());
         }
+    }
+
+    IEnumerator PlayAgain()
+    {
+        yield return new WaitForSeconds(2f);
+
+        life[currentLife].enabled = false;
+        currentLife--;
+
+        pacman.initPacman();
+
+        for (int i = 0; i < 8; i++)
+            ghost[i].InitGhost();
+
+        init();
+    }
+
+    public void VolumeOn()
+    {
+        for (int i = 0; i < 8; i++)
+            ghost[i].GetComponent<AudioSource>().volume = 1f;
+        pacman.audioSource.volume = 1f;
+        audioSource.volume = 1f;
+        volumeOn.enabled = true;
+        volumeOff.enabled = false;
+        volumeOn.gameObject.SetActive(true);
+        volumeOff.gameObject.SetActive(false);
+    }
+
+    public void VolumeOff()
+    {
+        for (int i = 0; i < 8; i++)
+            ghost[i].GetComponent<AudioSource>().volume = 0f;
+        pacman.audioSource.volume = 0f;
+        audioSource.volume = 0f;
+
+        volumeOn.enabled = false;
+        volumeOff.enabled = true;
+        volumeOn.gameObject.SetActive(false);
+        volumeOff.gameObject.SetActive(true);
     }
 }

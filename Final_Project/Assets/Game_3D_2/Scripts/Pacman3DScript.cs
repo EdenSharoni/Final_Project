@@ -10,7 +10,7 @@ public class Pacman3DScript : MonoBehaviour
     public AudioClip deadSound;
     Vector3 startPoint;
     public bool ghostBlue;
-    float speed = 0f;
+    public float speed = 0f;
     public Rigidbody rb;
     public bool isdead;
     int directionX;
@@ -27,10 +27,9 @@ public class Pacman3DScript : MonoBehaviour
 
     void Start()
     {
-        isMoving = false;
-        currentDirection = down;
-        rb = GetComponent<Rigidbody>();
         startPoint = transform.position;
+        rb = GetComponent<Rigidbody>();
+        
         audioSource = GetComponent<AudioSource>();
         initPacman();
     }
@@ -42,10 +41,12 @@ public class Pacman3DScript : MonoBehaviour
 
     IEnumerator Wait()
     {
+        transform.position = startPoint;
+        currentDirection = down;
+        isMoving = false;
         speed = 0;
         transform.position = startPoint;
         audioSource.PlayOneShot(audioClip);
-        //rb.constraints = RigidbodyConstraints.FreezeAll;
         yield return new WaitForSeconds(audioClip.length);
         startPacman();
     }
@@ -57,13 +58,11 @@ public class Pacman3DScript : MonoBehaviour
         anotherDot = true;
         ghostBlue = false;
         isdead = false;
-        //GetComponent<Animator>().SetBool("move", true);
         directionX = 1;
         directionY = 0;
         transform.eulerAngles = new Vector3(0, 0, 0);
-
-        //rb.constraints = RigidbodyConstraints.None;
     }
+
     private void Update()
     {
         GetInput();

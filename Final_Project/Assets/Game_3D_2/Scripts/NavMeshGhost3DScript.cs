@@ -8,7 +8,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     AudioSource source;
     public AudioClip ghostEat;
     public Transform target;
-    public Transform wayPoint;
+    //public Transform wayPoint;
     public Transform wayPoint2;
     private NavMeshAgent agent;
     public GameObject[] ghostPoints = new GameObject[4];
@@ -17,7 +17,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     private Material material;
     private Color original;
     bool oneTimeBlue;
-    float speed = 0f;
+    public float speed = 0f;
     RaycastHit forward;
     RaycastHit backwards;
     RaycastHit left;
@@ -40,34 +40,43 @@ public class NavMeshGhost3DScript : MonoBehaviour
     bool agentBool;
     Quaternion q;
     bool oneTimeEat;
-
+    bool notBlueAnymore;
+    bool resetAlgo;
     void Start()
     {
         source = GetComponent<AudioSource>();
+
         for (int i = 0; i < 4; i++)
             ghostPoints[i].SetActive(false);
+        startPosition = transform.position;
+        pacman = GameObject.Find("Pacman3D").GetComponent<Pacman3DScript>();
+        agent = GetComponent<NavMeshAgent>();
 
-        Physics.IgnoreLayerCollision(14, 14, true);
-        oneTimeEat = true;
-        agentBool = false;
-        startFindingPacman = false;
-        gotowaypoint2 = false;
-        oneTimeEntrence = true;
         directions[0] = Vector3.forward;
         directions[1] = Vector3.right;
         directions[2] = Vector3.back;
         directions[3] = Vector3.left;
 
-        pacman = GameObject.Find("Pacman3D").GetComponent<Pacman3DScript>();
-        agent = GetComponent<NavMeshAgent>();
-        startPosition = transform.position;
-
         material = GetComponent<Renderer>().material;
-        StartCoroutine(WaitInit());
-
+        InitGhost();
     }
+    public void InitGhost()
+    {
+        StartCoroutine(WaitInit());
+    }
+
     IEnumerator WaitInit()
     {
+        agent.angularSpeed = 0f;
+        resetAlgo = true;
+        notBlueAnymore = true;
+        transform.position = startPosition;
+        oneTimeEat = true;
+        agentBool = false;
+        startFindingPacman = false;
+        gotowaypoint2 = false;
+        oneTimeEntrence = true;
+        GetComponent<Renderer>().enabled = true;
         counter = 0;
         finishWaiting = true;
         oneTimeDirection = true;
@@ -75,6 +84,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
         transform.position = startPosition;
         original = material.color;
         agent.speed = 0;
+        speed = 0;
         yield return new WaitForSeconds(5f);
         StartCoroutine(WaitToGetOut());
     }
@@ -93,8 +103,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
             yield return new WaitForSeconds(12f);
         if (transform.name.Equals("PurpleGhost"))
             yield return new WaitForSeconds(15f);
-        agent.speed = 8;
-        speed = 10f;
+        agent.speed = 5;
+        speed = 8f;
     }
 
 
@@ -103,19 +113,29 @@ public class NavMeshGhost3DScript : MonoBehaviour
     {
         MakeRayCast();
 
-        if (startFindingPacman)
+        if (startFindingPacman && speed != 0)
         {
+            if (transform.name.Equals("DarkGreenGhost"))
+                Debug.Log("aaaa");
+                //GetComponent<CapsuleCollider>().isTrigger = false;
+
             if (FindingPacmanWithRayCast())
             {
                 agentBool = true;
                 StartCoroutine(FindPacmanAgain());
             }
             if (agentBool)
+            {
+                agent.enabled = true;
+                resetAlgo = true;
                 agent.SetDestination(target.position);
+            }
             else
             {
+                if (resetAlgo)
+                    ResetAlgorithm();
                 Algorithm();
-            } 
+            }
         }
 
         if (pacman.ghostBlue && oneTimeBlue)
@@ -123,15 +143,29 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
         if (transform.position == wayPoint2.position)
         {
-            GetComponent<CapsuleCollider>().isTrigger = false;
+            if(transform.name.Equals("DarkGreenGhost"))
+            Debug.Log("sss");
             startFindingPacman = true;
         }
+            
 
-        if (speed == 10f && !startFindingPacman)
+
+        if (speed == 8f && !startFindingPacman)
             GetOutOfHome();
 
         if (moveDirection != null && !agentBool)
             transform.Translate(moveDirection * speed * Time.deltaTime);
+    }
+
+    void ResetAlgorithm()
+    {
+        agent.enabled = false;
+        resetAlgo = false;
+        finishWaiting = true;
+        if (checkLoopDirections.Count > 5)
+            checkLoopDirections.Clear();
+        options.Clear();
+        counter = 0;
     }
 
     IEnumerator FindPacmanAgain()
@@ -153,17 +187,21 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 return true;
         return false;
     }
-    
+
     void GetOutOfHome()
     {
-        GetComponent<CapsuleCollider>().isTrigger = true;
+        agent.SetDestination(wayPoint2.position);
+        /*//GetComponent<CapsuleCollider>().isTrigger = true;
         Vector3 p1 = Vector3.MoveTowards(transform.position, wayPoint.position, speed * Time.deltaTime);
-        GetComponent<Rigidbody>().MovePosition(p1);
+        //GetComponent<Rigidbody>().MovePosition(p1);
+        transform.Translate(p1);
+        //Quaternion.Slerp(transform.position, p1, Time.deltaTime*speed);
         if (transform.position.z == p1.z)
         {
             Vector3 p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
-            GetComponent<Rigidbody>().MovePosition(p2);
-        }
+            //GetComponent<Rigidbody>().MovePosition(p2);
+            transform.Translate(p2);
+        }*/
     }
 
     void Algorithm()
@@ -224,15 +262,19 @@ public class NavMeshGhost3DScript : MonoBehaviour
     {
         if (collision.transform.name.Equals("Pacman3D"))
         {
-            if (pacman.ghostBlue)
+            if (!notBlueAnymore)
             {
+                notBlueAnymore = true;
                 if (oneTimeEat)
                     StartCoroutine(WaitForAnotherEat());
+                transform.position = startPosition;
+                startFindingPacman = false;
+                material.color = original;
             }
             else
                 pacman.isdead = true;
         }
-        
+
     }
 
     IEnumerator WaitForAnotherEat()
@@ -245,28 +287,48 @@ public class NavMeshGhost3DScript : MonoBehaviour
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
             ghostPoints[0].transform.position = transform.position;
-            //ghostPoints[0].transform.rotation = transform.rotation;
             ghostPoints[0].SetActive(true);
         }
         else if (pacman.ghostBlueCount == 2)
         {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
-            ghostPoints[1].transform.position = transform.position;
-            //ghostPoints[1].transform.rotation = transform.rotation;
-            ghostPoints[1].SetActive(true);
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
+            ghostPoints[0].transform.position = transform.position;
+            ghostPoints[0].SetActive(true);
         }
         else if (pacman.ghostBlueCount == 3)
         {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
-            ghostPoints[2].transform.position = transform.position;
-            //ghostPoints[2].transform.rotation = transform.rotation;
-            ghostPoints[2].SetActive(true);
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
+            ghostPoints[1].transform.position = transform.position;
+            ghostPoints[1].SetActive(true);
         }
         else if (pacman.ghostBlueCount == 4)
         {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
+            ghostPoints[1].transform.position = transform.position;
+            ghostPoints[1].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 5)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
+            ghostPoints[2].transform.position = transform.position;
+            ghostPoints[2].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 6)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
+            ghostPoints[2].transform.position = transform.position;
+            ghostPoints[2].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 7)
+        {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
             ghostPoints[3].transform.position = transform.position;
-            //ghostPoints[3].transform.rotation = transform.rotation;
+            ghostPoints[3].SetActive(true);
+        }
+        else if (pacman.ghostBlueCount == 8)
+        {
+            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
+            ghostPoints[3].transform.position = transform.position;
             ghostPoints[3].SetActive(true);
         }
 
@@ -340,12 +402,14 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     IEnumerator Blue()
     {
+        notBlueAnymore = false;
         pacman.ghostBlue = true;
         oneTimeBlue = false;
         material.color = Color.blue;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(40f);
         pacman.ghostBlue = false;
         material.color = original;
         oneTimeBlue = true;
+        notBlueAnymore = true;
     }
 }

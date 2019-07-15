@@ -8,7 +8,6 @@ public class CameraControllerScript : MonoBehaviour
     public GameObject angleCamera;
     public GameObject followCamera;
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKey("1"))
