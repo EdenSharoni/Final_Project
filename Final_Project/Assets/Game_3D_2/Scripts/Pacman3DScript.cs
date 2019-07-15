@@ -18,6 +18,7 @@ public class Pacman3DScript : MonoBehaviour
     bool anotherDot;
     public int ghostBlueCount;
     bool isMoving;
+    public bool blueAgain;
 
     private Vector3 up = Vector3.zero,
                     right = new Vector3(0, 90, 0),
@@ -29,7 +30,7 @@ public class Pacman3DScript : MonoBehaviour
     {
         startPoint = transform.position;
         rb = GetComponent<Rigidbody>();
-        
+
         audioSource = GetComponent<AudioSource>();
         initPacman();
     }
@@ -41,6 +42,7 @@ public class Pacman3DScript : MonoBehaviour
 
     IEnumerator Wait()
     {
+        blueAgain = false;
         transform.position = startPoint;
         currentDirection = down;
         isMoving = false;
@@ -91,7 +93,11 @@ public class Pacman3DScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PowerFood3D"))
         {
-            ghostBlue = true;
+            if (ghostBlue)
+                blueAgain = true;
+            else
+                ghostBlue = true;
+
             if (anotherDot)
                 audioSource.PlayOneShot(wakkawakka);
             StartCoroutine(WaitForSoundToEnd());

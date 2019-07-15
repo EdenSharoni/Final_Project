@@ -48,8 +48,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
 
-        for (int i = 0; i < 4; i++)
-            ghostPoints[i].SetActive(false);
+
         startPosition = transform.position;
         pacman = GameObject.Find("Pacman3D").GetComponent<Pacman3DScript>();
         agent = GetComponent<NavMeshAgent>();
@@ -70,6 +69,9 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     IEnumerator WaitInit()
     {
+        for (int i = 0; i < 4; i++)
+            ghostPoints[i].SetActive(false);
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         GetComponent<CapsuleCollider>().isTrigger = false;
         agent.angularSpeed = 0f;
         agent.enabled = false;
@@ -80,7 +82,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
         agentBool = false;
         startFindingPacman = false;
         gotowaypoint2 = false;
-        moveDirection =Vector3.zero;
+        moveDirection = Vector3.zero;
         oneTimeEntrence = true;
         GetComponent<Renderer>().enabled = true;
         counter = 0;
@@ -92,6 +94,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
         agent.speed = 0;
         speed = 0;
         yield return new WaitForSeconds(5f);
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+
         StartCoroutine(WaitToGetOut());
     }
 
@@ -143,6 +147,12 @@ public class NavMeshGhost3DScript : MonoBehaviour
         if (pacman.ghostBlue && oneTimeBlue)
             StartCoroutine(Blue());
 
+        if (pacman.blueAgain && oneTimeBlue)
+        {
+            pacman.blueAgain = false;
+            StartCoroutine(Blue());
+        }
+
         if (transform.position == wayPoint2.position)
         {
             startFindingPacman = true;
@@ -182,7 +192,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     bool FindingPacmanWithRayCast()
     {
-        if (Physics.Raycast(transform.position, q * Vector3.forward, out hitRound))
+        if (Physics.Raycast(transform.position, q * Vector3.forward * 10f, out hitRound))
             if (hitRound.collider.name.Equals("Pacman3D"))
                 return true;
         return false;
@@ -190,14 +200,17 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     void GetOutOfHome()
     {
-        GetComponent<CapsuleCollider>().isTrigger = true;
+        agent.enabled = true;
+        agent.SetDestination(wayPoint2.position);
+
+        /*GetComponent<CapsuleCollider>().isTrigger = true;
         p1 = Vector3.MoveTowards(transform.position, wayPoint.position, speed * Time.deltaTime);
         GetComponent<Rigidbody>().MovePosition(p1);
         if (transform.position.z == p1.z)
         {
             p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
             GetComponent<Rigidbody>().MovePosition(p2);
-        }
+        }*/
     }
 
     void Algorithm()
@@ -267,7 +280,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 notBlueAnymore = true;
                 if (oneTimeEat)
                     StartCoroutine(WaitForAnotherEat());
-                transform.position = wayPoint2.position;
+                transform.position = startPosition;
                 material.color = original;
             }
             else
@@ -406,10 +419,35 @@ public class NavMeshGhost3DScript : MonoBehaviour
         oneTimeBlue = false;
         material.color = Color.blue;
         GetComponent<CapsuleCollider>().isTrigger = false;
-        yield return new WaitForSeconds(40f);
+        yield return new WaitForSeconds(6f);
+        StartCoroutine(Blink());
+        yield return new WaitForSeconds(1f);
         pacman.ghostBlue = false;
         material.color = original;
         oneTimeBlue = true;
         notBlueAnymore = true;
+    }
+    IEnumerator Blink()
+    {
+        material.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.blue;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.blue;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.blue;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.blue;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        material.color = Color.blue;
+        yield return new WaitForSeconds(0.1f);
     }
 }
