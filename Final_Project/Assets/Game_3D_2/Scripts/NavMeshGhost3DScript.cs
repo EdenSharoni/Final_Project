@@ -449,5 +449,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         material.color = Color.blue;
         yield return new WaitForSeconds(0.1f);
+        material.color = original;
     }
 }
