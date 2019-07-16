@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Pacman3DScript : MonoBehaviour
 {
@@ -71,31 +72,47 @@ public class Pacman3DScript : MonoBehaviour
     void GetInput()
     {
         isMoving = true;
-
-
-        if (cameraControll.backCameraBool)
+        if (SceneManager.GetActiveScene().name.Equals("Game_3D_2"))
         {
-            Debug.Log("sss");
-            if (isdead) isMoving = false;
-            else if (Input.GetKey(KeyCode.UpArrow))
+            if (cameraControll.backCameraBool)
             {
-                currentDirection = up;
+                if (isdead) isMoving = false;
+
+                else if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.position, Vector3.right), Time.deltaTime);
+                    //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 90, transform.localEulerAngles.z);
+                }
+                else if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.position, Vector3.back), Time.deltaTime);
+                    //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 180, transform.localEulerAngles.z);
+                }
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.position, Vector3.left), Time.deltaTime);
+                    //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y - 90, transform.localEulerAngles.z);
+                }
+                else if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    currentDirection = up;
+                }
+                else isMoving = false;
+                if (isMoving)
+                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
             }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            else
             {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 90, transform.localEulerAngles.z);
+                if (isdead) isMoving = false;
+                else if (Input.GetKey(KeyCode.UpArrow)) currentDirection = up;
+                else if (Input.GetKey(KeyCode.RightArrow)) currentDirection = right;
+                else if (Input.GetKey(KeyCode.DownArrow)) currentDirection = down;
+                else if (Input.GetKey(KeyCode.LeftArrow)) currentDirection = left;
+                else isMoving = false;
+                if (isMoving)
+                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
+                transform.localEulerAngles = currentDirection;
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 180, transform.localEulerAngles.z);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y - 90, transform.localEulerAngles.z);
-            }
-            else isMoving = false;
-            if (isMoving)
-                transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
         else
         {
