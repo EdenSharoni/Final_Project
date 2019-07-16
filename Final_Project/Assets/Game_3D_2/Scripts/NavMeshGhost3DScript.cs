@@ -33,9 +33,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     string lastdirection;
     int rand;
     Vector3[] directions = new Vector3[4];
-    bool oneTimeEntrence;
     Vector3 moveDirection;
-    bool gotowaypoint2;
     bool startFindingPacman;
     bool agentBool;
     Quaternion q;
@@ -81,9 +79,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
         oneTimeEat = true;
         agentBool = false;
         startFindingPacman = false;
-        gotowaypoint2 = false;
         moveDirection = Vector3.zero;
-        oneTimeEntrence = true;
         GetComponent<Renderer>().enabled = true;
         counter = 0;
         finishWaiting = true;
@@ -291,7 +287,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     IEnumerator WaitForAnotherEat()
     {
-        oneTimeEntrence = true;
         pacman.ghostBlueCount++;
         oneTimeEat = false;
         source.PlayOneShot(ghostEat);

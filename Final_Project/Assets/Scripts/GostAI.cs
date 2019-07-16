@@ -13,7 +13,6 @@ public class GostAI : MonoBehaviour
     float speed = 35f;
     float nextWaypointDistance = 3f;
     int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
 
     void Start()
     {
@@ -26,7 +25,7 @@ public class GostAI : MonoBehaviour
     void UpdatePath()
     {
         if (seeker.IsDone())
-            seeker.StartPath(rb.position, target.position, OnPathComplete);    
+            seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
 
     void OnPathComplete(Path p)
@@ -43,12 +42,7 @@ public class GostAI : MonoBehaviour
         if (path == null)
             return;
         if (currentWaypoint >= path.vectorPath.Count)
-        {
-            reachedEndOfPath = true;
             return;
-        }
-        else
-            reachedEndOfPath = false;
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * speed;
         rb.AddForce(force);

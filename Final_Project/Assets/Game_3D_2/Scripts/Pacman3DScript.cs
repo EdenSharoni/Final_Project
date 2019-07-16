@@ -13,8 +13,6 @@ public class Pacman3DScript : MonoBehaviour
     public float speed = 0f;
     public Rigidbody rb;
     public bool isdead;
-    int directionX;
-    int directionY;
     bool anotherDot;
     public int ghostBlueCount;
     bool isMoving;
@@ -60,8 +58,6 @@ public class Pacman3DScript : MonoBehaviour
         anotherDot = true;
         ghostBlue = false;
         isdead = false;
-        directionX = 1;
-        directionY = 0;
         transform.eulerAngles = new Vector3(0, 0, 0);
     }
 

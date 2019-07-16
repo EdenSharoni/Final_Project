@@ -43,8 +43,10 @@ public class MainMenuScript : MonoBehaviour
     public void HowToPlay()
     {
         howToPlayPanel.gameObject.SetActive(!howToPlayPanel.gameObject.activeSelf);
+
         difficultyBtn.enabled = !difficultyBtn.enabled;
         difficultyBtn.gameObject.SetActive(!difficultyBtn.gameObject.activeSelf);
+
         game1.enabled = !game1.enabled;
         game1.gameObject.SetActive(!game1.gameObject.activeSelf);
 

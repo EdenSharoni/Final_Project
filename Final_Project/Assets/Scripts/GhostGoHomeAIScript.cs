@@ -12,7 +12,6 @@ public class GhostGoHomeAIScript : MonoBehaviour
     float speed = 90f;
     float nextWaypointDistance = 3f;
     int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
 
     void Start()
     {
@@ -43,12 +42,7 @@ public class GhostGoHomeAIScript : MonoBehaviour
         if (path == null)
             return;
         if (currentWaypoint >= path.vectorPath.Count)
-        {
-            reachedEndOfPath = true;
             return;
-        }
-        else
-            reachedEndOfPath = false;
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * speed;
         rb.AddForce(force);
