@@ -512,8 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1370110315}
-  wayPoint2: {fileID: 1445488273}
+  wayPoint: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -3468,8 +3467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1370110315}
-  wayPoint2: {fileID: 1445488273}
+  wayPoint: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -3915,8 +3913,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1188009735}
-  wayPoint2: {fileID: 1179156783}
+  wayPoint: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -8251,8 +8248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1370110315}
-  wayPoint2: {fileID: 1445488273}
+  wayPoint: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -8508,8 +8504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1188009735}
-  wayPoint2: {fileID: 1179156783}
+  wayPoint: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -8635,8 +8630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1188009735}
-  wayPoint2: {fileID: 1179156783}
+  wayPoint: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -21819,8 +21813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1370110315}
-  wayPoint2: {fileID: 1445488273}
+  wayPoint: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -29824,8 +29817,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1188009735}
-  wayPoint2: {fileID: 1179156783}
+  wayPoint: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
