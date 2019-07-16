@@ -6,6 +6,9 @@ public class Teleport3DScript : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        collision.gameObject.transform.Translate(0, 0, -100);
+        if (collision.gameObject.CompareTag("Pacman3D"))
+            collision.gameObject.transform.Translate(0, 0, -100);
+        else if (collision.gameObject.CompareTag("Ghost3D"))
+            collision.gameObject.transform.Translate(-100, 0, 0);
     }
 }

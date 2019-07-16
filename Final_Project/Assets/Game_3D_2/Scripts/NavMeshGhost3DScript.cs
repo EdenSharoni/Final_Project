@@ -102,7 +102,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     IEnumerator WaitToGetOut()
     {
         if (transform.name.Equals("GreenGhost"))
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(10f);
         if (transform.name.Equals("DarkGreenGhost"))
             yield return new WaitForSeconds(1f);
         if (transform.name.Equals("PinkGhost"))
