@@ -6,18 +6,19 @@ using UnityEngine.Video;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public AudioSource source;
+
     public Button howToPlayBtn;
     public Button difficultyBtn;
     public Button game1;
     public Button game2;
     public Button game3;
-    public RawImage trailer;
-    public VideoPlayer videoPlayer;
+    public Button trailer;
     public GameObject panel;
+    public bool video;
 
     void Start()
     {
+        video = false;
         howToPlayBtn.enabled = true;
         howToPlayBtn.gameObject.SetActive(true);
 
@@ -33,8 +34,8 @@ public class MainMenuScript : MonoBehaviour
         game3.enabled = false;
         game3.gameObject.SetActive(false);
 
-        //trailer.enabled = true;
-        //trailer.gameObject.SetActive(true);
+        trailer.enabled = true;
+        trailer.gameObject.SetActive(true);
 
         panel.gameObject.SetActive(false);
 
@@ -42,21 +43,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void Video()
     {
-        StartCoroutine(PlayVideo());
-    }
-
-    IEnumerator PlayVideo()
-    {
-        Debug.Log("aaa");
-        videoPlayer.Prepare();
-        while (!videoPlayer.isPrepared)
-        {
-            yield return new WaitForSeconds(1f);
-            break;
-        }
-        trailer.texture = videoPlayer.texture;
-        videoPlayer.Play();
-        source.Play();
+        video = !video;
     }
 
     public void HowToPlay()
@@ -66,4 +53,18 @@ public class MainMenuScript : MonoBehaviour
         difficultyBtn.gameObject.SetActive(!difficultyBtn.gameObject.activeSelf);
     }
 
+    public void Difficulty()
+    {
+        game1.enabled = !game1.enabled;
+        game1.gameObject.SetActive(!game1.gameObject.activeSelf);
+
+        game2.enabled = !game2.enabled;
+        game2.gameObject.SetActive(!game2.gameObject.activeSelf);
+
+        game3.enabled = !game3.enabled;
+        game3.gameObject.SetActive(!game3.gameObject.activeSelf);
+
+        trailer.enabled = !trailer.enabled;
+        trailer.gameObject.SetActive(!trailer.gameObject.activeSelf);
+    }
 }
