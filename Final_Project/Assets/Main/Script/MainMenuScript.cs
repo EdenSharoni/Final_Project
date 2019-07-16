@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class MainMenuScript : MonoBehaviour
     public Button game2;
     public Button game3;
     public Button trailer;
-    public GameObject panel;
+    public GameObject howToPlayPanel;
+    public GameObject gamesPanel;
     public bool video;
 
     void Start()
@@ -25,19 +27,11 @@ public class MainMenuScript : MonoBehaviour
         difficultyBtn.enabled = true;
         difficultyBtn.gameObject.SetActive(true);
 
-        game1.enabled = false;
-        game1.gameObject.SetActive(false);
-
-        game2.enabled = false;
-        game2.gameObject.SetActive(false);
-
-        game3.enabled = false;
-        game3.gameObject.SetActive(false);
-
         trailer.enabled = true;
         trailer.gameObject.SetActive(true);
 
-        panel.gameObject.SetActive(false);
+        howToPlayPanel.gameObject.SetActive(false);
+        gamesPanel.gameObject.SetActive(true);
 
     }
 
@@ -48,13 +42,9 @@ public class MainMenuScript : MonoBehaviour
 
     public void HowToPlay()
     {
-        panel.gameObject.SetActive(!panel.gameObject.activeSelf);
+        howToPlayPanel.gameObject.SetActive(!howToPlayPanel.gameObject.activeSelf);
         difficultyBtn.enabled = !difficultyBtn.enabled;
         difficultyBtn.gameObject.SetActive(!difficultyBtn.gameObject.activeSelf);
-    }
-
-    public void Difficulty()
-    {
         game1.enabled = !game1.enabled;
         game1.gameObject.SetActive(!game1.gameObject.activeSelf);
 
@@ -63,8 +53,29 @@ public class MainMenuScript : MonoBehaviour
 
         game3.enabled = !game3.enabled;
         game3.gameObject.SetActive(!game3.gameObject.activeSelf);
+    }
 
-        trailer.enabled = !trailer.enabled;
-        trailer.gameObject.SetActive(!trailer.gameObject.activeSelf);
+    public void Difficulty()
+    {
+        if (gamesPanel.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("ButtonSetStart"))
+            gamesPanel.GetComponent<Animator>().SetTrigger("pressOff");
+
+        else
+            gamesPanel.GetComponent<Animator>().SetTrigger("pressOn");
+    }
+
+    public void Pacman1()
+    {
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
+    }
+
+    public void Pacman2()
+    {
+        SceneManager.LoadScene(2, LoadSceneMode.Single);
+    }
+
+    public void Pacman3()
+    {
+        SceneManager.LoadScene(3, LoadSceneMode.Single);
     }
 }
