@@ -700,13 +700,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f6f22938f0e044691f3688877e391b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 0}
   howToPlayBtn: {fileID: 1039362877}
   difficultyBtn: {fileID: 611600246}
   game1: {fileID: 1716699167}
   game2: {fileID: 143896382}
   game3: {fileID: 1152958797}
   trailer: {fileID: 0}
-  VideoPlayer: {fileID: 0}
+  videoPlayer: {fileID: 0}
   panel: {fileID: 573469000}
 --- !u!1 &559234842
 GameObject:
@@ -873,7 +874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &573469001
 RectTransform:
   m_ObjectHideFlags: 0

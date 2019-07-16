@@ -33,8 +33,8 @@ public class MainMenuScript : MonoBehaviour
         game3.enabled = false;
         game3.gameObject.SetActive(false);
 
-        trailer.enabled = true;
-        trailer.gameObject.SetActive(true);
+        //trailer.enabled = true;
+        //trailer.gameObject.SetActive(true);
 
         panel.gameObject.SetActive(false);
 
