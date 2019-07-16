@@ -8,8 +8,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
     AudioSource source;
     public AudioClip ghostEat;
     public Transform target;
-    //public Transform wayPoint;
     public Transform wayPoint;
+    public Transform wayPoint2;
     private NavMeshAgent agent;
     public GameObject[] ghostPoints = new GameObject[4];
     Pacman3DScript pacman;
@@ -102,7 +102,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     IEnumerator WaitToGetOut()
     {
         if (transform.name.Equals("GreenGhost"))
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(3f);
         if (transform.name.Equals("DarkGreenGhost"))
             yield return new WaitForSeconds(1f);
         if (transform.name.Equals("PinkGhost"))
@@ -153,7 +153,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
             StartCoroutine(Blue());
         }
 
-        if (transform.position == wayPoint.position)
+        if (transform.position == wayPoint2.position)
         {
             startFindingPacman = true;
         }
@@ -201,7 +201,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     void GetOutOfHome()
     {
         agent.enabled = true;
-        agent.SetDestination(wayPoint.position);
+        agent.SetDestination(wayPoint2.position);
 
         /*GetComponent<CapsuleCollider>().isTrigger = true;
         p1 = Vector3.MoveTowards(transform.position, wayPoint.position, speed * Time.deltaTime);
