@@ -17,8 +17,9 @@ public class Pacman3DScript : MonoBehaviour
     public int ghostBlueCount;
     bool isMoving;
     public bool blueAgain;
+    CameraControllerScript cameraControll;
 
-    private Vector3 up = Vector3.zero,
+    public Vector3 up = Vector3.zero,
                     right = new Vector3(0, 90, 0),
                     down = new Vector3(0, 180, 0),
                     left = new Vector3(0, 270, 0),
@@ -26,6 +27,7 @@ public class Pacman3DScript : MonoBehaviour
 
     void Start()
     {
+        cameraControll = GameObject.Find("Camera Manager").GetComponent<CameraControllerScript>();
         startPoint = transform.position;
         rb = GetComponent<Rigidbody>();
 
@@ -42,7 +44,7 @@ public class Pacman3DScript : MonoBehaviour
     {
         blueAgain = false;
         transform.position = startPoint;
-        currentDirection = down;
+        currentDirection = up;
         isMoving = false;
         speed = 0;
         transform.position = startPoint;
@@ -70,19 +72,48 @@ public class Pacman3DScript : MonoBehaviour
     {
         isMoving = true;
 
-        if (isdead) isMoving = false;
-        else if (Input.GetKey(KeyCode.UpArrow)) currentDirection = up;
-        else if (Input.GetKey(KeyCode.RightArrow)) currentDirection = right;
-        else if (Input.GetKey(KeyCode.DownArrow)) currentDirection = down;
-        else if (Input.GetKey(KeyCode.LeftArrow)) currentDirection = left;
-        else isMoving = false;
 
-        transform.localEulerAngles = currentDirection;
+        if (cameraControll.backCameraBool)
+        {
+            Debug.Log("sss");
+            if (isdead) isMoving = false;
+            else if (Input.GetKey(KeyCode.UpArrow))
+            {
+                currentDirection = up;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 90, transform.localEulerAngles.z);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 180, transform.localEulerAngles.z);
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y - 90, transform.localEulerAngles.z);
+            }
+            else isMoving = false;
+            if (isMoving)
+                transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        }
+        else
+        {
+            if (isdead) isMoving = false;
+            else if (Input.GetKey(KeyCode.UpArrow)) currentDirection = up;
+            else if (Input.GetKey(KeyCode.RightArrow)) currentDirection = right;
+            else if (Input.GetKey(KeyCode.DownArrow)) currentDirection = down;
+            else if (Input.GetKey(KeyCode.LeftArrow)) currentDirection = left;
+            else isMoving = false;
+            if (isMoving)
+                transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            transform.localEulerAngles = currentDirection;
+        }
+
 
         GetComponent<Animator>().SetBool("move", isMoving);
 
-        if (isMoving)
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+
     }
 
     private void OnTriggerEnter(Collider other)

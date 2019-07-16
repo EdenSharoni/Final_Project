@@ -59,6 +59,8 @@ public class MainMenuScript : MonoBehaviour
 
     public void Difficulty()
     {
+        trailer.enabled = !trailer.enabled;
+
         if (gamesPanel.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("ButtonSetStart"))
             gamesPanel.GetComponent<Animator>().SetTrigger("pressOff");
 
