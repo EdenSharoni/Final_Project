@@ -29,6 +29,7 @@ public class VideoScript : MonoBehaviour
         }
         if (!main.video)
             Pause();
+
         else if (main.video)
             Play();
     }

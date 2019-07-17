@@ -17,6 +17,7 @@ public class MainMenuScript : MonoBehaviour
     public GameObject howToPlayPanel;
     public GameObject gamesPanel;
     public bool video;
+    public Image play;
 
     void Start()
     {
@@ -33,11 +34,14 @@ public class MainMenuScript : MonoBehaviour
         howToPlayPanel.gameObject.SetActive(false);
         gamesPanel.gameObject.SetActive(true);
 
+        play.gameObject.SetActive(true);
     }
 
     public void Video()
     {
         video = !video;
+
+        play.gameObject.SetActive(false);
     }
 
     public void HowToPlay()
