@@ -77,29 +77,15 @@ public class Pacman3DScript : MonoBehaviour
             if (cameraControll.backCameraBool)
             {
                 if (isdead) isMoving = false;
-
                 else if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.position, Vector3.right), Time.deltaTime);
-                    //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 90, transform.localEulerAngles.z);
-                }
-                else if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.position, Vector3.back), Time.deltaTime);
-                    //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 180, transform.localEulerAngles.z);
-                }
+                    transform.Rotate(transform.rotation.x, transform.rotation.y + 3f, transform.rotation.z);
                 else if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.position, Vector3.left), Time.deltaTime);
-                    //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y - 90, transform.localEulerAngles.z);
-                }
+                    transform.Rotate(transform.rotation.x, transform.rotation.y - 3f, transform.rotation.z);
+                else if (Input.GetKey(KeyCode.DownArrow))
+                    transform.Translate(Vector3.back * speed * Time.deltaTime);
                 else if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    currentDirection = up;
-                }
-                else isMoving = false;
-                if (isMoving)
                     transform.Translate(Vector3.forward * speed * Time.deltaTime);
+                else isMoving = false;
             }
             else
             {
@@ -126,7 +112,6 @@ public class Pacman3DScript : MonoBehaviour
                 transform.Translate(Vector3.forward * speed * Time.deltaTime);
             transform.localEulerAngles = currentDirection;
         }
-
 
         GetComponent<Animator>().SetBool("move", isMoving);
 
