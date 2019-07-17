@@ -63,7 +63,7 @@ public class Pacman3DScript : MonoBehaviour
     void startPacman()
     {
         ghostBlueCount = 0;
-        speed = 10f;
+        speed = 15f;
         anotherDot = true;
         ghostBlue = false;
         isdead = false;
@@ -104,10 +104,7 @@ public class Pacman3DScript : MonoBehaviour
                 transform.Translate(Vector3.forward * speed * Time.deltaTime);
             transform.localEulerAngles = currentDirection;
         }
-
         GetComponent<Animator>().SetBool("move", isMoving);
-
-
     }
 
     private void OnTriggerEnter(Collider other)

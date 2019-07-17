@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameScript : MonoBehaviour
 {
@@ -108,7 +109,17 @@ public class GameScript : MonoBehaviour
 
             if (currentLife >= 0 && board.transform.childCount != 0)
                 StartCoroutine(PlayAgain());
+            if (currentLife == -1)
+                StartCoroutine(WaitTwoSeconds(0));
+            if (board.transform.childCount == 0)
+                StartCoroutine(WaitTwoSeconds(2));
         }
+    }
+
+    IEnumerator WaitTwoSeconds(int i)
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(i, LoadSceneMode.Single);
     }
 
     IEnumerator PlayAgain()

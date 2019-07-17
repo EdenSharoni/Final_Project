@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ManagerScript : MonoBehaviour
 {
@@ -118,6 +119,8 @@ public class ManagerScript : MonoBehaviour
 
             if (currentLife >= 0 && food.transform.childCount != 0)
                 StartCoroutine(PlayAgain());
+            else
+                SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
     }
 
