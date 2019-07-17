@@ -26,6 +26,7 @@ TagManager:
   - Wall3D
   - waypoint13D
   - waypoint23D
+  - Fire
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Pacman3DScript : MonoBehaviour
 {
     public AudioSource audioSource;
+    public Rigidbody bullet;
     public AudioClip audioClip;
     public AudioClip wakkawakka;
     public AudioClip deadSound;
@@ -19,6 +20,8 @@ public class Pacman3DScript : MonoBehaviour
     bool isMoving;
     public bool blueAgain;
     CameraControllerScript cameraControll;
+    private Scene activeScene;
+    private string sceneName;
 
     public Vector3 up = Vector3.zero,
                     right = new Vector3(0, 90, 0),
@@ -34,6 +37,9 @@ public class Pacman3DScript : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         StartCoroutine(StartCam());
+
+        activeScene = SceneManager.GetActiveScene();
+        sceneName = activeScene.name;
     }
 
     IEnumerator StartCam()
@@ -105,6 +111,9 @@ public class Pacman3DScript : MonoBehaviour
             transform.localEulerAngles = currentDirection;
         }
         GetComponent<Animator>().SetBool("move", isMoving);
+
+        if (Input.GetKeyDown("space") && sceneName == "Game_3D_2" && PlayerPrefs.GetInt("points") > 100) 
+            Instantiate(bullet, transform.position, Quaternion.identity);
     }
 
     private void OnTriggerEnter(Collider other)

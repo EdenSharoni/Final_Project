@@ -13,7 +13,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     private NavMeshAgent agent;
     public GameObject[] ghostPoints = new GameObject[4];
     Pacman3DScript pacman;
-    Vector3 startPosition;
+    public Vector3 startPosition;
     private Material material;
     private Color original;
     bool oneTimeBlue;
