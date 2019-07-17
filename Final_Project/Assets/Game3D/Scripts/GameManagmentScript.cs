@@ -22,8 +22,8 @@ public class GameManagmentScript : MonoBehaviour
     private bool oneTimeEntrence;
     private GameObject food;
 
+    public Text cameraInstruction;
 
-    // Start is called before the first frame update
     void Start()
     {
         PlayerPrefs.SetInt("points", 0);
@@ -46,10 +46,31 @@ public class GameManagmentScript : MonoBehaviour
 
     IEnumerator StartCam()
     {
+        cameraInstruction.gameObject.SetActive(false);
         gameOver.enabled = false;
         ready.enabled = false;
-        yield return new WaitForSeconds(9f);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(TextBlink());
+        yield return new WaitForSeconds(8f);
+        cameraInstruction.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1f);        
         init();
+    }
+    IEnumerator TextBlink()
+    {
+        cameraInstruction.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        cameraInstruction.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        cameraInstruction.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        cameraInstruction.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        cameraInstruction.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        cameraInstruction.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        cameraInstruction.gameObject.SetActive(true);
     }
 
     void init()
