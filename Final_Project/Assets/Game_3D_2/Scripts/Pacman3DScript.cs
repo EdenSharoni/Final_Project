@@ -72,33 +72,19 @@ public class Pacman3DScript : MonoBehaviour
     void GetInput()
     {
         isMoving = true;
-        if (SceneManager.GetActiveScene().name.Equals("Game_3D_2"))
+
+        if (cameraControll.backCameraBool)
         {
-            if (cameraControll.backCameraBool)
-            {
-                if (isdead) isMoving = false;
-                else if (Input.GetKey(KeyCode.RightArrow))
-                    transform.Rotate(transform.rotation.x, transform.rotation.y + 3f, transform.rotation.z);
-                else if (Input.GetKey(KeyCode.LeftArrow))
-                    transform.Rotate(transform.rotation.x, transform.rotation.y - 3f, transform.rotation.z);
-                else if (Input.GetKey(KeyCode.DownArrow))
-                    transform.Translate(Vector3.back * speed * Time.deltaTime);
-                else if (Input.GetKey(KeyCode.UpArrow))
-                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
-                else isMoving = false;
-            }
-            else
-            {
-                if (isdead) isMoving = false;
-                else if (Input.GetKey(KeyCode.UpArrow)) currentDirection = up;
-                else if (Input.GetKey(KeyCode.RightArrow)) currentDirection = right;
-                else if (Input.GetKey(KeyCode.DownArrow)) currentDirection = down;
-                else if (Input.GetKey(KeyCode.LeftArrow)) currentDirection = left;
-                else isMoving = false;
-                if (isMoving)
-                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
-                transform.localEulerAngles = currentDirection;
-            }
+            if (isdead) isMoving = false;
+            else if (Input.GetKey(KeyCode.RightArrow))
+                transform.Rotate(transform.rotation.x, transform.rotation.y + 3f, transform.rotation.z);
+            else if (Input.GetKey(KeyCode.LeftArrow))
+                transform.Rotate(transform.rotation.x, transform.rotation.y - 3f, transform.rotation.z);
+            else if (Input.GetKey(KeyCode.DownArrow))
+                transform.Translate(Vector3.back * speed * Time.deltaTime);
+            else if (Input.GetKey(KeyCode.UpArrow))
+                transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            else isMoving = false;
         }
         else
         {
