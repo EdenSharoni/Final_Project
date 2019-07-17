@@ -33,6 +33,12 @@ public class Pacman3DScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         audioSource = GetComponent<AudioSource>();
+        StartCoroutine(StartCam());
+    }
+
+    IEnumerator StartCam()
+    {
+        yield return new WaitForSeconds(9f);
         initPacman();
     }
 

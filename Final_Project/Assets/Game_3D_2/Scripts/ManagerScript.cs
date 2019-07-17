@@ -40,10 +40,17 @@ public class ManagerScript : MonoBehaviour
         volumeOff.gameObject.SetActive(false);
         volumeOn.enabled = true;
         volumeOff.enabled = false;
-
-        init();
-
+        StartCoroutine(StartCam());
     }
+
+    IEnumerator StartCam()
+    {
+        gameOver.enabled = false;
+        ready.enabled = false;
+        yield return new WaitForSeconds(9f);
+        init();
+    }
+
     void init()
     {
         StartCoroutine(Starter());

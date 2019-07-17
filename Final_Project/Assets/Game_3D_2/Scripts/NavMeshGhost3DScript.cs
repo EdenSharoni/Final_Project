@@ -58,8 +58,15 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
         material = GetComponent<Renderer>().material;
         original = material.color;
+        StartCoroutine(StartCam());
+    }
+
+    IEnumerator StartCam()
+    {
+        yield return new WaitForSeconds(9f);
         InitGhost();
     }
+
     public void InitGhost()
     {
         StartCoroutine(WaitInit());

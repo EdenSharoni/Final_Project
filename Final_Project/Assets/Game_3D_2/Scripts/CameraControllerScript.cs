@@ -9,24 +9,25 @@ public class CameraControllerScript : MonoBehaviour
     public GameObject followCamera;
     public GameObject backCamera;
     public bool backCameraBool;
-    //bool back;
+    public GameObject startCamera;
+
     private void Start()
     {
-        //back = true;
         backCameraBool = false;
+        StartCoroutine(CamStarter());
     }
 
-    //IEnumerator BackToBackCamera()
-    //{
-    //     yield return new WaitForSeconds(5f);
-    //     back = true;
-    // }
+    IEnumerator CamStarter()
+    {
+        yield return new WaitForSeconds(8f);
+        startCamera.SetActive(false);
+        aboveCamera.SetActive(true);
+    }
 
     void Update()
     {
         if (Input.GetKey("1"))
         {
-            //StartCoroutine(BackToBackCamera());
             backCameraBool = false;
             aboveCamera.SetActive(true);
             angleCamera.SetActive(false);
@@ -36,7 +37,6 @@ public class CameraControllerScript : MonoBehaviour
 
         if (Input.GetKey("2"))
         {
-            //StartCoroutine(BackToBackCamera());
             backCameraBool = false;
             aboveCamera.SetActive(false);
             angleCamera.SetActive(true);
@@ -46,16 +46,14 @@ public class CameraControllerScript : MonoBehaviour
 
         if (Input.GetKey("3"))
         {
-            //StartCoroutine(BackToBackCamera());
             backCameraBool = false;
             aboveCamera.SetActive(false);
             angleCamera.SetActive(false);
             followCamera.SetActive(true);
             backCamera.SetActive(false);
         }
-        if (Input.GetKey("4"))//|back
+        if (Input.GetKey("4"))
         {
-            //back = false;
             backCameraBool = true;
             aboveCamera.SetActive(false);
             angleCamera.SetActive(false);
