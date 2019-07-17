@@ -40,7 +40,10 @@ public class MainMenuScript : MonoBehaviour
     public void Video()
     {
         video = !video;
-
+        if (video)
+            GetComponent<AudioSource>().Pause();
+        else
+            GetComponent<AudioSource>().Play();
         play.gameObject.SetActive(false);
     }
 

@@ -1418,7 +1418,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1816,7 +1816,7 @@ PrefabInstance:
     - target: {fileID: 2963431278323030082, guid: 1d9c437120c16bc469f91b552504ac2f,
         type: 3}
       propertyPath: layermask.m_Bits
-      value: 196608
+      value: 1536
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d9c437120c16bc469f91b552504ac2f, type: 3}
@@ -3203,7 +3203,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -139,9 +139,9 @@ public class ManagerScript : MonoBehaviour
     public void VolumeOn()
     {
         for (int i = 0; i < 8; i++)
-            ghost[i].GetComponent<AudioSource>().volume = 1f;
-        pacman.audioSource.volume = 1f;
-        audioSource.volume = 1f;
+            ghost[i].GetComponent<AudioSource>().volume = 0.3f;
+        pacman.audioSource.volume = 0.3f;
+        audioSource.volume = 0.3f;
         volumeOn.enabled = true;
         volumeOff.enabled = false;
         volumeOn.gameObject.SetActive(true);

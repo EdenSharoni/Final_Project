@@ -112,8 +112,7 @@ public class PacManScript : MonoBehaviour
         {
             ghostBlue = true;
             if (anotherDot)
-                audioSource.PlayOneShot(wakkawakka);
-            StartCoroutine(WaitForSoundToEnd());
+                StartCoroutine(WaitForSoundToEnd());
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 50);
             Destroy(collision.gameObject);
         }
@@ -129,6 +128,7 @@ public class PacManScript : MonoBehaviour
     IEnumerator WaitForSoundToEnd()
     {
         anotherDot = false;
+        audioSource.volume = 0.1f;
         audioSource.PlayOneShot(wakkawakka);
         yield return new WaitForSeconds(wakkawakka.length);
         anotherDot = true;
@@ -148,9 +148,6 @@ public class PacManScript : MonoBehaviour
         hitLeft = Physics2D.CircleCast(transform.position, 1f, Vector2.left, 1f, layermask);
         Debug.DrawRay(transform.position, Vector2.left);
     }
-
-    
-
 
     void Right()
     {
