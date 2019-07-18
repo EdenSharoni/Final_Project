@@ -185,6 +185,7 @@ public class GameManagmentScript : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
             ghosts[i].GetComponent<AudioSource>().volume = 0f;
+
         pacman.audioSource.volume = 0f;
         audioSource.volume = 0f;
 

@@ -8,8 +8,8 @@ public class CameraControllerScript : MonoBehaviour
     public GameObject angleCamera;
     public GameObject followCamera;
     public GameObject backCamera;
-    public bool backCameraBool;
     public GameObject startCamera;
+    public bool backCameraBool;
 
     private void Start()
     {
@@ -52,6 +52,7 @@ public class CameraControllerScript : MonoBehaviour
             followCamera.SetActive(true);
             backCamera.SetActive(false);
         }
+
         if (Input.GetKey("4"))
         {
             backCameraBool = true;
@@ -59,7 +60,6 @@ public class CameraControllerScript : MonoBehaviour
             angleCamera.SetActive(false);
             followCamera.SetActive(false);
             backCamera.SetActive(true);
-
         }
     }
 }

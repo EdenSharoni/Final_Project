@@ -5,47 +5,43 @@ using UnityEngine.AI;
 
 public class NavMeshGhost3DScript : MonoBehaviour
 {
-    AudioSource source;
     public AudioClip ghostEat;
     public Transform target;
-    //public Transform wayPoint;
     public Transform wayPoint;
-    private NavMeshAgent agent;
     public GameObject[] ghostPoints = new GameObject[4];
-    Pacman3DScript pacman;
     public Vector3 startPosition;
+    public LayerMask layermask;
+    public float speed = 0f;
+
+    private List<int> checkLoopDirections = new List<int>();
+    private List<int> options = new List<int>();
+    private RaycastHit forward, backwards, left, right;
+    private Vector3[] directions = new Vector3[4];
+    private Vector3 moveDirection;
+    private Pacman3DScript pacman;
+    private RaycastHit hitRound;
+    private AudioSource source;
+    private NavMeshAgent agent;
     private Material material;
     private Color original;
-    bool oneTimeBlue;
-    public float speed = 0f;
-    RaycastHit forward;
-    RaycastHit backwards;
-    RaycastHit left;
-    RaycastHit right;
-    RaycastHit hitRound;
-    public LayerMask layermask;
-    bool[] freeDirection = { false, false, false, false };
-    bool oneTimeDirection;
-    bool finishWaiting;
-    int counter = 0;
-    List<int> options = new List<int>();
-    List<int> checkLoopDirections = new List<int>();
-    string lastdirection;
-    int rand;
-    Vector3[] directions = new Vector3[4];
-    Vector3 moveDirection;
-    bool startFindingPacman;
-    bool agentBool;
-    Quaternion q;
-    bool oneTimeEat;
-    bool notBlueAnymore;
-    bool resetAlgo;
-    Vector3 p1, p2;
+    private Quaternion q;
+    private Vector3 p1, p2;
+    private bool oneTimeBlue;
+    private bool[] freeDirection = { false, false, false, false };
+    private bool oneTimeDirection;
+    private bool finishWaiting;
+    private bool startFindingPacman;
+    private bool agentBool;
+    private bool oneTimeEat;
+    private bool notBlueAnymore;
+    private bool resetAlgo;
+    private int counter = 0;
+    private int rand;
+    private string lastdirection;
 
     void Start()
     {
         source = GetComponent<AudioSource>();
-
 
         startPosition = transform.position;
         pacman = GameObject.Find("Pacman3D").GetComponent<Pacman3DScript>();
@@ -120,8 +116,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
         speed = 8f;
     }
 
-
-
     void FixedUpdate()
     {
         MakeRayCast();
@@ -156,10 +150,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
             StartCoroutine(Blue());
         }
 
-        if (transform.position == wayPoint.position)
-        {
-            startFindingPacman = true;
-        }
+        if (transform.position == wayPoint.position)        
+            startFindingPacman = true;        
 
         if (speed == 8f && !startFindingPacman)
             GetOutOfHome();
@@ -232,7 +224,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 Debug.Log("left: " + freeDirection[3]);
             }*/
 
-
             for (int i = 0; i < 4; i++)
             {
                 if (freeDirection[i] == true)
@@ -289,7 +280,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
             else
                 pacman.isdead = true;
         }
-
     }
 
     IEnumerator WaitForAnotherEat()
@@ -303,42 +293,49 @@ public class NavMeshGhost3DScript : MonoBehaviour
             ghostPoints[0].transform.position = transform.position;
             ghostPoints[0].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 2)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
             ghostPoints[0].transform.position = transform.position;
             ghostPoints[0].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 3)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
             ghostPoints[1].transform.position = transform.position;
             ghostPoints[1].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 4)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
             ghostPoints[1].transform.position = transform.position;
             ghostPoints[1].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 5)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
             ghostPoints[2].transform.position = transform.position;
             ghostPoints[2].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 6)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
             ghostPoints[2].transform.position = transform.position;
             ghostPoints[2].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 7)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
             ghostPoints[3].transform.position = transform.position;
             ghostPoints[3].SetActive(true);
         }
+
         else if (pacman.ghostBlueCount == 8)
         {
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
@@ -351,7 +348,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
             ghostPoints[i].SetActive(false);
     }
 
-
     void FindRayCastHit()
     {
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.forward, out forward, 3f, layermask))
@@ -360,30 +356,35 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 oneTimeDirection = true;
             freeDirection[0] = false;
         }
+
         else
         {
             if (freeDirection[0] == false)
                 oneTimeDirection = true;
             freeDirection[0] = true;
         }
+
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.right, out right, 3f, layermask))
         {
             if (freeDirection[1] == true)
                 oneTimeDirection = true;
             freeDirection[1] = false;
         }
+
         else
         {
             if (freeDirection[1] == false)
                 oneTimeDirection = true;
             freeDirection[1] = true;
         }
+
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.back, out backwards, 3f, layermask))
         {
             if (freeDirection[2] == true)
                 oneTimeDirection = true;
             freeDirection[2] = false;
         }
+
         else
         {
             if (freeDirection[2] == false)
@@ -397,6 +398,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 oneTimeDirection = true;
             freeDirection[3] = false;
         }
+
         else
         {
             if (freeDirection[3] == false)
@@ -429,6 +431,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
         oneTimeBlue = true;
         notBlueAnymore = true;
     }
+
     IEnumerator Blink()
     {
         material.color = Color.white;

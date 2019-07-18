@@ -15,13 +15,14 @@ public class ManagerScript : MonoBehaviour
     public Image ready;
     public Image gameOver;
     public Image[] life = new Image[3];
-    NavMeshGhost3DScript[] ghost = new NavMeshGhost3DScript[8];
-    AudioSource audioSource;
-    Pacman3DScript pacman;
-    int currentLife = 2;
-    bool oneTimeEntrence;
-    GameObject food;
     public Text cameraInstruction;
+
+    private NavMeshGhost3DScript[] ghost = new NavMeshGhost3DScript[8];
+    private AudioSource audioSource;
+    private Pacman3DScript pacman;
+    private GameObject food;
+    private int currentLife = 2;
+    private bool oneTimeEntrence;
 
     void Start()
     {
@@ -106,12 +107,14 @@ public class ManagerScript : MonoBehaviour
             audioSource.clip = ghostBlueSound;
             audioSource.Play();
         }
+
         else if (!pacman.ghostBlue && audioSource.clip == ghostBlueSound && !pacman.isdead)
         {
             audioSource.Stop();
             audioSource.clip = main;
             audioSource.Play();
         }
+
         if ((food.transform.childCount == 0 || pacman.isdead) && oneTimeEntrence)
         {
             StopAllCoroutines();

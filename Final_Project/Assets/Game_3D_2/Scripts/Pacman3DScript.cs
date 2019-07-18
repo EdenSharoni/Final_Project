@@ -10,26 +10,27 @@ public class Pacman3DScript : MonoBehaviour
     public AudioClip audioClip;
     public AudioClip wakkawakka;
     public AudioClip deadSound;
-    Vector3 startPoint;
-    public bool ghostBlue;
-    public float speed = 0f;
     public Rigidbody rb;
-    public bool isdead;
-    bool anotherDot;
-    public int ghostBlueCount;
-    bool isMoving;
+    public bool ghostBlue;
     public bool blueAgain;
-    CameraControllerScript cameraControll;
+    public bool isdead;
+    public float speed = 0f;
+    public int ghostBlueCount;
+    public Vector3 up = Vector3.zero,
+                right = new Vector3(0, 90, 0),
+                down = new Vector3(0, 180, 0),
+                left = new Vector3(0, 270, 0),
+                currentDirection = Vector3.zero;
+
+    private CameraControllerScript cameraControll;
+    private Vector3 startPoint;
     private Scene activeScene;
+    private bool anotherDot;
+    private bool isMoving;
     private string sceneName;
     private int tempFoodCount = 0;
     private int tempBulletCount = 0;
 
-    public Vector3 up = Vector3.zero,
-                    right = new Vector3(0, 90, 0),
-                    down = new Vector3(0, 180, 0),
-                    left = new Vector3(0, 270, 0),
-                    currentDirection = Vector3.zero;
 
     void Start()
     {
@@ -119,7 +120,6 @@ public class Pacman3DScript : MonoBehaviour
         {
             Instantiate(bullet, transform.position, transform.rotation);
             PlayerPrefs.SetInt("fireCount", --tempBulletCount);
-            Debug.Log("bullets: " + tempBulletCount);
         }
     }
 

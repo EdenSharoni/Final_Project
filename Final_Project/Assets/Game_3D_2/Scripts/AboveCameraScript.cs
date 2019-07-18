@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable 0649
+
 public class AboveCameraScript : MonoBehaviour
 {
 
@@ -39,23 +41,17 @@ public class AboveCameraScript : MonoBehaviour
     public void Refresh()
     {
         // compute position
-        if (offsetPositionSpace == Space.Self)
-        {
+        if (offsetPositionSpace == Space.Self)        
             transform.position = target.TransformPoint(offsetPosition);
-        }
-        else
-        {
-            transform.position = target.position + offsetPosition;
-        }
+        
+        else        
+            transform.position = target.position + offsetPosition;        
 
         // compute rotation
-        if (lookAt)
-        {
+        if (lookAt)        
             transform.LookAt(target);
-        }
-        else
-        {
-            transform.rotation = target.rotation;
-        }
+        
+        else        
+            transform.rotation = target.rotation;        
     }
 }
