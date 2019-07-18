@@ -12,24 +12,25 @@ public class PacManScript : MonoBehaviour
     public LayerMask layermask;
     public bool isdead;
     public bool ghostBlue;
-    Vector2 startPoint;
-    RaycastHit2D hitUp;
-    RaycastHit2D hitDown;
-    RaycastHit2D hitLeft;
-    RaycastHit2D hitRight;
-    float speed = 10f;
-    int directionX;
-    int directionY;
-    bool anotherDot;
     public int ghostBlueCount;
-    string saveLastPress;
-    string currentDirection;
+    RaycastHit2D hitUp, hitDown, hitLeft, hitRight;
+    float speed = 10f;
+    bool anotherDot;
+    Vector2 left = Vector2.left,
+        right = Vector2.right,
+        down = Vector2.down,
+        up = Vector2.up,
+        currentDirection = Vector2.zero,
+        saveLastPress = Vector2.zero,
+        startPoint = Vector2.zero;
+    Vector3 upEulerAngles = new Vector3(0, 0, 90),
+                    rightEulerAngles = Vector3.zero,
+                    downEulerAngles = new Vector3(0, 0, 270),
+                    leftEulerAngles = new Vector3(0, 0, 180);
 
     private void Start()
     {
-        anotherDot = true;
         startPoint = transform.position;
-
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
         initPacman();
@@ -51,20 +52,16 @@ public class PacManScript : MonoBehaviour
 
     void startPacman()
     {
-        saveLastPress = "right";
-        currentDirection = "right";
-        ghostBlueCount = 0;
+        anotherDot = true;
         ghostBlue = false;
         isdead = false;
+        saveLastPress = currentDirection = right;
+        ghostBlueCount = 0;
         GetComponent<Animator>().SetBool("move", true);
-        directionX = 1;
-        directionY = 0;
-        transform.eulerAngles = new Vector3(0, 0, 0);
-
-        rb.constraints = RigidbodyConstraints2D.None;
+        transform.eulerAngles = rightEulerAngles;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
     }
+
     private void Update()
     {
         GetInput();
@@ -73,7 +70,7 @@ public class PacManScript : MonoBehaviour
     void FixedUpdate()
     {
         MakeRayCast();
-        rb.velocity = new Vector2(speed * directionX, speed * directionY);
+        rb.velocity = currentDirection * speed;
     }
 
     void GetInput()
@@ -87,22 +84,23 @@ public class PacManScript : MonoBehaviour
             else if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider == null) Up();
 
             //Save The input that was not free
-            if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider != null) saveLastPress = "up";
-            else if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider != null) saveLastPress = "right";
-            else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider != null) saveLastPress = "down";
-            else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider != null) saveLastPress = "left";
+            if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider != null) saveLastPress = up;
+            else if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider != null) saveLastPress = right;
+            else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider != null) saveLastPress = down;
+            else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider != null) saveLastPress = left;
 
             //Turn to the free direction
-            if (hitRight.collider == null && saveLastPress == "right") Right();
-            else if (hitLeft.collider == null && saveLastPress == "left") Left();
-            else if (hitUp.collider == null && saveLastPress == "up") Up();
-            else if (hitDown.collider == null && saveLastPress == "down") Down();
+            if (hitRight.collider == null && saveLastPress == right) Right();
+            else if (hitLeft.collider == null && saveLastPress == left) Left();
+            else if (hitUp.collider == null && saveLastPress == up) Up();
+            else if (hitDown.collider == null && saveLastPress == down) Down();
 
             //Pacman hit the wall and animation stops
-            if (hitRight.collider != null && currentDirection == "right") GetComponent<Animator>().enabled = false;
-            else if (hitLeft.collider != null && currentDirection == "left") GetComponent<Animator>().enabled = false;
-            else if (hitUp.collider != null && currentDirection == "up") GetComponent<Animator>().enabled = false;
-            else if (hitDown.collider != null && currentDirection == "down") GetComponent<Animator>().enabled = false;
+            if (hitRight.collider != null && currentDirection == right) GetComponent<Animator>().enabled = false;
+            else if (hitLeft.collider != null && currentDirection == left) GetComponent<Animator>().enabled = false;
+            else if (hitUp.collider != null && currentDirection == up) GetComponent<Animator>().enabled = false;
+            else if (hitDown.collider != null && currentDirection == down) GetComponent<Animator>().enabled = false;
+            else GetComponent<Animator>().enabled = true;
         }
     }
 
@@ -151,38 +149,26 @@ public class PacManScript : MonoBehaviour
 
     void Right()
     {
-        GetComponent<Animator>().enabled = true;
-        directionX = 1;
-        directionY = 0;
-        transform.eulerAngles = new Vector3(0, 0, 0);
-        saveLastPress = null;
-        currentDirection = "right";
+        currentDirection = right;
+        transform.eulerAngles = rightEulerAngles;
+        saveLastPress = Vector2.zero;
     }
     void Left()
     {
-        GetComponent<Animator>().enabled = true;
-        directionX = -1;
-        directionY = 0;
-        transform.eulerAngles = new Vector3(0, 0, 180);
-        saveLastPress = null;
-        currentDirection = "left";
+        currentDirection = left;
+        transform.eulerAngles = leftEulerAngles;
+        saveLastPress = Vector2.zero;
     }
     void Down()
     {
-        GetComponent<Animator>().enabled = true;
-        directionX = 0;
-        directionY = -1;
-        transform.eulerAngles = new Vector3(0, 0, 270);
-        saveLastPress = null;
-        currentDirection = "down";
+        currentDirection = down;
+        transform.eulerAngles = downEulerAngles;
+        saveLastPress = Vector2.zero;
     }
     void Up()
     {
-        GetComponent<Animator>().enabled = true;
-        directionX = 0;
-        directionY = 1;
-        transform.eulerAngles = new Vector3(0, 0, 90);
-        saveLastPress = null;
-        currentDirection = "up";
+        currentDirection = up;
+        transform.eulerAngles = upEulerAngles;
+        saveLastPress = Vector2.zero;
     }
 }
