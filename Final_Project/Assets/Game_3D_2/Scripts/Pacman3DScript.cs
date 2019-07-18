@@ -153,7 +153,6 @@ public class Pacman3DScript : MonoBehaviour
     void getBullets(int amount)
     {
         tempFoodCount += amount;
-        Debug.Log("tempfood: " + tempFoodCount);
         if (tempFoodCount >= 100)
         {
             tempBulletCount++;
@@ -166,7 +165,7 @@ public class Pacman3DScript : MonoBehaviour
     {
         anotherDot = false;
         audioSource.volume = 0.1f;
-        audioSource.PlayOneShot(wakkawakka);
+        
         yield return new WaitForSeconds(wakkawakka.length);
         anotherDot = true;
     }

@@ -9,6 +9,7 @@ public class GostScript : MonoBehaviour
     public LayerMask layermask;
     public bool startFindingPacman;
     public bool controllerOneTimeEntrence;
+    public bool oneTimeBlue;
     GameObject gate;
     PacManScript pacman;
     Rigidbody2D rb;
@@ -18,20 +19,19 @@ public class GostScript : MonoBehaviour
     RaycastHit2D hitRight;
     List<int> options = new List<int>();
     List<int> checkLoopDirections = new List<int>();
-    string[] directions = { "up", "right", "down", "left" };
-    string lastdirection;
     float speed = 0;
     int directionX;
     int directionY;
     int rand;
     int counter = 0;
     bool upDownStarter;
-    public bool oneTimeBlue;
     bool gateOpen;
     bool oneTimeDirection;
     bool finishWaiting;
     bool getOutOfHome;
     bool[] freeDirection = { false, false, false, false };
+    string[] directions = { "up", "right", "down", "left" };
+    string lastdirection;
 
     private void Start()
     {

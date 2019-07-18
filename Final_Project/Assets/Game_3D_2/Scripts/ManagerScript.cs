@@ -147,8 +147,14 @@ public class ManagerScript : MonoBehaviour
             if (currentLife >= 0 && food.transform.childCount != 0)
                 StartCoroutine(PlayAgain());
             else
-                SceneManager.LoadScene(0, LoadSceneMode.Single);
+                StartCoroutine(WaitTwoSeconds());
         }
+    }
+
+    IEnumerator WaitTwoSeconds()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
     IEnumerator PlayAgain()

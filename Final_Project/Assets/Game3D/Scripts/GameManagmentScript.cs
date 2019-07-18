@@ -149,11 +149,13 @@ public class GameManagmentScript : MonoBehaviour
                 StartCoroutine(WaitTwoSeconds(3));
         }
     }
+
     IEnumerator WaitTwoSeconds(int i)
     {
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(i, LoadSceneMode.Single);
     }
+
     IEnumerator PlayAgain()
     {
         yield return new WaitForSeconds(2f);

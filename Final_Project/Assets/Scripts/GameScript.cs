@@ -27,6 +27,7 @@ public class GameScript : MonoBehaviour
         Physics2D.IgnoreLayerCollision(11, 13);
         Physics2D.IgnoreLayerCollision(12, 13);
         Physics2D.IgnoreLayerCollision(10, 13);
+
         PlayerPrefs.SetInt("points", 0);
 
         pacman = GameObject.Find("Pacman").GetComponent<PacManScript>();
@@ -34,8 +35,10 @@ public class GameScript : MonoBehaviour
         ghost[1] = GameObject.Find("PinkGost").GetComponent<GostControllerScript>();
         ghost[2] = GameObject.Find("LightBlueGost").GetComponent<GostControllerScript>();
         ghost[3] = GameObject.Find("YellowGost").GetComponent<GostControllerScript>();
+
         audioSource = GetComponent<AudioSource>();
         board = GameObject.Find("Board");
+
         volumeOn.gameObject.SetActive(true);
         volumeOff.gameObject.SetActive(false);
         volumeOn.enabled = true;
@@ -92,7 +95,7 @@ public class GameScript : MonoBehaviour
             pacman.rb.constraints = RigidbodyConstraints2D.FreezeAll;
             pacman.StopAllCoroutines();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < ghost.Length; i++)
             {
                 ghost[i].GetComponent<AudioSource>().Stop();
                 ghost[i].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
@@ -131,7 +134,7 @@ public class GameScript : MonoBehaviour
 
         pacman.initPacman();
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < ghost.Length; i++)
             ghost[i].initGhost();
 
         init();
