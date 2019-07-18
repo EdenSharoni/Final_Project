@@ -22,6 +22,8 @@ public class Pacman3DScript : MonoBehaviour
     CameraControllerScript cameraControll;
     private Scene activeScene;
     private string sceneName;
+    private int tempFoodCount = 0;
+    private int tempBulletCount = 0;
 
     public Vector3 up = Vector3.zero,
                     right = new Vector3(0, 90, 0),
@@ -40,6 +42,7 @@ public class Pacman3DScript : MonoBehaviour
 
         activeScene = SceneManager.GetActiveScene();
         sceneName = activeScene.name;
+        PlayerPrefs.SetInt("fireCount", 0);
     }
 
     IEnumerator StartCam()
@@ -112,8 +115,12 @@ public class Pacman3DScript : MonoBehaviour
         }
         GetComponent<Animator>().SetBool("move", isMoving);
 
-        if (Input.GetKeyDown("space") && sceneName == "Game_3D_2" && PlayerPrefs.GetInt("points") > 100) 
-            Instantiate(bullet, transform.position, Quaternion.identity);
+        if (Input.GetKeyDown("space") && sceneName == "Game_3D_2" && tempBulletCount > 0)
+        {
+            Instantiate(bullet, transform.position, transform.rotation);
+            PlayerPrefs.SetInt("fireCount", --tempBulletCount);
+            Debug.Log("bullets: " + tempBulletCount);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -127,6 +134,7 @@ public class Pacman3DScript : MonoBehaviour
 
             if (anotherDot)
                 audioSource.PlayOneShot(wakkawakka);
+            getBullets(50);
             StartCoroutine(WaitForSoundToEnd());
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 50);
             Destroy(other.gameObject);
@@ -136,8 +144,21 @@ public class Pacman3DScript : MonoBehaviour
         {
             if (anotherDot)
                 StartCoroutine(WaitForSoundToEnd());
+            getBullets(10);            
             PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 10);
             Destroy(other.gameObject);
+        }
+    }
+
+    void getBullets(int amount)
+    {
+        tempFoodCount += amount;
+        Debug.Log("tempfood: " + tempFoodCount);
+        if (tempFoodCount >= 100)
+        {
+            tempBulletCount++;
+            PlayerPrefs.SetInt("fireCount", tempBulletCount);
+            tempFoodCount = 0;
         }
     }
 

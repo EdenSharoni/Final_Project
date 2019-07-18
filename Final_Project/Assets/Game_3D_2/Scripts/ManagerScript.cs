@@ -11,6 +11,7 @@ public class ManagerScript : MonoBehaviour
     public Button volumeOn;
     public Button volumeOff;
     public Text score;
+    public Text fireCount;
     public Image ready;
     public Image gameOver;
     public Image[] life = new Image[3];
@@ -96,7 +97,8 @@ public class ManagerScript : MonoBehaviour
     void Update()
     {
 
-        score.text = PlayerPrefs.GetInt("points").ToString();
+        score.text = "Points:  " + PlayerPrefs.GetInt("points").ToString();
+        fireCount.text = "Bullets:  " + PlayerPrefs.GetInt("fireCount").ToString();
 
         if (pacman.ghostBlue && audioSource.clip == main && !pacman.isdead)
         {
