@@ -119,7 +119,6 @@ public class Pacman3DScript : MonoBehaviour
         {
             Instantiate(bullet, transform.position, transform.rotation);
             PlayerPrefs.SetInt("fireCount", --tempBulletCount);
-            Debug.Log("bullets: " + tempBulletCount);
         }
     }
 
@@ -153,7 +152,6 @@ public class Pacman3DScript : MonoBehaviour
     void getBullets(int amount)
     {
         tempFoodCount += amount;
-        Debug.Log("tempfood: " + tempFoodCount);
         if (tempFoodCount >= 100)
         {
             tempBulletCount++;

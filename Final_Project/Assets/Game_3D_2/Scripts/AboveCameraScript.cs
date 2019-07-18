@@ -22,6 +22,7 @@ public class AboveCameraScript : MonoBehaviour
 
     void Start()
     {
+        target = GameObject.Find("Pacman3D").GetComponent<Transform>();
         offsetPosition = transform.position - target.position;
     }
 
