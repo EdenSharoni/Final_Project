@@ -20,7 +20,7 @@ public class GameScript : MonoBehaviour
     GameObject board;
     int currentLife = 2;
     bool oneTimeEntrence;
-
+    
     void Start()
     {
         Physics2D.IgnoreLayerCollision(11, 11);
@@ -160,5 +160,10 @@ public class GameScript : MonoBehaviour
         volumeOff.enabled = true;
         volumeOn.gameObject.SetActive(false);
         volumeOff.gameObject.SetActive(true);
+    }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 }

@@ -185,4 +185,8 @@ public class ManagerScript : MonoBehaviour
         volumeOn.gameObject.SetActive(false);
         volumeOff.gameObject.SetActive(true);
     }
+    public void Exit()
+    {
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
+    }
 }
