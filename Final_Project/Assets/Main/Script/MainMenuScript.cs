@@ -18,10 +18,13 @@ public class MainMenuScript : MonoBehaviour
     public GameObject gamesPanel;
     public bool video;
     public Image play;
+    VideoScript videoScript;
 
     void Start()
     {
         video = false;
+        videoScript = GameObject.Find("Pacman Video").GetComponent<VideoScript>();
+
         howToPlayBtn.enabled = true;
         howToPlayBtn.gameObject.SetActive(true);
 
@@ -35,6 +38,14 @@ public class MainMenuScript : MonoBehaviour
         gamesPanel.gameObject.SetActive(true);
 
         play.gameObject.SetActive(true);
+    }
+    private void Update()
+    {
+        if (videoScript.videoEnded)
+        {
+            videoScript.videoEnded = false;
+            GetComponent<AudioSource>().Play();
+        }
     }
 
     public void Video()

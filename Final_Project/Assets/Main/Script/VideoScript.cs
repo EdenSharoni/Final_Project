@@ -11,9 +11,10 @@ public class VideoScript : MonoBehaviour
     public VideoPlayer videoPlayer;
     MainMenuScript main;
     bool oneTimeEntrence;
-
+    public bool videoEnded;
     void Start()
     {
+        videoEnded = false;
         oneTimeEntrence = true;
         main = GameObject.Find("Main Camera").GetComponent<MainMenuScript>();
         main.video = false;
@@ -50,8 +51,9 @@ public class VideoScript : MonoBehaviour
     IEnumerator VideoLength()
     {
         float time = (float)videoPlayer.length;
-        yield return new WaitForSeconds(time - 1f);
+        yield return new WaitForSeconds(time);
         main.video = false;
+        videoEnded = true;
     }
 
     void Pause()
