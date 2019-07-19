@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class FireScript : MonoBehaviour
 {
-
+    public AudioClip shoot;
+    public AudioClip explode;
     public int fireSpeed;
     private NavMeshGhost3DScript[] ghost = new NavMeshGhost3DScript[8];
     private Pacman3DScript pacman;
     int i;
+    AudioSource source;
 
     private void Start()
     {
@@ -25,6 +27,10 @@ public class FireScript : MonoBehaviour
         ghost[5] = GameObject.Find("LightBlueGhost").GetComponent<NavMeshGhost3DScript>();
         ghost[6] = GameObject.Find("YellowGhost").GetComponent<NavMeshGhost3DScript>();
         ghost[7] = GameObject.Find("PurpleGhost").GetComponent<NavMeshGhost3DScript>();
+
+        source = GetComponent<AudioSource>();
+        source.volume = 0.1f;
+        source.PlayOneShot(shoot);
     }
     // Update is called once per frame
     void Update()
@@ -41,6 +47,7 @@ public class FireScript : MonoBehaviour
             for (i = 0; i < 8; i++)
                 if (ghost[i].gameObject.Equals(other.gameObject))
                 {
+                    source.PlayOneShot(explode);
                     GetComponent<MeshRenderer>().enabled = false;
                     GetComponent<SphereCollider>().isTrigger = false;
                     ghost[i].explode = true;
