@@ -527,10 +527,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &31788513
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3129,12 +3135,12 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: d6a4f195fc7efd641b1ce49940b5e544, type: 3}
   wakkawakka: {fileID: 8300000, guid: 85cc1d2035698c04d8d5df63906b67f7, type: 3}
   deadSound: {fileID: 8300000, guid: 4a3f224caf4d469408174a57e891c4d5, type: 3}
-  ghostBlue: 0
-  speed: 0
   rb: {fileID: 0}
-  isdead: 0
-  ghostBlueCount: 0
+  ghostBlue: 0
   blueAgain: 0
+  isdead: 0
+  speed: 0
+  ghostBlueCount: 0
   up: {x: 0, y: 0, z: 0}
   right: {x: 0, y: 90, z: 0}
   down: {x: 0, y: 180, z: 0}
@@ -3521,10 +3527,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &180724179
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3972,10 +3984,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &203426342
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8040,8 +8058,8 @@ MonoBehaviour:
   angleCamera: {fileID: 1436874214}
   followCamera: {fileID: 1861645566}
   backCamera: {fileID: 765404416}
-  backCameraBool: 0
   startCamera: {fileID: 1107106709}
+  backCameraBool: 0
 --- !u!4 &503342458
 Transform:
   m_ObjectHideFlags: 0
@@ -8366,10 +8384,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &515731621
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8628,10 +8652,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &531264617
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8755,10 +8785,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &548267911
 AudioSource:
   m_ObjectHideFlags: 0
@@ -22772,10 +22808,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &1543783166
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31171,10 +31213,16 @@ MonoBehaviour:
   - {fileID: 1632590750}
   - {fileID: 869818400}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 196608
+  speed: 0
+  explode: 0
+  cubeSize: 0.2
+  cubesInRow: 5
+  explosionForce: 50
+  explosionRadius: 4
+  explosionUpward: 0.4
 --- !u!82 &2145909973
 AudioSource:
   m_ObjectHideFlags: 0

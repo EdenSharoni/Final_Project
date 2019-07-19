@@ -10,8 +10,12 @@ public class FireScript : MonoBehaviour
     private NavMeshGhost3DScript[] ghost = new NavMeshGhost3DScript[8];
     private Pacman3DScript pacman;
     int i;
+
     private void Start()
     {
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<SphereCollider>().isTrigger = true;
+
         pacman = GameObject.Find("Pacman3D").GetComponent<Pacman3DScript>();
         ghost[0] = GameObject.Find("RedGhost").GetComponent<NavMeshGhost3DScript>();
         ghost[1] = GameObject.Find("OrangeGhost").GetComponent<NavMeshGhost3DScript>();
@@ -37,11 +41,23 @@ public class FireScript : MonoBehaviour
             for (i = 0; i < 8; i++)
                 if (ghost[i].gameObject.Equals(other.gameObject))
                 {
-                    other.transform.position = ghost[i].startPosition;
-                    Destroy(gameObject);
+                    GetComponent<MeshRenderer>().enabled = false;
+                    GetComponent<SphereCollider>().isTrigger = false;
+                    ghost[i].explode = true;
+                    StartCoroutine(Wait(ghost[i]));
                 }
         }
-        else
-            Destroy(gameObject, 2f);
+        if (other.gameObject.CompareTag("Wall3D"))
+            Destroy(gameObject);
+    }
+    IEnumerator Wait(NavMeshGhost3DScript ghost)
+    {
+        ghost.gameObject.GetComponent<MeshRenderer>().enabled = false;
+        ghost.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        yield return new WaitForSeconds(2f);
+        ghost.transform.position = ghost.startPosition;
+        ghost.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        ghost.gameObject.GetComponent<CapsuleCollider>().enabled = true;
+        Destroy(gameObject);
     }
 }
