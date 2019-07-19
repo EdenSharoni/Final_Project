@@ -45,6 +45,7 @@ public class ManagerScript : MonoBehaviour
         volumeOn.enabled = true;
         volumeOff.enabled = false;
         StartCoroutine(StartCam());
+        audioSource.volume = 0.3f;
     }
 
     IEnumerator StartCam()
@@ -175,9 +176,9 @@ public class ManagerScript : MonoBehaviour
     public void VolumeOn()
     {
         for (int i = 0; i < 8; i++)
-            ghost[i].GetComponent<AudioSource>().volume = 0.3f;
-        pacman.audioSource.volume = 0.3f;
-        audioSource.volume = 0.3f;
+            ghost[i].GetComponent<AudioSource>().volume = 0.1f;
+        pacman.audioSource.volume = 0.1f;
+        audioSource.volume = 0.1f;
         volumeOn.enabled = true;
         volumeOff.enabled = false;
         volumeOn.gameObject.SetActive(true);
