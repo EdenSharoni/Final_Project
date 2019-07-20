@@ -116,7 +116,7 @@ public class Pacman3DScript : MonoBehaviour
         }
         GetComponent<Animator>().SetBool("move", isMoving);
 
-        if (Input.GetKeyDown("space") && sceneName == "Game_3D_2" && tempBulletCount > 0)
+        if (Input.GetKeyDown("space") && sceneName == "Game_3D_2" && tempBulletCount > 0 && speed != 0)
         {
             Instantiate(bullet, transform.position, transform.rotation);
             PlayerPrefs.SetInt("fireCount", --tempBulletCount);

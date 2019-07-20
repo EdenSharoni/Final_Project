@@ -43,8 +43,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
     public bool explode;
 
 
-
-
     void Start()
     {
         source = GetComponent<AudioSource>();
@@ -83,6 +81,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
         for (int i = 0; i < 4; i++)
             ghostPoints[i].SetActive(false);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
         GetComponent<CapsuleCollider>().isTrigger = false;
         agent.angularSpeed = 0f;
         agent.enabled = false;
@@ -204,9 +204,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     void GetOutOfHome()
     {
-        //agent.enabled = true;
-        //agent.SetDestination(wayPoint.position);
-
         GetComponent<CapsuleCollider>().isTrigger = true;
         p1 = Vector3.MoveTowards(transform.position, wayPoint.position, speed * Time.deltaTime);
         GetComponent<Rigidbody>().MovePosition(p1);
@@ -218,7 +215,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
                 GetComponent<Rigidbody>().MovePosition(p2);
             }
         }
-        else if(SceneManager.GetActiveScene().name.Equals("Game_3D"))
+        else if (SceneManager.GetActiveScene().name.Equals("Game_3D"))
         {
             if (transform.position.x == p1.x)
             {
@@ -236,14 +233,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
             finishWaiting = false;
 
             FindRayCastHit();
-
-            /*if (transform.name.Equals("DarkGreenGhost"))
-            {
-                Debug.Log("forward: " + freeDirection[0]);
-                Debug.Log("right: " + freeDirection[1]);
-                Debug.Log("back: " + freeDirection[2]);
-                Debug.Log("left: " + freeDirection[3]);
-            }*/
 
             for (int i = 0; i < 4; i++)
             {
@@ -308,65 +297,25 @@ public class NavMeshGhost3DScript : MonoBehaviour
         pacman.ghostBlueCount++;
         oneTimeEat = false;
         source.PlayOneShot(ghostEat);
-        if (pacman.ghostBlueCount == 1)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
-            ghostPoints[0].transform.position = transform.position;
-            ghostPoints[0].SetActive(true);
-        }
 
-        else if (pacman.ghostBlueCount == 2)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 200);
-            ghostPoints[0].transform.position = transform.position;
-            ghostPoints[0].SetActive(true);
-        }
-
-        else if (pacman.ghostBlueCount == 3)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
-            ghostPoints[1].transform.position = transform.position;
-            ghostPoints[1].SetActive(true);
-        }
-
-        else if (pacman.ghostBlueCount == 4)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 400);
-            ghostPoints[1].transform.position = transform.position;
-            ghostPoints[1].SetActive(true);
-        }
-
-        else if (pacman.ghostBlueCount == 5)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
-            ghostPoints[2].transform.position = transform.position;
-            ghostPoints[2].SetActive(true);
-        }
-
-        else if (pacman.ghostBlueCount == 6)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 800);
-            ghostPoints[2].transform.position = transform.position;
-            ghostPoints[2].SetActive(true);
-        }
-
-        else if (pacman.ghostBlueCount == 7)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
-            ghostPoints[3].transform.position = transform.position;
-            ghostPoints[3].SetActive(true);
-        }
-
-        else if (pacman.ghostBlueCount == 8)
-        {
-            PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + 1600);
-            ghostPoints[3].transform.position = transform.position;
-            ghostPoints[3].SetActive(true);
-        }
-
+        if (pacman.ghostBlueCount == 1 || pacman.ghostBlueCount == 2)
+            Points(0, 200);
+        else if (pacman.ghostBlueCount == 3 || pacman.ghostBlueCount == 4)
+            Points(1, 400);
+        else if (pacman.ghostBlueCount == 5 || pacman.ghostBlueCount == 6)
+            Points(2, 800);
+        else if (pacman.ghostBlueCount == 7 || pacman.ghostBlueCount == 8)
+            Points(3, 1600);
         yield return new WaitForSeconds(1f);
         for (int i = 0; i < 4; i++)
             ghostPoints[i].SetActive(false);
+    }
+
+    void Points(int ghostnumer, int points)
+    {
+        PlayerPrefs.SetInt("points", PlayerPrefs.GetInt("points") + points);
+        ghostPoints[ghostnumer].transform.position = transform.position;
+        ghostPoints[ghostnumer].SetActive(true);
     }
 
     void FindRayCastHit()
@@ -472,8 +421,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
         material.color = Color.blue;
         yield return new WaitForSeconds(0.1f);
         material.color = Color.white;
-        yield return new WaitForSeconds(0.1f);
-        material.color = Color.blue;
         yield return new WaitForSeconds(0.1f);
         material.color = original;
     }

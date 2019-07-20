@@ -532,6 +532,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &31788513
@@ -3529,6 +3530,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &180724179
@@ -3983,6 +3985,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &203426342
@@ -8380,6 +8383,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &515731621
@@ -8645,6 +8649,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &531264617
@@ -8775,6 +8780,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &548267911
@@ -10774,7 +10780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &645685733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22795,6 +22801,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &1543783166
@@ -26715,7 +26722,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.61, y: 1, z: 1}
+  m_Size: {x: 1.72, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1820071734
 MeshRenderer:
@@ -31197,6 +31204,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  agent: {fileID: 0}
   material: {fileID: 0}
   explode: 0
 --- !u!82 &2145909973
