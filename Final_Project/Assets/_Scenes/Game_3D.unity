@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -201,7 +201,7 @@ Transform:
   m_LocalScale: {x: 20, y: 2, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &26677945
 GameObject:
@@ -798,17 +798,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 2022342408}
-  wayPoint: {fileID: 1192821518}
+  wayPoint: {fileID: 524419263}
+  wayPoint2: {fileID: 1192821518}
   ghostPoints:
   - {fileID: 1988970555}
   - {fileID: 1441770732}
   - {fileID: 1543484551}
   - {fileID: 233351317}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 229376
+  speed: 0
+  material: {fileID: 0}
+  explode: 0
 --- !u!82 &479536702
 AudioSource:
   m_ObjectHideFlags: 0
@@ -905,6 +908,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &524419262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 524419263}
+  m_Layer: 0
+  m_Name: WayPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &524419263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524419262}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &616873815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2117,7 +2150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1192821518}
   m_Layer: 0
-  m_Name: WayPoint
+  m_Name: WayPoint2
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2301,7 +2334,7 @@ PrefabInstance:
     - target: {fileID: 8203611397157547887, guid: 85d60abab14402244ac3057761abccba,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8203611397157547887, guid: 85d60abab14402244ac3057761abccba,
         type: 3}
@@ -2396,17 +2429,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 2022342408}
-  wayPoint: {fileID: 1192821518}
+  wayPoint: {fileID: 524419263}
+  wayPoint2: {fileID: 1192821518}
   ghostPoints:
   - {fileID: 1988970555}
   - {fileID: 1441770732}
   - {fileID: 1543484551}
   - {fileID: 233351317}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 229376
+  speed: 0
+  material: {fileID: 0}
+  explode: 0
 --- !u!82 &1345433671
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5860,6 +5896,72 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 11, y: 0, z: 0}
+--- !u!1 &1616306706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1616306709}
+  - component: {fileID: 1616306708}
+  - component: {fileID: 1616306707}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1616306707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616306706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1616306708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616306706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1616306709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616306706}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1616720456 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8203611397157547883, guid: 85d60abab14402244ac3057761abccba,
@@ -5880,17 +5982,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 2022342408}
-  wayPoint: {fileID: 1192821518}
+  wayPoint: {fileID: 524419263}
+  wayPoint2: {fileID: 1192821518}
   ghostPoints:
   - {fileID: 1988970555}
   - {fileID: 1441770732}
   - {fileID: 1543484551}
   - {fileID: 233351317}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 229376
+  speed: 0
+  material: {fileID: 0}
+  explode: 0
 --- !u!82 &1616720464
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6239,8 +6344,8 @@ MonoBehaviour:
   angleCamera: {fileID: 1561800502}
   followCamera: {fileID: 1962791161}
   backCamera: {fileID: 1608881368}
-  backCameraBool: 0
   startCamera: {fileID: 177472272}
+  backCameraBool: 0
 --- !u!1 &1962791161
 GameObject:
   m_ObjectHideFlags: 0
@@ -6586,12 +6691,12 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: d6a4f195fc7efd641b1ce49940b5e544, type: 3}
   wakkawakka: {fileID: 8300000, guid: 85cc1d2035698c04d8d5df63906b67f7, type: 3}
   deadSound: {fileID: 8300000, guid: 4a3f224caf4d469408174a57e891c4d5, type: 3}
-  ghostBlue: 0
-  speed: 0
   rb: {fileID: 0}
-  isdead: 0
-  ghostBlueCount: 0
+  ghostBlue: 0
   blueAgain: 0
+  isdead: 0
+  speed: 0
+  ghostBlueCount: 0
   up: {x: 0, y: 0, z: 0}
   right: {x: 0, y: 90, z: 0}
   down: {x: 0, y: 180, z: 0}
@@ -6826,17 +6931,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 2022342408}
-  wayPoint: {fileID: 1192821518}
+  wayPoint: {fileID: 524419263}
+  wayPoint2: {fileID: 1192821518}
   ghostPoints:
   - {fileID: 1988970555}
   - {fileID: 1441770732}
   - {fileID: 1543484551}
   - {fileID: 233351317}
   startPosition: {x: 0, y: 0, z: 0}
-  speed: 0
   layermask:
     serializedVersion: 2
     m_Bits: 229376
+  speed: 0
+  material: {fileID: 0}
+  explode: 0
 --- !u!82 &2133981409
 AudioSource:
   m_ObjectHideFlags: 0

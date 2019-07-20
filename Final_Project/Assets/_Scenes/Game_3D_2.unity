@@ -520,7 +520,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1445488273}
+  wayPoint: {fileID: 1370110315}
+  wayPoint2: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -531,12 +532,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &31788513
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3520,7 +3517,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1445488273}
+  wayPoint: {fileID: 1370110315}
+  wayPoint2: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -3531,12 +3529,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &180724179
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3977,7 +3971,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1179156783}
+  wayPoint: {fileID: 1188009735}
+  wayPoint2: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -3988,12 +3983,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &203426342
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8377,7 +8368,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1445488273}
+  wayPoint: {fileID: 1370110315}
+  wayPoint2: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -8388,12 +8380,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &515731621
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8645,7 +8633,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1179156783}
+  wayPoint: {fileID: 1188009735}
+  wayPoint2: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -8656,12 +8645,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &531264617
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8778,7 +8763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1179156783}
+  wayPoint: {fileID: 1188009735}
+  wayPoint2: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -8789,12 +8775,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &548267911
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20259,7 +20241,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "same Camera  Angles\n+\nEat  10  foods\n to  gain  1  shot"
+  m_Text: "same Camera  Angles\n+\nEat  10  food\n to  gain  1  shot"
 --- !u!222 &1321594483
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22801,7 +22783,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1445488273}
+  wayPoint: {fileID: 1370110315}
+  wayPoint2: {fileID: 1445488273}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -22812,12 +22795,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &1543783166
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31206,7 +31185,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostEat: {fileID: 8300000, guid: e9e182736c1cd5340b9442b94863e32a, type: 3}
   target: {fileID: 157450140}
-  wayPoint: {fileID: 1179156783}
+  wayPoint: {fileID: 1188009735}
+  wayPoint2: {fileID: 1179156783}
   ghostPoints:
   - {fileID: 1532666999}
   - {fileID: 773838497}
@@ -31217,12 +31197,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 196608
   speed: 0
+  material: {fileID: 0}
   explode: 0
-  cubeSize: 0.2
-  cubesInRow: 5
-  explosionForce: 50
-  explosionRadius: 4
-  explosionUpward: 0.4
 --- !u!82 &2145909973
 AudioSource:
   m_ObjectHideFlags: 0

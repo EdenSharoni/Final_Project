@@ -160,7 +160,7 @@ public class ManagerScript : MonoBehaviour
 
     IEnumerator PlayAgain()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         life[currentLife].enabled = false;
         currentLife--;

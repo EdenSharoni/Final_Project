@@ -9,6 +9,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     public AudioClip ghostEat;
     public Transform target;
     public Transform wayPoint;
+    public Transform wayPoint2;
     public GameObject[] ghostPoints = new GameObject[4];
     public Vector3 startPosition;
     public LayerMask layermask;
@@ -22,8 +23,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
     private Pacman3DScript pacman;
     private RaycastHit hitRound;
     private AudioSource source;
-    private NavMeshAgent agent;
-    private Material material;
+    public NavMeshAgent agent;
+    public Material material;
     private Color original;
     private Quaternion q;
     private Vector3 p1, p2;
@@ -42,15 +43,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
     public bool explode;
 
 
-    public float cubeSize = 0.2f;
-    public int cubesInRow = 5;
 
-    float cubesPivotDistance;
-    Vector3 cubesPivot;
-
-    public float explosionForce = 50f;
-    public float explosionRadius = 4f;
-    public float explosionUpward = 0.4f;
 
     void Start()
     {
@@ -69,8 +62,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
         original = material.color;
 
 
-        cubesPivotDistance = cubeSize * cubesInRow / 2;
-        cubesPivot = new Vector3(cubesPivotDistance, cubesPivotDistance, cubesPivotDistance);
+
 
         StartCoroutine(StartCam());
     }
@@ -106,7 +98,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
         finishWaiting = true;
         oneTimeDirection = true;
         oneTimeBlue = true;
-        transform.position = startPosition;
         material.color = original;
         agent.speed = 0;
         speed = 0;
@@ -132,57 +123,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
             yield return new WaitForSeconds(15f);
         agent.speed = 5;
         speed = 8f;
-    }
-
-    private void Update()
-    {
-        if (explode && SceneManager.GetActiveScene().name.Equals("Game_3D_2"))
-        {
-            explode = false;
-            Explode();
-        }
-    }
-
-    public void Explode()
-    {
-        //loop 3 times to create 5x5x5 pieces in x,y,z coordinates
-        for (int x = 0; x < cubesInRow; x++)
-            for (int y = 0; y < cubesInRow; y++)
-                for (int z = 0; z < cubesInRow; z++)
-                    createPiece(x, y, z);
-
-        //get explosion position
-        Vector3 explosionPos = transform.position;
-        //get colliders in that position and radius
-        Collider[] colliders = Physics.OverlapSphere(explosionPos, explosionRadius);
-        //add explosion force to all colliders in that overlap sphere
-        foreach (Collider hit in colliders)
-        {
-            //get rigidbody from collider object
-            Rigidbody rb = hit.GetComponent<Rigidbody>();
-            if (rb != null)
-                //add explosion force to this body with given parameters
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, explosionUpward);
-        }
-
-    }
-
-    void createPiece(int x, int y, int z)
-    {
-        //create piece
-        GameObject piece;
-        piece = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-        //set piece position and scale
-        piece.transform.position = transform.position + new Vector3(cubeSize * x, cubeSize * y, cubeSize * z) - cubesPivot;
-        piece.transform.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
-
-        //add rigidbody and set mass
-        piece.AddComponent<Rigidbody>();
-        piece.GetComponent<Rigidbody>().mass = cubeSize;
-        piece.GetComponent<Renderer>().sharedMaterial = material;
-
-        Destroy(piece, 2);
     }
 
     void FixedUpdate()
@@ -219,15 +159,15 @@ public class NavMeshGhost3DScript : MonoBehaviour
             StartCoroutine(Blue());
         }
 
-        if (transform.position == wayPoint.position)        
-            startFindingPacman = true;        
+        if (transform.position == wayPoint2.position)
+            startFindingPacman = true;
 
         if (speed == 8f && !startFindingPacman)
             GetOutOfHome();
         else
             GetComponent<CapsuleCollider>().isTrigger = false;
 
-        if (moveDirection != Vector3.zero && !agentBool)
+        if (moveDirection != Vector3.zero && !agentBool && speed != 0)
             transform.Translate(moveDirection * speed * Time.deltaTime);
     }
 
@@ -241,7 +181,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
         options.Clear();
         counter = 0;
     }
-    
+
     IEnumerator FindPacmanAgain()
     {
         yield return new WaitForSeconds(3f);
@@ -264,17 +204,29 @@ public class NavMeshGhost3DScript : MonoBehaviour
 
     void GetOutOfHome()
     {
-        agent.enabled = true;
-        agent.SetDestination(wayPoint.position);
+        //agent.enabled = true;
+        //agent.SetDestination(wayPoint.position);
 
-        /*GetComponent<CapsuleCollider>().isTrigger = true;
+        GetComponent<CapsuleCollider>().isTrigger = true;
         p1 = Vector3.MoveTowards(transform.position, wayPoint.position, speed * Time.deltaTime);
         GetComponent<Rigidbody>().MovePosition(p1);
-        if (transform.position.z == p1.z)
+        if (SceneManager.GetActiveScene().name.Equals("Game_3D_2"))
         {
-            p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
-            GetComponent<Rigidbody>().MovePosition(p2);
-        }*/
+            if (transform.position.z == p1.z)
+            {
+                p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
+                GetComponent<Rigidbody>().MovePosition(p2);
+            }
+        }
+        else if(SceneManager.GetActiveScene().name.Equals("Game_3D"))
+        {
+            if (transform.position.x == p1.x)
+            {
+                p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
+                GetComponent<Rigidbody>().MovePosition(p2);
+            }
+        }
+
     }
 
     void Algorithm()
