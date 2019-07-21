@@ -32,6 +32,23 @@ public class TeleportScript : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (transform.name.Equals("Teleport") && teleport2Script.oneTimeEntrence)
+        {
+            oneTimeEntrence = false;
+            collision.gameObject.transform.position = teleport2Script.transform.position;
+            StartCoroutine(Wait());
+        }
+
+        if (transform.name.Equals("Teleport2") && teleportScript.oneTimeEntrence)
+        {
+            oneTimeEntrence = false;
+            collision.gameObject.transform.position = teleportScript.transform.position;
+            StartCoroutine(Wait());
+        }
+    }
+
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(0.1f);

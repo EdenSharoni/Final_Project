@@ -987,7 +987,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &636527939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1962,7 +1962,7 @@ GameObject:
   - component: {fileID: 1182744437}
   - component: {fileID: 1182744436}
   m_Layer: 0
-  m_Name: Teleport R2L
+  m_Name: Teleport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1977,7 +1977,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1182744435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15f44cedd4921fd47aa837a528da31e4, type: 3}
+  m_Script: {fileID: 11500000, guid: e67c13ed5c53c424f97644d3df0e9a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!65 &1182744437
@@ -2046,7 +2046,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1182744435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.5, y: 1, z: 4.97}
+  m_LocalPosition: {x: 50.6, y: 1, z: 4.97}
   m_LocalScale: {x: 1, y: 2, z: 7}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6719,7 +6719,7 @@ GameObject:
   - component: {fileID: 2026944589}
   - component: {fileID: 2026944588}
   m_Layer: 0
-  m_Name: Teleport L2R
+  m_Name: Teleport2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6734,7 +6734,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2026944587}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15f44cedd4921fd47aa837a528da31e4, type: 3}
+  m_Script: {fileID: 11500000, guid: e67c13ed5c53c424f97644d3df0e9a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!65 &2026944589
@@ -6803,7 +6803,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2026944587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -52.5, y: 1, z: 4.97}
+  m_LocalPosition: {x: -50.4, y: 1, z: 4.97}
   m_LocalScale: {x: 1, y: 2, z: 7}
   m_Children: []
   m_Father: {fileID: 0}
