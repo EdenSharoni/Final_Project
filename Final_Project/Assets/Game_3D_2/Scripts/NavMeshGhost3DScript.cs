@@ -321,60 +321,28 @@ public class NavMeshGhost3DScript : MonoBehaviour
     void FindRayCastHit()
     {
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.forward, out forward, 3f, layermask))
-        {
-            if (freeDirection[0] == true)
-                oneTimeDirection = true;
-            freeDirection[0] = false;
-        }
-
+            SetDirection(0, true, false);
         else
-        {
-            if (freeDirection[0] == false)
-                oneTimeDirection = true;
-            freeDirection[0] = true;
-        }
-
+            SetDirection(0, false, true);
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.right, out right, 3f, layermask))
-        {
-            if (freeDirection[1] == true)
-                oneTimeDirection = true;
-            freeDirection[1] = false;
-        }
-
+            SetDirection(1, true, false);
         else
-        {
-            if (freeDirection[1] == false)
-                oneTimeDirection = true;
-            freeDirection[1] = true;
-        }
-
+            SetDirection(1, false, true);
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.back, out backwards, 3f, layermask))
-        {
-            if (freeDirection[2] == true)
-                oneTimeDirection = true;
-            freeDirection[2] = false;
-        }
-
+            SetDirection(2, true, false);
         else
-        {
-            if (freeDirection[2] == false)
-                oneTimeDirection = true;
-            freeDirection[2] = true;
-        }
-
+            SetDirection(2, false, true);
         if (Physics.SphereCast(transform.position, 1.5f, Vector3.left, out left, 3f, layermask))
-        {
-            if (freeDirection[3] == true)
-                oneTimeDirection = true;
-            freeDirection[3] = false;
-        }
-
+            SetDirection(3, true, false);
         else
-        {
-            if (freeDirection[3] == false)
-                oneTimeDirection = true;
-            freeDirection[3] = true;
-        }
+            SetDirection(3, false, true);
+    }
+
+    void SetDirection(int i, bool boolean1, bool boolean2)
+    {
+        if (freeDirection[i] == boolean1)
+            oneTimeDirection = true;
+        freeDirection[i] = boolean2;
     }
 
     private void OnDrawGizmos()

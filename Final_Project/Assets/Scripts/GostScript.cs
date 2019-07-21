@@ -20,8 +20,6 @@ public class GostScript : MonoBehaviour
     List<int> options = new List<int>();
     List<int> checkLoopDirections = new List<int>();
     float speed = 0;
-    int directionX;
-    int directionY;
     int rand;
     int counter = 0;
     bool upDownStarter;
@@ -30,8 +28,12 @@ public class GostScript : MonoBehaviour
     bool finishWaiting;
     bool getOutOfHome;
     bool[] freeDirection = { false, false, false, false };
-    string[] directions = { "up", "right", "down", "left" };
-    string lastdirection;
+
+    Vector2 left = Vector2.left,
+            right = Vector2.right,
+            down = Vector2.down,
+            up = Vector2.up,
+            currentDirection = Vector2.zero;
 
     private void Start()
     {
@@ -44,8 +46,7 @@ public class GostScript : MonoBehaviour
 
     public void initGhost()
     {
-        directionX = 0;
-        directionY = 0;
+        currentDirection = Vector2.zero;
         gate.SetActive(true);
         oneTimeBlue = true;
         upDownStarter = true;
@@ -64,7 +65,7 @@ public class GostScript : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         speed = 5f;
-        Switches("up");
+        Switches(0);
         StartCoroutine(WaitForGate());
     }
 
@@ -87,7 +88,7 @@ public class GostScript : MonoBehaviour
         if (pacman.ghostBlue && !gateOpen && oneTimeBlue)
             StartCoroutine(Blue());
 
-        rb.velocity = new Vector2(speed * directionX, speed * directionY);
+        rb.velocity = currentDirection * speed;
 
         GetOutOfHome();
 
@@ -114,7 +115,7 @@ public class GostScript : MonoBehaviour
             GetComponent<Rigidbody2D>().MovePosition(p1);
             if (transform.position.x == p1.x)
             {
-                Switches("up");
+                Switches(0);
                 Vector2 p2 = Vector2.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
                 GetComponent<Rigidbody2D>().MovePosition(p2);
             }
@@ -137,7 +138,6 @@ public class GostScript : MonoBehaviour
                     options.Add(i);
                 }
             }
-
             if (oneTimeDirection && (counter != 0))
             {
                 oneTimeDirection = false;
@@ -154,8 +154,7 @@ public class GostScript : MonoBehaviour
                 else
                     rand = Random.Range(0, counter);
                 checkLoopDirections.Add(options[rand]);
-                lastdirection = directions[options[rand]];
-                Switches(lastdirection);
+                Switches(options[rand]);
             }
             StartCoroutine(Wait());
         }
@@ -177,7 +176,6 @@ public class GostScript : MonoBehaviour
         {
             GetComponent<Animator>().SetLayerWeight(2, 0);
             GetComponent<Animator>().SetBool("blue", false);
-
             speed = 5f;
             getOutOfHome = true;
             if (startFindingPacman)
@@ -192,58 +190,49 @@ public class GostScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (upDownStarter)
-        {
             if (GetComponent<Animator>().GetBool("up"))
-                Switches("down");
+                Switches(2);
             else
-                Switches("up");
-        }
+                Switches(0);
     }
 
     IEnumerator Blue()
     {
         oneTimeBlue = false;
         GetComponent<Animator>().SetBool("blue", true);
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(8.5f);
         GetComponent<Animator>().SetBool("blue", false);
+        yield return new WaitForSeconds(1.5f);
         pacman.ghostBlue = false;
         oneTimeBlue = true;
         pacman.ghostBlueCount = 0;
         transform.gameObject.layer = 11;
     }
 
-    void Switches(string s)
+    void Switches(int num)
     {
         GetComponent<Animator>().SetBool("up", false);
         GetComponent<Animator>().SetBool("down", false);
         GetComponent<Animator>().SetBool("left", false);
         GetComponent<Animator>().SetBool("right", false);
 
-        switch (s)
+        switch (num)
         {
-            case "right":
-                directionX = 1;
-                directionY = 0;
-                lastdirection = "right";
-                GetComponent<Animator>().SetBool("right", true);
-                break;
-            case "left":
-                directionX = -1;
-                directionY = 0;
-                lastdirection = "left";
-                GetComponent<Animator>().SetBool("left", true);
-                break;
-            case "up":
-                directionX = 0;
-                directionY = 1;
-                lastdirection = "up";
+            case 0:
+                currentDirection = up;
                 GetComponent<Animator>().SetBool("up", true);
                 break;
-            case "down":
-                directionX = 0;
-                directionY = -1;
-                lastdirection = "down";
+            case 1:
+                currentDirection = right;
+                GetComponent<Animator>().SetBool("right", true);
+                break;
+            case 2:
+                currentDirection = down;
                 GetComponent<Animator>().SetBool("down", true);
+                break;
+            case 3:
+                currentDirection = left;
+                GetComponent<Animator>().SetBool("left", true);
                 break;
         }
     }
@@ -251,55 +240,24 @@ public class GostScript : MonoBehaviour
     void FindHit()
     {
         if (hitUp.collider != null)
-        {
-            if (freeDirection[0] == true)
-                oneTimeDirection = true;
-            freeDirection[0] = false;
-        }
-        else
-        {
-            if (freeDirection[0] == false)
-                oneTimeDirection = true;
-            freeDirection[0] = true;
-        }
-
+            SetDirections(0, true, false);
+        else SetDirections(0, false, true);
         if (hitRight.collider != null)
-        {
-            if (freeDirection[1] == true)
-                oneTimeDirection = true;
-            freeDirection[1] = false;
-        }
-        else
-        {
-            if (freeDirection[1] == false)
-                oneTimeDirection = true;
-            freeDirection[1] = true;
-        }
-
+            SetDirections(1, true, false);
+        else SetDirections(1, false, true);
         if (hitDown.collider != null)
-        {
-            if (freeDirection[2] == true)
-                oneTimeDirection = true;
-            freeDirection[2] = false;
-        }
-        else
-        {
-            if (freeDirection[2] == false)
-                oneTimeDirection = true;
-            freeDirection[2] = true;
-        }
+            SetDirections(2, true, false);
+        else SetDirections(2, false, true);
         if (hitLeft.collider != null)
-        {
-            if (freeDirection[3] == true)
-                oneTimeDirection = true;
-            freeDirection[3] = false;
-        }
-        else
-        {
-            if (freeDirection[3] == false)
-                oneTimeDirection = true;
-            freeDirection[3] = true;
-        }
+            SetDirections(3, true, false);
+        else SetDirections(3, false, true);
+    }
+
+    void SetDirections(int number, bool boolean1, bool boolean2)
+    {
+        if (freeDirection[number] == boolean1)
+            oneTimeDirection = true;
+        freeDirection[number] = boolean2;
     }
 
     void MakeRayCast()

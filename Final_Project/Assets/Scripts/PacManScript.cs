@@ -23,6 +23,7 @@ public class PacManScript : MonoBehaviour
         currentDirection = Vector2.zero,
         saveLastPress = Vector2.zero,
         startPoint = Vector2.zero;
+
     Vector3 upEulerAngles = new Vector3(0, 0, 90),
                     rightEulerAngles = Vector3.zero,
                     downEulerAngles = new Vector3(0, 0, 270),
@@ -77,29 +78,32 @@ public class PacManScript : MonoBehaviour
     {
         if (!isdead)
         {
-            //Adjust the direction
-            if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider == null) Right();
-            else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider == null) Left();
-            else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider == null) Down();
-            else if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider == null) Up();
+            //Adjust the direction OR Turn to the free direction
+            if ((Input.GetKey(KeyCode.RightArrow) && hitRight.collider == null)
+                || (hitRight.collider == null && saveLastPress == right))
+                SetDirection(right, rightEulerAngles);
+            else if ((Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider == null)
+                || (hitLeft.collider == null && saveLastPress == left))
+                SetDirection(left, leftEulerAngles);
+            else if ((Input.GetKey(KeyCode.DownArrow) && hitDown.collider == null)
+                || (hitDown.collider == null && saveLastPress == down))
+                SetDirection(down, downEulerAngles);
+            else if ((Input.GetKey(KeyCode.UpArrow) && hitUp.collider == null)
+                || (hitUp.collider == null && saveLastPress == up))
+                SetDirection(up, upEulerAngles);
 
-            //Save The input that was not free
+            //Save The input that was not free in saveLastPress
             if (Input.GetKey(KeyCode.UpArrow) && hitUp.collider != null) saveLastPress = up;
             else if (Input.GetKey(KeyCode.RightArrow) && hitRight.collider != null) saveLastPress = right;
             else if (Input.GetKey(KeyCode.DownArrow) && hitDown.collider != null) saveLastPress = down;
             else if (Input.GetKey(KeyCode.LeftArrow) && hitLeft.collider != null) saveLastPress = left;
 
-            //Turn to the free direction
-            if (hitRight.collider == null && saveLastPress == right) Right();
-            else if (hitLeft.collider == null && saveLastPress == left) Left();
-            else if (hitUp.collider == null && saveLastPress == up) Up();
-            else if (hitDown.collider == null && saveLastPress == down) Down();
-
             //Pacman hit the wall and animation stops
-            if (hitRight.collider != null && currentDirection == right) GetComponent<Animator>().enabled = false;
-            else if (hitLeft.collider != null && currentDirection == left) GetComponent<Animator>().enabled = false;
-            else if (hitUp.collider != null && currentDirection == up) GetComponent<Animator>().enabled = false;
-            else if (hitDown.collider != null && currentDirection == down) GetComponent<Animator>().enabled = false;
+            if ((hitRight.collider != null && currentDirection == right)
+                || (hitLeft.collider != null && currentDirection == left)
+                || (hitUp.collider != null && currentDirection == up)
+                || (hitDown.collider != null && currentDirection == down))
+                GetComponent<Animator>().enabled = false;
             else GetComponent<Animator>().enabled = true;
         }
     }
@@ -147,28 +151,10 @@ public class PacManScript : MonoBehaviour
         Debug.DrawRay(transform.position, Vector2.left);
     }
 
-    void Right()
+    void SetDirection(Vector2 direction, Vector3 eulerAngles)
     {
-        currentDirection = right;
-        transform.eulerAngles = rightEulerAngles;
-        saveLastPress = Vector2.zero;
-    }
-    void Left()
-    {
-        currentDirection = left;
-        transform.eulerAngles = leftEulerAngles;
-        saveLastPress = Vector2.zero;
-    }
-    void Down()
-    {
-        currentDirection = down;
-        transform.eulerAngles = downEulerAngles;
-        saveLastPress = Vector2.zero;
-    }
-    void Up()
-    {
-        currentDirection = up;
-        transform.eulerAngles = upEulerAngles;
+        currentDirection = direction;
+        transform.eulerAngles = eulerAngles;
         saveLastPress = Vector2.zero;
     }
 }
