@@ -59,6 +59,7 @@ public class Pacman3DScript : MonoBehaviour
 
     IEnumerator Wait()
     {
+        GetComponent<Animator>().applyRootMotion = true;
         blueAgain = false;
         transform.position = startPoint;
         currentDirection = up;

@@ -82,6 +82,7 @@ public class GameManagmentScript : MonoBehaviour
 
     IEnumerator Initial()
     {
+
         audioSource.clip = main;
         pacman.isdead = false;
         oneTimeEntrence = true;
@@ -140,6 +141,7 @@ public class GameManagmentScript : MonoBehaviour
                 pacman.GetComponent<Animator>().enabled = true;
                 pacman.audioSource.clip = pacman.deadSound;
                 pacman.audioSource.PlayOneShot(pacman.deadSound);
+                pacman.GetComponent<Animator>().applyRootMotion = false;
                 pacman.GetComponent<Animator>().SetTrigger("die");
             }
 
