@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shoot: {fileID: 8300000, guid: c48c18caab6be3e47a82ebd8f53cc7cf, type: 3}
   explode: {fileID: 8300000, guid: 162be25f0e8a95249aaf34facf01d531, type: 3}
-  fireSpeed: 15
+  fireSpeed: 25
   cubeSize: 0.2
   cubesInRow: 5
   explosionForce: 150
