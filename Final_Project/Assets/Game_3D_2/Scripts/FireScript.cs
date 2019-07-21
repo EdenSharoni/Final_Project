@@ -113,14 +113,12 @@ public class FireScript : MonoBehaviour
 
     IEnumerator Wait(NavMeshGhost3DScript ghost)
     {
-        Debug.Log("IN: " + ghost.transform.name);
         ghost.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         ghost.agent.enabled = false;
         ghost.speed = 0f;
         ghost.gameObject.GetComponent<MeshRenderer>().enabled = false;
         ghost.gameObject.GetComponent<CapsuleCollider>().enabled = false;
         yield return new WaitForSeconds(2f);
-        Debug.Log("OUT: " + ghost.transform.name);
         ghost.transform.position = ghost.startPosition;
         ghost.gameObject.GetComponent<MeshRenderer>().enabled = true;
         ghost.gameObject.GetComponent<CapsuleCollider>().enabled = true;
