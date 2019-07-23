@@ -159,7 +159,7 @@ public class NavMeshGhost3DScript : MonoBehaviour
             StartCoroutine(Blue());
         }
 
-        if (transform.position == wayPoint2.position)
+        if (transform.position.z >= wayPoint2.position.z -.05 && transform.position.z <= wayPoint2.position.z + .05)
             startFindingPacman = true;
 
         if (speed == 8f && !startFindingPacman)
@@ -209,8 +209,9 @@ public class NavMeshGhost3DScript : MonoBehaviour
         GetComponent<Rigidbody>().MovePosition(p1);
         if (SceneManager.GetActiveScene().name.Equals("Game_3D_2"))
         {
-            if (transform.position.z == p1.z)
+            if (transform.position.z <= p1.z + .05 && transform.position.z >= p1.z -.05)
             {
+                Debug.Log("here " + transform.name);
                 p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
                 GetComponent<Rigidbody>().MovePosition(p2);
             }
