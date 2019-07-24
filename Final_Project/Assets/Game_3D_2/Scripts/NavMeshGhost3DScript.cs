@@ -212,7 +212,6 @@ public class NavMeshGhost3DScript : MonoBehaviour
         {
             if (transform.position.z <= p1.z + .05 && transform.position.z >= p1.z -.05)
             {
-                Debug.Log("here " + transform.name);
                 p2 = Vector3.MoveTowards(transform.position, wayPoint2.position, speed * Time.deltaTime);
                 GetComponent<Rigidbody>().MovePosition(p2);
             }
