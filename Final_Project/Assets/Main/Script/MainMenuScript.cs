@@ -100,4 +100,9 @@ public class MainMenuScript : MonoBehaviour
     {
         SceneManager.LoadScene(3, LoadSceneMode.Single);
     }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
 }
