@@ -35,7 +35,7 @@ public class Pacman3DScript : MonoBehaviour
     private bool isMoving;
     private string sceneName;
     private int tempFoodCount = 0;
-    private int tempBulletCount = 500;
+    private int tempBulletCount = 0;
 
 
     void Start()
