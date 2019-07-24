@@ -159,7 +159,8 @@ public class NavMeshGhost3DScript : MonoBehaviour
             StartCoroutine(Blue());
         }
 
-        if (transform.position.z >= wayPoint2.position.z -.05 && transform.position.z <= wayPoint2.position.z + .05)
+        if ((transform.position.z >= wayPoint2.position.z -.05 && transform.position.z <= wayPoint2.position.z + .05) &&
+            (transform.position.x >= wayPoint2.position.x - .05 && transform.position.x <= wayPoint2.position.x + .05))
             startFindingPacman = true;
 
         if (speed == 8f && !startFindingPacman)
